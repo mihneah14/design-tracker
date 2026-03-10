@@ -291,10 +291,10 @@ const DESIGNER_COLORS = { Teo: '#e8c547', Mircea: '#4ecdc4', Cristi: '#ff9f43' }
 
 // ─── API ──────────────────────────────────
 async function apiFetch(payload) {
-  const res = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+  // Apps Script requires no-cors or form submission for POST
+  // We use a URL param trick: send payload as 'data' query param via GET
+  const url = `${SCRIPT_URL}?payload=${encodeURIComponent(JSON.stringify(payload))}`;
+  const res = await fetch(url);
   const data = await res.json();
   if (data.error) throw new Error(data.error);
   return data;
