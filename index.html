@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Tracker — Universum Events</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --accent: #e8c547;
+    --accent2: #4ecdc4;
+    --danger: #ff6b6b;
+    --text: #e8e8e8;
+    --text2: #888;
+    --text3: #555;
+    --teo: #e8c547;
+    --mircea: #4ecdc4;
+    --cristi: #ff9f43;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; }
+
+  /* AUTH SCREEN */
+  .auth-screen {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; gap: 24px;
+  }
+  .auth-logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
+  .auth-logo span { color: var(--text2); font-weight: 400; }
+  .auth-title { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--text); }
+  .auth-sub { font-size: 13px; color: var(--text2); text-align: center; max-width: 320px; line-height: 1.6; }
+  .btn-login {
+    background: var(--accent); color: #0f0f0f; border: none;
+    padding: 14px 32px; font-family: var(--font-mono); font-size: 12px;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; border-radius: 4px; transition: opacity 0.15s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn-login:hover { opacity: 0.85; }
+  .auth-error { color: var(--danger); font-family: var(--font-mono); font-size: 12px; text-align: center; max-width: 360px; }
+
+  /* LOADING */
+  .loading-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 9999;
+    align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+    backdrop-filter: blur(3px);
+  }
+  .loading-overlay.show { display: flex; }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-family: var(--font-mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; }
+
+  /* HEADER */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px; border-bottom: 1px solid var(--border);
+    background: var(--surface); position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
+  .logo span { color: var(--text2); font-weight: 400; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .user-badge { font-family: var(--font-mono); font-size: 11px; color: var(--text2); padding: 4px 10px; border: 1px solid var(--border); border-radius: 3px; }
+  .view-switcher { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .view-btn { padding: 6px 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; background: none; border: none; color: var(--text2); cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
+  .view-btn.active { background: var(--accent); color: #0f0f0f; font-weight: 600; }
+  .btn-primary { background: var(--accent); color: #0f0f0f; border: none; padding: 8px 18px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: opacity 0.15s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-logout { background: none; border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.08em; }
+  .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* LAYOUT */
+  .container { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+
+  /* DESIGNER CARDS */
+  .designer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .designer-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; position: relative; overflow: hidden; }
+  .designer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .designer-card.teo::before { background: var(--teo); }
+  .designer-card.mircea::before { background: var(--mircea); }
+  .designer-card.cristi::before { background: var(--cristi); }
+  .designer-name { font-family: var(--font-mono); font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .designer-name.teo { color: var(--teo); }
+  .designer-name.mircea { color: var(--mircea); }
+  .designer-name.cristi { color: var(--cristi); }
+  .designer-subtitle { font-size: 11px; color: var(--text2); margin-bottom: 16px; font-family: var(--font-mono); }
+  .stats-row { display: flex; gap: 20px; margin-bottom: 14px; }
+  .stat { flex: 1; }
+  .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; font-family: var(--font-mono); }
+  .stat-value { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--text); }
+  .stat-value span { font-size: 12px; color: var(--text2); font-weight: 400; }
+  .workload-bar-bg { background: var(--bg); border-radius: 2px; height: 6px; overflow: hidden; margin-bottom: 6px; }
+  .workload-bar { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+  .workload-label { font-family: var(--font-mono); font-size: 10px; color: var(--text2); display: flex; justify-content: space-between; }
+  .status-badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; font-weight: 600; }
+  .status-badge.available { background: #1a3a1a; color: #4ade80; }
+  .status-badge.busy { background: #3a2a0a; color: var(--accent); }
+  .status-badge.overloaded { background: #3a1a1a; color: var(--danger); }
+
+  /* TABLE */
+  .projects-section { margin-bottom: 28px; }
+  .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .filters { display: flex; gap: 8px; align-items: center; }
+  .filter-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; background: none; border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; transition: all 0.15s; }
+  .filter-btn.active, .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  select.filter-select { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; outline: none; }
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 12px 16px; font-size: 13px; vertical-align: middle; }
+  .project-name { font-weight: 500; color: var(--text); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .project-client { font-size: 11px; color: var(--text2); font-family: var(--font-mono); margin-top: 2px; }
+  .designer-dot { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.teo { background: var(--teo); }
+  .dot.mircea { background: var(--mircea); }
+  .dot.cristi { background: var(--cristi); }
+  .hours-cell { font-family: var(--font-mono); font-size: 12px; }
+  .hours-realized { color: var(--text); font-weight: 600; }
+  .hours-estimated { color: var(--text2); }
+  .hours-separator { color: var(--text3); margin: 0 3px; }
+  .progress-mini { width: 80px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 8px; }
+  .progress-mini-fill { height: 100%; border-radius: 2px; }
+  .fill-ok { background: #4ade80; }
+  .fill-warn { background: var(--accent); }
+  .fill-over { background: var(--danger); }
+  .cost-cell { font-family: var(--font-mono); font-size: 12px; color: var(--accent2); }
+  .action-btn { background: none; border: 1px solid var(--border); color: var(--text2); padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; margin-right: 4px; }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .proj-status { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; font-weight: 600; }
+  .proj-status.active { background: #1a2a3a; color: var(--accent2); }
+  .proj-status.completed { background: #1a3a1a; color: #4ade80; }
+  .proj-status.paused { background: #2a2a1a; color: var(--accent); }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); font-family: var(--font-mono); font-size: 13px; }
+  .empty-state div:first-child { font-size: 32px; margin-bottom: 12px; }
+  .total-row td { border-top: 1px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 11px; padding-top: 16px; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; width: 520px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+  .modal-title { font-family: var(--font-mono); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .modal-close { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 20px; line-height: 1; padding: 0; transition: color 0.15s; }
+  .modal-close:hover { color: var(--text); }
+  .modal-body { padding: 24px; }
+  .form-group { margin-bottom: 18px; }
+  .form-label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+  .form-input, .form-select, .form-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; font-family: var(--font-sans); font-size: 13px; border-radius: 4px; outline: none; transition: border-color 0.15s; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-footer { display: flex; gap: 10px; justify-content: flex-end; padding: 16px 24px; border-top: 1px solid var(--border); }
+  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--text2); padding: 8px 18px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; border-radius: 3px; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.08em; }
+  .btn-cancel:hover { border-color: var(--text2); color: var(--text); }
+
+  /* LOG */
+  .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .log-entry { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; }
+  .log-date { color: var(--text2); min-width: 90px; }
+  .log-hours { color: var(--accent); min-width: 60px; font-weight: 600; }
+  .log-note { color: var(--text); flex: 1; font-family: var(--font-sans); font-size: 12px; }
+  .log-delete { color: var(--text3); cursor: pointer; background: none; border: none; font-size: 14px; transition: color 0.15s; }
+  .log-delete:hover { color: var(--danger); }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent); color: var(--accent); padding: 10px 18px; font-family: var(--font-mono); font-size: 12px; border-radius: 4px; z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-logo">Universum <span>/ Design Tracker</span></div>
+  <div class="auth-title">Bun venit</div>
+  <div class="auth-sub">Loghează-te cu contul tău Microsoft 365 pentru a accesa tracker-ul echipei de design.</div>
+  <button class="btn-login" onclick="login()">
+    <svg width="18" height="18" viewBox="0 0 21 21" fill="none"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+    Loghează-te cu Microsoft
+  </button>
+  <div class="auth-error" id="authError"></div>
+</div>
+
+<!-- MAIN APP (hidden until login) -->
+<div id="appScreen" style="display:none">
+  <header>
+    <div class="logo">Universum <span>/ Design Tracker</span></div>
+    <div class="header-right">
+      <div class="user-badge" id="userBadge">—</div>
+      <div class="view-switcher">
+        <button class="view-btn active" onclick="switchView('manager', this)">Manager</button>
+        <button class="view-btn" onclick="switchView('designer', this)">Designer</button>
+      </div>
+      <select id="designerSelector" class="form-select" style="width:auto;padding:6px 10px;font-size:11px;display:none;" onchange="setActiveDesigner(this.value)">
+        <option value="Teo">Teo</option>
+        <option value="Mircea">Mircea</option>
+        <option value="Cristi">Cristi</option>
+      </select>
+      <button class="btn-primary" onclick="openAddProject()">+ Proiect nou</button>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="section-label">Workload curent</div>
+    <div class="designer-cards" id="designerCards"></div>
+    <div class="projects-section">
+      <div class="table-header">
+        <div class="section-label" style="margin-bottom:0">Proiecte</div>
+        <div class="filters">
+          <button class="filter-btn active" onclick="setFilter('all', this)">Toate</button>
+          <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
+          <button class="filter-btn" onclick="setFilter('completed', this)">Finalizate</button>
+          <select class="filter-select" id="designerFilter" onchange="renderTable()">
+            <option value="all">Toți designerii</option>
+            <option value="Teo">Teo</option>
+            <option value="Mircea">Mircea</option>
+            <option value="Cristi">Cristi</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Proiect / Client</th>
+              <th>Designer</th>
+              <th>Status</th>
+              <th>Ore realizate / estimate</th>
+              <th>Progres</th>
+              <th>Cost (25€/h)</th>
+              <th>Acțiuni</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Se încarcă...</div>
+</div>
+
+<!-- ADD PROJECT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Proiect nou</div>
+      <button class="modal-close" onclick="closeModal('addModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Nume proiect</label><input class="form-input" id="f_name" placeholder="ex. Gala Anuală BCR 2025"></div>
+      <div class="form-group"><label class="form-label">Client</label><input class="form-input" id="f_client" placeholder="ex. BCR"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Designer</label><select class="form-select" id="f_designer"><option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option></select></div>
+        <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="f_status"><option value="active">Activ</option><option value="completed">Finalizat</option><option value="paused">Pauzat</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Ore estimate</label><input class="form-input" id="f_estimated" type="number" placeholder="ex. 12" min="0" step="0.5"></div>
+        <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="f_deadline" type="date"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Notă</label><textarea class="form-textarea" id="f_note" rows="2" placeholder="Detalii suplimentare..."></textarea></div>
+    </div>
+    <div class="form-footer">
+      <button class="btn-cancel" onclick="closeModal('addModal')">Anulează</button>
+      <button class="btn-primary" onclick="saveProject()">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOG TIME MODAL -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="logModalTitle">Logare ore</div>
+      <button class="modal-close" onclick="closeModal('logModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="tab-bar">
+        <div class="tab active" onclick="switchTab('logNew', this)">Adaugă ore</div>
+        <div class="tab" onclick="switchTab('logHistory', this)">Istoric</div>
+      </div>
+      <div class="tab-content active" id="logNew">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Designer</label><select class="form-select" id="l_designer"><option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option></select></div>
+          <div class="form-group"><label class="form-label">Data</label><input class="form-input" id="l_date" type="date"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Ore lucrate</label><input class="form-input" id="l_hours" type="number" placeholder="ex. 3.5" min="0.5" step="0.5"></div>
+        <div class="form-group"><label class="form-label">Notă / Descriere task</label><textarea class="form-textarea" id="l_note" rows="2" placeholder="ex. Mockup landing page, revisii logo..."></textarea></div>
+      </div>
+      <div class="tab-content" id="logHistory"><div id="logHistoryList"></div></div>
+    </div>
+    <div class="form-footer" id="logFooter">
+      <button class="btn-cancel" onclick="closeModal('logModal')">Închide</button>
+      <button class="btn-primary" onclick="saveLog()">Adaugă ore</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIGURARE — datele tale reale
+// ─────────────────────────────────────────────
+const CONFIG = {
+  clientId: 'b70b72a1-5f68-43c4-91b6-7ef4bc26edb5',
+  tenantId: '4dd6ab9c-acc6-46b9-b516-0905354db6ad',
+  siteHostname: 'universumsrl.sharepoint.com',
+  // Calea fișierului Excel relativ la rădăcina site-ului SharePoint
+  // Modifică dacă l-ai salvat în alt folder
+  excelPath: '/Documents/Design Tracker/design_tracker_data.xlsx',
+  driveItemId: '7d8f5f5e-5249-47a6-b46f-09575f52f7e1', // din URL-ul tău
+};
+
+const SCOPES = ['Files.ReadWrite.All', 'Sites.ReadWrite.All', 'User.Read'];
+const RATE = 25; // €/oră
+const DESIGNERS = ['Teo', 'Mircea', 'Cristi'];
+const DESIGNER_COLORS = { Teo: '#e8c547', Mircea: '#4ecdc4', Cristi: '#ff9f43' };
+
+// ─────────────────────────────────────────────
+// MSAL AUTH
+// ─────────────────────────────────────────────
+const msalConfig = {
+  auth: {
+    clientId: CONFIG.clientId,
+    authority: `https://login.microsoftonline.com/${CONFIG.tenantId}`,
+    redirectUri: window.location.href.split('?')[0],
+  },
+  cache: { cacheLocation: 'sessionStorage' }
+};
+
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+let currentAccount = null;
+let accessToken = null;
+
+async function login() {
+  try {
+    showLoading('Se conectează la Microsoft...');
+    const result = await msalInstance.loginPopup({ scopes: SCOPES });
+    currentAccount = result.account;
+    accessToken = result.accessToken;
+    onLoginSuccess();
+  } catch (e) {
+    hideLoading();
+    document.getElementById('authError').textContent = 'Eroare la autentificare: ' + e.message;
+  }
+}
+
+async function getToken() {
+  try {
+    const result = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: currentAccount });
+    accessToken = result.accessToken;
+    return accessToken;
+  } catch (e) {
+    const result = await msalInstance.acquireTokenPopup({ scopes: SCOPES });
+    accessToken = result.accessToken;
+    return accessToken;
+  }
+}
+
+async function logout() {
+  await msalInstance.logout();
+  location.reload();
+}
+
+async function checkExistingLogin() {
+  await msalInstance.initialize();
+  const accounts = msalInstance.getAllAccounts();
+  if (accounts.length > 0) {
+    currentAccount = accounts[0];
+    try {
+      const result = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: currentAccount });
+      accessToken = result.accessToken;
+      onLoginSuccess();
+    } catch(e) {
+      hideLoading();
+    }
+  } else {
+    hideLoading();
+  }
+}
+
+function onLoginSuccess() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  document.getElementById('userBadge').textContent = currentAccount.username;
+  loadAllData();
+}
+
+// ─────────────────────────────────────────────
+// GRAPH API — Excel pe SharePoint
+// ─────────────────────────────────────────────
+// Construim endpoint-ul pe baza driveItemId din URL
+function getExcelBase() {
+  return `https://graph.microsoft.com/v1.0/sites/${CONFIG.siteHostname}:/:/drive/items/${CONFIG.driveItemId}/workbook`;
+}
+
+async function graphRequest(url, method = 'GET', body = null) {
+  const token = await getToken();
+  const opts = {
+    method,
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${res.status}`);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+async function getSheetData(sheetName) {
+  try {
+    const base = getExcelBase();
+    const data = await graphRequest(`${base}/worksheets/${sheetName}/usedRange`);
+    if (!data.values || data.values.length < 2) return [];
+    const headers = data.values[0];
+    return data.values.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = row[i] ?? '');
+      return obj;
+    }).filter(r => r.id && r.id !== '');
+  } catch(e) {
+    console.error(`Eroare citire ${sheetName}:`, e);
+    return [];
+  }
+}
+
+async function appendRow(sheetName, rowData) {
+  const base = getExcelBase();
+  // Găsim ultima linie și adăugăm după ea
+  const data = await graphRequest(`${base}/worksheets/${sheetName}/usedRange`);
+  const nextRow = data.values ? data.values.length + 1 : 2;
+  const headers = data.values ? data.values[0] : Object.keys(rowData);
+  const values = [headers.map(h => rowData[h] ?? '')];
+  await graphRequest(
+    `${base}/worksheets/${sheetName}/range(address='A${nextRow}:${colLetter(headers.length)}${nextRow}')`,
+    'PATCH',
+    { values }
+  );
+}
+
+async function updateRow(sheetName, rowIndex, rowData) {
+  // rowIndex = index în array (0-based, fără header)
+  const base = getExcelBase();
+  const data = await graphRequest(`${base}/worksheets/${sheetName}/usedRange`);
+  const headers = data.values[0];
+  const excelRow = rowIndex + 2; // +1 header, +1 pentru 1-based
+  const values = [headers.map(h => rowData[h] ?? '')];
+  await graphRequest(
+    `${base}/worksheets/${sheetName}/range(address='A${excelRow}:${colLetter(headers.length)}${excelRow}')`,
+    'PATCH',
+    { values }
+  );
+}
+
+async function deleteRow(sheetName, rowIndex) {
+  const base = getExcelBase();
+  const excelRow = rowIndex + 2;
+  // Ștergem conținutul (clear) — Excel Graph API nu suportă delete row direct simplu
+  await graphRequest(
+    `${base}/worksheets/${sheetName}/range(address='A${excelRow}:Z${excelRow}')/clear`,
+    'POST',
+    { applyTo: 'contents' }
+  );
+}
+
+function colLetter(n) {
+  let s = '';
+  while (n > 0) { s = String.fromCharCode(64 + (n % 26 || 26)) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let db = { projects: [], logs: [] };
+let editingId = null;
+let logProjectId = null;
+let currentFilter = 'all';
+let currentView = 'manager';
+let activeDesigner = 'Teo';
+
+async function loadAllData() {
+  showLoading('Se încarcă datele...');
+  try {
+    const [projects, logs] = await Promise.all([
+      getSheetData('Projects'),
+      getSheetData('Logs')
+    ]);
+    db.projects = projects;
+    db.logs = logs;
+    render();
+  } catch(e) {
+    toast('Eroare la încărcare: ' + e.message, true);
+    console.error(e);
+  }
+  hideLoading();
+}
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function getRealizedHours(projectId) {
+  return db.logs.filter(l => l.projectId === projectId).reduce((s, l) => s + Number(l.hours || 0), 0);
+}
+
+function getTotalRealizedByDesigner(designer) {
+  const ids = new Set(db.projects.filter(p => p.status === 'active' && p.designer === designer).map(p => p.id));
+  return db.logs.filter(l => ids.has(l.projectId) && l.designer === designer).reduce((s, l) => s + Number(l.hours || 0), 0);
+}
+
+function getActiveProjectsByDesigner(designer) {
+  return db.projects.filter(p => p.designer === designer && p.status === 'active').length;
+}
+
+function toast(msg, isError = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.borderColor = isError ? 'var(--danger)' : 'var(--accent)';
+  el.style.color = isError ? 'var(--danger)' : 'var(--accent)';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function showLoading(msg = 'Se procesează...') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+
+// ─────────────────────────────────────────────
+// VIEWS & RENDER
+// ─────────────────────────────────────────────
+function switchView(v, btn) {
+  currentView = v;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const sel = document.getElementById('designerSelector');
+  sel.style.display = v === 'designer' ? 'block' : 'none';
+  render();
+}
+
+function setActiveDesigner(d) { activeDesigner = d; render(); }
+
+function render() { renderCards(); renderTable(); }
+
+function renderCards() {
+  const container = document.getElementById('designerCards');
+  const designers = currentView === 'designer' ? [activeDesigner] : DESIGNERS;
+  container.innerHTML = designers.map(d => {
+    const active = getActiveProjectsByDesigner(d);
+    const realized = getTotalRealizedByDesigner(d);
+    const estimated = db.projects.filter(p => p.designer === d && p.status === 'active').reduce((s, p) => s + Number(p.estimated || 0), 0);
+    const util = estimated > 0 ? Math.round((realized / estimated) * 100) : 0;
+    const barColor = util > 100 ? 'var(--danger)' : util > 80 ? 'var(--accent)' : DESIGNER_COLORS[d];
+    const statusText = util > 100 ? 'overloaded' : util > 75 ? 'busy' : 'available';
+    const statusLabel = { available: 'Disponibil', busy: 'Ocupat', overloaded: 'Suprasolicitat' }[statusText];
+    return `
+      <div class="designer-card ${d.toLowerCase()}">
+        <div class="designer-name ${d.toLowerCase()}">${d}</div>
+        <div class="designer-subtitle">Designer</div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-label">Proiecte active</div><div class="stat-value">${active}</div></div>
+          <div class="stat"><div class="stat-label">Ore realizate</div><div class="stat-value">${realized.toFixed(1)}<span>h</span></div></div>
+          <div class="stat"><div class="stat-label">Ore estimate</div><div class="stat-value">${estimated.toFixed(1)}<span>h</span></div></div>
+        </div>
+        <div class="workload-bar-bg"><div class="workload-bar" style="width:${Math.min(util,100)}%;background:${barColor}"></div></div>
+        <div class="workload-label"><span>${util}% utilizare</span><span class="status-badge ${statusText}">${statusLabel}</span></div>
+      </div>`;
+  }).join('');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('projectsBody');
+  const designerFilter = document.getElementById('designerFilter').value;
+  let projects = db.projects.filter(p => {
+    if (currentFilter !== 'all' && p.status !== currentFilter) return false;
+    if (designerFilter !== 'all' && p.designer !== designerFilter) return false;
+    if (currentView === 'designer' && p.designer !== activeDesigner) return false;
+    return true;
+  });
+
+  if (projects.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+    return;
+  }
+
+  let totalRealized = 0, totalEstimated = 0;
+  tbody.innerHTML = projects.map(p => {
+    const realized = getRealizedHours(p.id);
+    const estimated = Number(p.estimated || 0);
+    const pct = estimated > 0 ? Math.min(Math.round((realized / estimated) * 100), 200) : 0;
+    const fillClass = pct > 100 ? 'fill-over' : pct > 75 ? 'fill-warn' : 'fill-ok';
+    const cost = realized * RATE;
+    const statusLabel = { active: 'Activ', completed: 'Finalizat', paused: 'Pauzat' }[p.status] || p.status;
+    const dKey = (p.designer || '').toLowerCase();
+    totalRealized += realized; totalEstimated += estimated;
+    const managerActions = `<button class="action-btn" onclick="openLog('${p.id}')">+ Ore</button><button class="action-btn" onclick="editProject('${p.id}')">Edit</button><button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>`;
+    const designerActions = `<button class="action-btn" onclick="openLog('${p.id}')">+ Ore mele</button>`;
+    return `
+      <tr>
+        <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client || '—'}${p.deadline ? ' · ' + p.deadline : ''}</div></td>
+        <td><span class="designer-dot"><span class="dot ${dKey}"></span>${p.designer}</span></td>
+        <td><span class="proj-status ${p.status}">${statusLabel}</span></td>
+        <td class="hours-cell"><span class="hours-realized">${realized.toFixed(1)}</span><span class="hours-separator">/</span><span class="hours-estimated">${estimated > 0 ? estimated + 'h' : '—'}</span></td>
+        <td><div style="display:flex;align-items:center;gap:6px"><div class="progress-mini"><div class="progress-mini-fill ${fillClass}" style="width:${Math.min(pct,100)}%"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--text2)">${estimated > 0 ? pct + '%' : '—'}</span></div></td>
+        <td class="cost-cell">${cost > 0 ? cost.toFixed(0) + ' €' : '—'}</td>
+        <td>${currentView === 'designer' ? designerActions : managerActions}</td>
+      </tr>`;
+  }).join('');
+
+  const totalCost = totalRealized * RATE;
+  tbody.innerHTML += `<tr class="total-row"><td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Total</td><td class="hours-cell"><span class="hours-realized">${totalRealized.toFixed(1)}</span><span class="hours-separator">/</span><span class="hours-estimated">${totalEstimated > 0 ? totalEstimated + 'h' : '—'}</span></td><td></td><td class="cost-cell">${totalCost > 0 ? totalCost.toFixed(0) + ' €' : '—'}</td><td></td></tr>`;
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+// ─────────────────────────────────────────────
+// MODALS
+// ─────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function openAddProject() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'Proiect nou';
+  ['f_name','f_client','f_note'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f_estimated').value = '';
+  document.getElementById('f_deadline').value = '';
+  document.getElementById('f_status').value = 'active';
+  openModal('addModal');
+}
+
+function editProject(id) {
+  const p = db.projects.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'Editează proiect';
+  document.getElementById('f_name').value = p.name;
+  document.getElementById('f_client').value = p.client || '';
+  document.getElementById('f_designer').value = p.designer;
+  document.getElementById('f_status').value = p.status;
+  document.getElementById('f_estimated').value = p.estimated || '';
+  document.getElementById('f_deadline').value = p.deadline || '';
+  document.getElementById('f_note').value = p.note || '';
+  openModal('addModal');
+}
+
+async function saveProject() {
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { alert('Introdu numele proiectului.'); return; }
+  const proj = {
+    id: editingId || uid(),
+    name,
+    client: document.getElementById('f_client').value.trim(),
+    designer: document.getElementById('f_designer').value,
+    status: document.getElementById('f_status').value,
+    estimated: parseFloat(document.getElementById('f_estimated').value) || 0,
+    deadline: document.getElementById('f_deadline').value,
+    note: document.getElementById('f_note').value.trim(),
+    createdAt: new Date().toISOString(),
+  };
+
+  showLoading('Se salvează...');
+  try {
+    if (editingId) {
+      const idx = db.projects.findIndex(x => x.id === editingId);
+      await updateRow('Projects', idx, proj);
+      db.projects[idx] = proj;
+      toast('Proiect actualizat ✓');
+    } else {
+      await appendRow('Projects', proj);
+      db.projects.push(proj);
+      toast('Proiect adăugat ✓');
+    }
+    closeModal('addModal');
+    render();
+  } catch(e) {
+    toast('Eroare: ' + e.message, true);
+  }
+  hideLoading();
+}
+
+async function deleteProject(id) {
+  if (!confirm('Ștergi proiectul și toate orele logate?')) return;
+  showLoading('Se șterge...');
+  try {
+    const idx = db.projects.findIndex(p => p.id === id);
+    await deleteRow('Projects', idx);
+    // Șterge și log-urile asociate
+    const logIdxs = db.logs.map((l, i) => l.projectId === id ? i : -1).filter(i => i >= 0);
+    for (const li of logIdxs.reverse()) await deleteRow('Logs', li);
+    db.projects.splice(idx, 1);
+    db.logs = db.logs.filter(l => l.projectId !== id);
+    toast('Proiect șters');
+    render();
+  } catch(e) {
+    toast('Eroare: ' + e.message, true);
+  }
+  hideLoading();
+}
+
+// ─────────────────────────────────────────────
+// LOG TIME
+// ─────────────────────────────────────────────
+function openLog(projectId) {
+  logProjectId = projectId;
+  const p = db.projects.find(x => x.id === projectId);
+  document.getElementById('logModalTitle').textContent = p ? p.name : 'Logare ore';
+  document.getElementById('l_designer').value = p ? p.designer : 'Teo';
+  document.getElementById('l_date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('l_hours').value = '';
+  document.getElementById('l_note').value = '';
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === 0));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i === 0));
+  document.getElementById('logFooter').querySelector('.btn-primary').style.display = '';
+  renderLogHistory(projectId);
+  openModal('logModal');
+}
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.getElementById('logFooter').querySelector('.btn-primary').style.display = tabId === 'logHistory' ? 'none' : '';
+}
+
+function renderLogHistory(projectId) {
+  const list = document.getElementById('logHistoryList');
+  const logs = db.logs.filter(l => l.projectId === projectId).sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  if (logs.length === 0) { list.innerHTML = '<div class="empty-state" style="padding:30px"><div>📝</div>Nicio intrare încă</div>'; return; }
+  list.innerHTML = logs.map(l => `
+    <div class="log-entry">
+      <span class="log-date">${l.date}</span>
+      <span class="log-hours">${Number(l.hours||0).toFixed(1)}h</span>
+      <span style="font-size:10px;font-family:var(--font-mono);color:${DESIGNER_COLORS[l.designer]||'var(--text2)'};">${l.designer}</span>
+      <span class="log-note">${l.note || '—'}</span>
+      <button class="log-delete" onclick="deleteLog('${l.id}')">✕</button>
+    </div>`).join('');
+}
+
+async function saveLog() {
+  const hours = parseFloat(document.getElementById('l_hours').value);
+  if (!hours || hours <= 0) { alert('Introdu numărul de ore.'); return; }
+  const date = document.getElementById('l_date').value;
+  if (!date) { alert('Selectează data.'); return; }
+  const log = {
+    id: uid(),
+    projectId: logProjectId,
+    designer: document.getElementById('l_designer').value,
+    date, hours,
+    note: document.getElementById('l_note').value.trim(),
+  };
+  showLoading('Se salvează orele...');
+  try {
+    await appendRow('Logs', log);
+    db.logs.push(log);
+    toast('Ore logate ✓');
+    document.getElementById('l_hours').value = '';
+    document.getElementById('l_note').value = '';
+    renderLogHistory(logProjectId);
+    render();
+  } catch(e) {
+    toast('Eroare: ' + e.message, true);
+  }
+  hideLoading();
+}
+
+async function deleteLog(id) {
+  showLoading('Se șterge...');
+  try {
+    const idx = db.logs.findIndex(l => l.id === id);
+    await deleteRow('Logs', idx);
+    db.logs.splice(idx, 1);
+    renderLogHistory(logProjectId);
+    render();
+    toast('Înregistrare ștearsă');
+  } catch(e) {
+    toast('Eroare: ' + e.message, true);
+  }
+  hideLoading();
+}
+
+// Click outside to close modals
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+showLoading('Se inițializează...');
+checkExistingLogin();
+</script>
+</body>
+</html>
