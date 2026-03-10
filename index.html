@@ -16,6 +16,27 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; }
 
+  /* LOGIN SCREEN */
+  .login-screen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; gap: 24px; }
+  .login-screen.show { display: flex; }
+  .login-logo { font-family: var(--font-mono); font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .login-sub { font-family: var(--font-mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; margin-bottom: 24px; }
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 40px 48px; display: flex; flex-direction: column; align-items: center; gap: 20px; min-width: 340px; }
+  .btn-google { display: flex; align-items: center; gap: 12px; background: #fff; color: #333; border: none; padding: 12px 24px; border-radius: 4px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; width: 100%; justify-content: center; }
+  .btn-google:hover { opacity: 0.9; }
+  .btn-google svg { flex-shrink: 0; }
+  .login-note { font-family: var(--font-mono); font-size: 10px; color: var(--text3); text-align: center; }
+  .access-denied { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  .access-denied.show { display: flex; }
+  .denied-icon { font-size: 48px; }
+  .denied-title { font-family: var(--font-mono); font-size: 16px; color: var(--danger); }
+  .denied-msg { font-family: var(--font-mono); font-size: 12px; color: var(--text2); text-align: center; max-width: 360px; line-height: 1.6; }
+  .btn-logout-denied { background: none; border: 1px solid var(--border); color: var(--text2); padding: 8px 18px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; border-radius: 3px; margin-top: 8px; }
+
+  /* APP */
+  #app { display: none; }
+  #app.show { display: block; }
+
   .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(3px); }
   .loading-overlay.show { display: flex; }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -26,6 +47,9 @@
   .logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
   .logo span { color: var(--text2); font-weight: 400; }
   .header-right { display: flex; align-items: center; gap: 12px; }
+  .user-chip { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 5px 10px; }
+  .user-avatar { width: 22px; height: 22px; border-radius: 50%; }
+  .user-name { font-family: var(--font-mono); font-size: 11px; color: var(--text2); }
   .view-switcher { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .view-btn { padding: 6px 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; background: none; border: none; color: var(--text2); cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
   .view-btn.active { background: var(--accent); color: #0f0f0f; font-weight: 600; }
@@ -33,6 +57,8 @@
   .btn-primary:hover { opacity: 0.85; }
   .btn-secondary { background: none; border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.08em; }
   .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-logout { background: none; border: 1px solid var(--border); color: var(--text3); padding: 5px 10px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; }
+  .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
 
   .container { padding: 24px 28px; max-width: 1500px; margin: 0 auto; }
   .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
@@ -53,8 +79,7 @@
   .phase-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
   .phase-stat { background: var(--bg); border-radius: 4px; padding: 8px 10px; }
   .phase-stat-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .phase-stat-label.pitch { color: var(--pitch); }
-  .phase-stat-label.impl { color: var(--impl); }
+  .phase-stat-label.pitch { color: var(--pitch); } .phase-stat-label.impl { color: var(--impl); }
   .phase-stat-nums { font-family: var(--font-mono); font-size: 12px; color: var(--text); }
   .phase-stat-nums span { color: var(--text2); }
   .workload-bar-bg { background: var(--bg); border-radius: 2px; height: 5px; overflow: hidden; margin-bottom: 5px; }
@@ -76,8 +101,7 @@
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 900px; }
   thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
-  thead th.pitch-col { color: var(--pitch); }
-  thead th.impl-col { color: var(--impl); }
+  thead th.pitch-col { color: var(--pitch); } thead th.impl-col { color: var(--impl); }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--surface2); }
@@ -94,8 +118,8 @@
   .hours-sep { color: var(--text3); margin: 0 2px; }
   .progress-mini { width: 55px; height: 3px; background: var(--bg); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 5px; }
   .progress-mini-fill { height: 100%; border-radius: 2px; }
-  .fill-ok { background: #4ade80; } .fill-warn { background: var(--accent); } .fill-over { background: var(--danger); }
   .fill-pitch { background: var(--pitch); } .fill-impl { background: var(--impl); }
+  .fill-warn { background: var(--accent); } .fill-over { background: var(--danger); }
   .cost-cell { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); }
   .action-btn { background: none; border: 1px solid var(--border); color: var(--text2); padding: 4px 8px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; margin-right: 3px; white-space: nowrap; }
   .action-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -138,15 +162,13 @@
   .btn-remove:hover { color: var(--danger); }
   .phase-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .phase-label.pitch { color: var(--pitch); }
-  .phase-label.impl { color: var(--impl); }
+  .phase-label.pitch { color: var(--pitch); } .phase-label.impl { color: var(--impl); }
   .add-designer-bar { display: flex; gap: 8px; align-items: center; }
   .add-designer-bar select { flex: 1; }
   .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
   .tab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+  .tab-content { display: none; } .tab-content.active { display: block; }
   .log-entry { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; flex-wrap: wrap; }
   .log-date { color: var(--text2); min-width: 85px; }
   .log-hours { color: var(--accent); min-width: 45px; font-weight: 600; }
@@ -155,61 +177,88 @@
   .log-delete:hover { color: var(--danger); }
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent); color: var(--accent); padding: 10px 18px; font-family: var(--font-mono); font-size: 12px; border-radius: 4px; z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
   .toast.show { transform: translateY(0); opacity: 1; }
-  .info-banner { background: #1a2a1a; border: 1px solid #2a4a2a; border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: #4ade80; margin-bottom: 20px; }
+  .info-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .info-banner .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Universum <span>/ Design Tracker</span></div>
-  <div class="header-right">
-    <div class="view-switcher">
-      <button class="view-btn active" onclick="switchView('manager', this)">Manager</button>
-      <button class="view-btn" onclick="switchView('designer', this)">Designer</button>
-    </div>
-    <select id="designerSelector" class="form-select" style="width:auto;padding:6px 10px;font-size:11px;display:none;" onchange="setActiveDesigner(this.value)">
-      <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
-    </select>
-    <button class="btn-secondary" onclick="loadAllData()">↻ Refresh</button>
-    <button class="btn-primary" onclick="openAddProject()">+ Proiect nou</button>
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-logo">Universum Events</div>
+  <div class="login-sub">/ Design Tracker</div>
+  <div class="login-card">
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--text2);text-align:center;line-height:1.6;">Autentifică-te cu contul<br>tău <strong style="color:var(--text)">@universum.ro</strong></div>
+    <button class="btn-google" onclick="signIn()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A353" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Continuă cu Google
+    </button>
+    <div class="login-note">Acces restricționat la adrese @universum.ro<br>și colaboratori aprobați</div>
   </div>
-</header>
+</div>
 
-<div class="container">
-  <div class="info-banner">✓ Sincronizat cu Google Sheets — date accesibile întregii echipe</div>
-  <div class="section-label">Workload curent</div>
-  <div class="designer-cards" id="designerCards"></div>
-  <div class="projects-section">
-    <div class="table-header">
-      <div class="section-label" style="margin-bottom:0">Proiecte</div>
-      <div class="filters">
-        <button class="filter-btn active" onclick="setStatusFilter('all', this)">Toate</button>
-        <button class="filter-btn" onclick="setStatusFilter('active', this)">Active</button>
-        <button class="filter-btn" onclick="setStatusFilter('completed', this)">Finalizate</button>
-        <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhaseFilter(this)">Faza: Toate</button>
-        <select class="filter-select" id="designerFilter" onchange="renderTable()">
-          <option value="all">Toți designerii</option>
-          <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
-        </select>
+<!-- ACCESS DENIED -->
+<div class="access-denied" id="accessDenied">
+  <div class="denied-icon">🔒</div>
+  <div class="denied-title">Acces restricționat</div>
+  <div class="denied-msg" id="deniedMsg">Contul tău nu are acces la Design Tracker. Contactează-l pe Mihnea pentru a fi adăugat.</div>
+  <button class="btn-logout-denied" onclick="signOut()">← Încearcă cu alt cont</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="logo">Universum <span>/ Design Tracker</span></div>
+    <div class="header-right">
+      <div class="user-chip">
+        <img class="user-avatar" id="userAvatar" src="" alt="">
+        <span class="user-name" id="userName"></span>
       </div>
+      <div class="view-switcher">
+        <button class="view-btn active" onclick="switchView('manager', this)">Manager</button>
+        <button class="view-btn" onclick="switchView('designer', this)">Designer</button>
+      </div>
+      <select id="designerSelector" class="form-select" style="width:auto;padding:6px 10px;font-size:11px;display:none;" onchange="setActiveDesigner(this.value)">
+        <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
+      </select>
+      <button class="btn-secondary" onclick="loadAllData()">↻ Refresh</button>
+      <button class="btn-primary" onclick="openAddProject()">+ Proiect nou</button>
+      <button class="btn-logout" onclick="signOut()">Logout</button>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Proiect / Client</th>
-            <th>Designeri</th>
-            <th>Status</th>
-            <th class="pitch-col">Pitch — real / est.</th>
-            <th class="impl-col">Impl. — real / est.</th>
-            <th>Total ore</th>
-            <th>Cost (25€/h)</th>
-            <th>Acțiuni</th>
-          </tr>
-        </thead>
-        <tbody id="projectsBody"></tbody>
-      </table>
+  </header>
+
+  <div class="container">
+    <div class="info-banner"><span class="dot-green"></span><span id="bannerText">Conectat — date sincronizate cu Google Sheets</span></div>
+    <div class="section-label">Workload curent</div>
+    <div class="designer-cards" id="designerCards"></div>
+    <div class="projects-section">
+      <div class="table-header">
+        <div class="section-label" style="margin-bottom:0">Proiecte</div>
+        <div class="filters">
+          <button class="filter-btn active" onclick="setStatusFilter('all', this)">Toate</button>
+          <button class="filter-btn" onclick="setStatusFilter('active', this)">Active</button>
+          <button class="filter-btn" onclick="setStatusFilter('completed', this)">Finalizate</button>
+          <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhaseFilter(this)">Faza: Toate</button>
+          <select class="filter-select" id="designerFilter" onchange="renderTable()">
+            <option value="all">Toți designerii</option>
+            <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Proiect / Client</th><th>Designeri</th><th>Status</th>
+              <th class="pitch-col">Pitch — real / est.</th>
+              <th class="impl-col">Impl. — real / est.</th>
+              <th>Total ore</th><th>Cost (25€/h)</th><th>Acțiuni</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -228,9 +277,7 @@
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Status</label>
-          <select class="form-select" id="f_status">
-            <option value="active">Activ</option><option value="completed">Finalizat</option><option value="paused">Pauzat</option>
-          </select>
+          <select class="form-select" id="f_status"><option value="active">Activ</option><option value="completed">Finalizat</option><option value="paused">Pauzat</option></select>
         </div>
         <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="f_deadline" type="date"></div>
       </div>
@@ -269,10 +316,7 @@
         <div class="form-row">
           <div class="form-group"><label class="form-label">Designer</label><select class="form-select" id="l_designer"></select></div>
           <div class="form-group"><label class="form-label">Faza</label>
-            <select class="form-select" id="l_phase">
-              <option value="pitch">Pitch</option>
-              <option value="implementare">Implementare</option>
-            </select>
+            <select class="form-select" id="l_phase"><option value="pitch">Pitch</option><option value="implementare">Implementare</option></select>
           </div>
         </div>
         <div class="form-row">
@@ -293,49 +337,188 @@
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="loading-text" id="loadingText">Se încarcă...</div></div>
 <div class="toast" id="toast"></div>
 
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <script>
-const SHEET_ID = '1MCN7LrV0Ug6C5o-JJza61SRANrWRN_badqFKXKK7PsY';
-const API_KEY  = 'AIzaSyAAUM5OQLc_hwt6Qy_wsF03Tb7NHnjU-h0';
-const RATE = 25;
-const DESIGNERS = ['Teo', 'Mircea', 'Cristi'];
+// ─── CONFIG ───────────────────────────────
+const CLIENT_ID   = '146433765376-b1st3pb2lat3082e8l24e41l2opst7sb.apps.googleusercontent.com';
+const SHEET_ID    = '1MCN7LrV0Ug6C5o-JJza61SRANrWRN_badqFKXKK7PsY';
+const API_KEY     = 'AIzaSyAAUM5OQLc_hwt6Qy_wsF03Tb7NHnjU-h0';
+const SCOPES      = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+const RATE        = 25;
+const DESIGNERS   = ['Teo', 'Mircea', 'Cristi'];
 const DESIGNER_COLORS = { Teo: '#e8c547', Mircea: '#4ecdc4', Cristi: '#ff9f43' };
+
+const WHITELIST = [
+  'alexandra.davidescu@universum.ro',
+  'anamaria.gafita@universum.ro',
+  'bogdan.popa@universum.ro',
+  'cristian.calin@universum.ro',
+  'cristian.hossu@universum.ro',
+  'denisa.glavan@universum.ro',
+  'eliza.pisica@universum.ro',
+  'ely.sopos@universum.ro',
+  'emilia.petcu@universum.ro',
+  'eva.moraru@universum.ro',
+  'ioana.chiriac@universum.ro',
+  'ionut.rotaru@universum.ro',
+  'mihnea.hanganu@universum.ro',
+  'mircea.curtianu@universum.ro',
+  'ramona.chirita@universum.ro',
+  'sabina.poparlan@universum.ro',
+  'teo.diaconu@universum.ro'
+];
+
+// ─── AUTH ─────────────────────────────────
+let tokenClient, accessToken = null;
+let currentUser = null;
+
+function initAuth() {
+  // Check saved token
+  const saved = sessionStorage.getItem('dt_token');
+  const savedUser = sessionStorage.getItem('dt_user');
+  if (saved && savedUser) {
+    accessToken = saved;
+    currentUser = JSON.parse(savedUser);
+    showApp();
+    return;
+  }
+  showLogin();
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').classList.add('show');
+  document.getElementById('accessDenied').classList.remove('show');
+  document.getElementById('app').style.display = 'none';
+}
+
+function showDenied(email) {
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('accessDenied').classList.add('show');
+  document.getElementById('deniedMsg').textContent = `Contul "${email}" nu are acces la Design Tracker. Contactează-l pe Mihnea pentru a fi adăugat.`;
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('accessDenied').classList.remove('show');
+  document.getElementById('app').style.display = 'block';
+  if (currentUser) {
+    document.getElementById('userName').textContent = currentUser.name || currentUser.email;
+    if (currentUser.picture) document.getElementById('userAvatar').src = currentUser.picture;
+  }
+  loadAllData();
+}
+
+function signIn() {
+  if (!window.google) { toast('Google SDK nu s-a încărcat. Reîncarcă pagina.', true); return; }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: async (resp) => {
+      if (resp.error) { toast('Eroare autentificare: ' + resp.error, true); return; }
+      accessToken = resp.access_token;
+      // Fetch user info
+      showLoading('Se verifică accesul...');
+      try {
+        const r = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+          headers: { Authorization: 'Bearer ' + accessToken }
+        });
+        const user = await r.json();
+        const email = (user.email || '').toLowerCase();
+        if (!WHITELIST.includes(email)) {
+          hideLoading();
+          accessToken = null;
+          showDenied(user.email);
+          return;
+        }
+        currentUser = user;
+        sessionStorage.setItem('dt_token', accessToken);
+        sessionStorage.setItem('dt_user', JSON.stringify(user));
+        hideLoading();
+        showApp();
+      } catch(e) {
+        hideLoading();
+        toast('Eroare verificare utilizator', true);
+      }
+    }
+  });
+  tokenClient.requestAccessToken({ prompt: 'select_account' });
+}
+
+function signOut() {
+  sessionStorage.removeItem('dt_token');
+  sessionStorage.removeItem('dt_user');
+  accessToken = null; currentUser = null;
+  if (window.google && window.google.accounts) google.accounts.oauth2.revoke(accessToken, ()=>{});
+  showLogin();
+}
+
+// ─── SHEETS API (authenticated) ───────────
 const _hc = {};
 
+async function apiCall(url, method='GET', body=null) {
+  if (!accessToken) throw new Error('Nu ești autentificat');
+  const opts = {
+    method,
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (r.status === 401) {
+    sessionStorage.removeItem('dt_token');
+    sessionStorage.removeItem('dt_user');
+    showLogin();
+    throw new Error('Sesiunea a expirat. Te rog autentifică-te din nou.');
+  }
+  if (!r.ok) {
+    const err = await r.json().catch(()=>({}));
+    throw new Error((err.error && err.error.message) || `HTTP ${r.status}`);
+  }
+  return r.json();
+}
+
+const BASE = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}`;
+
 async function sheetRead(s) {
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}?key=${API_KEY}`);
-  if (!r.ok) throw new Error(`Read ${s}: ${r.status}`);
-  const d = await r.json();
+  const d = await apiCall(`${BASE}/values/${s}`);
   if (!d.values || d.values.length < 2) return [];
   const h = d.values[0];
+  _hc[s] = h;
   return d.values.slice(1).map(row => { const o={}; h.forEach((k,i)=>o[k]=row[i]??''); return o; }).filter(o=>o.id&&o.id!=='');
 }
+
 async function sheetHdrs(s) {
   if (_hc[s]) return _hc[s];
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}!1:1?key=${API_KEY}`);
-  const d = await r.json(); _hc[s] = d.values?d.values[0]:[]; return _hc[s];
+  const d = await apiCall(`${BASE}/values/${s}!1:1`);
+  _hc[s] = d.values ? d.values[0] : [];
+  return _hc[s];
 }
+
 async function sheetAppend(s, obj) {
   const h = await sheetHdrs(s);
-  const row = h.map(k=>obj[k]??'');
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS&key=${API_KEY}`,
-    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:[row]})});
-  if (!r.ok) throw new Error(`Append ${s}: ${r.status}`);
+  const row = h.map(k => obj[k] ?? '');
+  await apiCall(`${BASE}/values/${s}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, 'POST', { values: [row] });
 }
+
 async function sheetUpdate(s, idx, obj) {
-  const h = await sheetHdrs(s); const row = h.map(k=>obj[k]??''); const er = idx+2; const ce = cl(h.length);
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}!A${er}:${ce}${er}?valueInputOption=RAW&key=${API_KEY}`,
-    {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:[row]})});
-  if (!r.ok) throw new Error(`Update ${s}: ${r.status}`);
+  const h = await sheetHdrs(s);
+  const row = h.map(k => obj[k] ?? '');
+  const er = idx + 2;
+  await apiCall(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}?valueInputOption=RAW`, 'PUT', { values: [row] });
 }
+
 async function sheetClear(s, idx) {
-  const h = await sheetHdrs(s); const er = idx+2;
-  const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}!A${er}:${cl(h.length)}${er}/clear?key=${API_KEY}`,
-    {method:'POST',headers:{'Content-Type':'application/json'}});
-  if (!r.ok) throw new Error(`Clear ${s}: ${r.status}`);
+  const h = await sheetHdrs(s);
+  const er = idx + 2;
+  await apiCall(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}/clear`, 'POST');
 }
+
 function cl(n) { let s=''; while(n>0){s=String.fromCharCode(64+(n%26||26))+s;n=Math.floor((n-1)/26);} return s; }
 
-let db = {projects:[],logs:[],allocations:[]};
+// ─── STATE ────────────────────────────────
+let db = { projects:[], logs:[], allocations:[] };
 let editingId=null, logProjectId=null;
 let currentStatusFilter='all', currentPhaseFilter='all';
 let currentView='manager', activeDesigner='Teo';
@@ -344,12 +527,16 @@ let formDesigners=[];
 async function loadAllData() {
   showLoading('Se încarcă datele...');
   try {
-    const [p,l,a] = await Promise.all([sheetRead('Projects'),sheetRead('Logs'),sheetRead('Allocations')]);
+    const [p,l,a] = await Promise.all([sheetRead('Projects'), sheetRead('Logs'), sheetRead('Allocations')]);
     db.projects=p; db.logs=l; db.allocations=a;
-    render(); toast('Date actualizate ✓');
-  } catch(e){toast('Eroare: '+e.message,true);} hideLoading();
+    render();
+    document.getElementById('bannerText').textContent = 'Conectat ca ' + (currentUser?.email||'') + ' — date sincronizate';
+    toast('Date actualizate ✓');
+  } catch(e) { toast('Eroare: '+e.message, true); }
+  hideLoading();
 }
 
+// ─── HELPERS ──────────────────────────────
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function getProjAllocs(pid){return db.allocations.filter(a=>a.projectId===pid);}
 function getProjLogs(pid,phase=null){return db.logs.filter(l=>l.projectId===pid&&(phase===null||l.phase===phase));}
@@ -372,6 +559,7 @@ function hideLoading(){document.getElementById('loadingOverlay').classList.remov
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
+// ─── RENDER ───────────────────────────────
 function switchView(v,btn){
   currentView=v; document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
   document.getElementById('designerSelector').style.display=v==='designer'?'block':'none'; render();
@@ -382,9 +570,9 @@ function render(){renderCards();renderTable();}
 function renderCards(){
   const designers=currentView==='designer'?[activeDesigner]:DESIGNERS;
   document.getElementById('designerCards').innerHTML=designers.map(d=>{
-    const pR=getDesignerHours(d,'pitch'), iR=getDesignerHours(d,'implementare');
-    const pE=getDesignerEst(d,'pitch'), iE=getDesignerEst(d,'implementare');
-    const tR=pR+iR, tE=pE+iE;
+    const pR=getDesignerHours(d,'pitch'),iR=getDesignerHours(d,'implementare');
+    const pE=getDesignerEst(d,'pitch'),iE=getDesignerEst(d,'implementare');
+    const tR=pR+iR,tE=pE+iE;
     const util=tE>0?Math.round((tR/tE)*100):0;
     const bc=util>100?'var(--danger)':util>80?'var(--accent)':DESIGNER_COLORS[d];
     const st=util>100?'overloaded':util>75?'busy':'available';
@@ -420,9 +608,9 @@ function renderTable(){
   let tPR=0,tIR=0,tPE=0,tIE=0;
   tbody.innerHTML=projs.map(p=>{
     const allocs=getProjAllocs(p.id);
-    const pR=sumH(getProjLogs(p.id,'pitch')), iR=sumH(getProjLogs(p.id,'implementare'));
-    const pE=allocs.reduce((s,a)=>s+Number(a.pitchEst||0),0), iE=allocs.reduce((s,a)=>s+Number(a.implEst||0),0);
-    const tR=pR+iR, tE=pE+iE;
+    const pR=sumH(getProjLogs(p.id,'pitch')),iR=sumH(getProjLogs(p.id,'implementare'));
+    const pE=allocs.reduce((s,a)=>s+Number(a.pitchEst||0),0),iE=allocs.reduce((s,a)=>s+Number(a.implEst||0),0);
+    const tR=pR+iR,tE=pE+iE;
     tPR+=pR;tIR+=iR;tPE+=pE;tIE+=iE;
     const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
     const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
@@ -430,16 +618,16 @@ function renderTable(){
     const iPct=iE>0?Math.min(Math.round((iR/iE)*100),200):0;
     const pF=pPct>100?'fill-over':pPct>75?'fill-warn':'fill-pitch';
     const iF=iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
-    const spitch=currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
-    const simpl=currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
+    const sp=currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
+    const si=currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
     const mgr=`<button class="action-btn" onclick="openLog('${p.id}')">+ Ore</button><button class="action-btn" onclick="editProject('${p.id}')">Edit</button><button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>`;
     const des=`<button class="action-btn" onclick="openLog('${p.id}')">+ Ore mele</button>`;
     return `<tr>
       <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}${p.deadline?' · '+p.deadline:''}</div></td>
       <td><div class="designers-list">${chips||'—'}</div></td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
-      <td class="hours-block" style="opacity:${spitch?1:0.2}"><span class="hours-realized">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${pE>0?pE+'h':'—'}</span>${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}</td>
-      <td class="hours-block" style="opacity:${simpl?1:0.2}"><span class="hours-realized">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${iE>0?iE+'h':'—'}</span>${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}</td>
+      <td class="hours-block" style="opacity:${sp?1:0.2}"><span class="hours-realized">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${pE>0?pE+'h':'—'}</span>${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}</td>
+      <td class="hours-block" style="opacity:${si?1:0.2}"><span class="hours-realized">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${iE>0?iE+'h':'—'}</span>${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}</td>
       <td class="hours-block"><span class="hours-realized">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tE>0?tE+'h':'—'}</span></td>
       <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
       <td>${currentView==='designer'?des:mgr}</td>
@@ -454,25 +642,21 @@ function setStatusFilter(f,btn){
   btn.classList.add('active'); renderTable();
 }
 function cyclePhaseFilter(btn){
-  const states=['all','pitch','implementare'], labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'], classes=['active','pitch-active','impl-active'];
+  const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['active','pitch-active','impl-active'];
   const next=(states.indexOf(currentPhaseFilter)+1)%3;
   currentPhaseFilter=states[next]; btn.textContent=labels[next]; btn.className='filter-btn '+classes[next]; renderTable();
 }
 
+// ─── FORM DESIGNERS ───────────────────────
 function renderFormDesigners(){
   const c=document.getElementById('designerRows');
-  if(!formDesigners.length){c.innerHTML=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer adăugat — apasă + pentru a adăuga</div>`;return;}
+  if(!formDesigners.length){c.innerHTML=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`;return;}
   c.innerHTML=formDesigners.map((fd,i)=>`
     <div class="designer-row">
-      <div class="designer-row-header">
-        <span class="designer-row-name ${fd.designer.toLowerCase()}">${fd.designer}</span>
-        <button class="btn-remove" onclick="removeDesignerRow(${i})">×</button>
-      </div>
+      <div class="designer-row-header"><span class="designer-row-name ${fd.designer.toLowerCase()}">${fd.designer}</span><button class="btn-remove" onclick="removeDesignerRow(${i})">×</button></div>
       <div class="phase-inputs">
-        <div><div class="phase-label pitch">Pitch — ore estimate</div>
-          <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}" onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0"></div>
-        <div><div class="phase-label impl">Implementare — ore estimate</div>
-          <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}" onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0"></div>
+        <div><div class="phase-label pitch">Pitch — ore estimate</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}" onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0"></div>
+        <div><div class="phase-label impl">Implementare — ore estimate</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}" onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0"></div>
       </div>
     </div>`).join('');
 }
@@ -483,6 +667,7 @@ function addDesignerRow(){
 }
 function removeDesignerRow(i){formDesigners.splice(i,1);renderFormDesigners();}
 
+// ─── PROJECT CRUD ─────────────────────────
 function openAddProject(){
   editingId=null; formDesigners=[];
   document.getElementById('modalTitle').textContent='Proiect nou';
@@ -538,6 +723,7 @@ async function deleteProject(id){
   hideLoading();
 }
 
+// ─── LOG TIME ─────────────────────────────
 function openLog(pid){
   logProjectId=pid;
   const p=db.projects.find(x=>x.id===pid);
@@ -595,22 +781,30 @@ async function deleteLog(id){
 
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
 
-async function initHeaders(){
-  const sheets={Projects:['id','name','client','status','deadline','note','createdAt'],Logs:['id','projectId','designer','phase','date','hours','note'],Allocations:['id','projectId','designer','pitchEst','implEst']};
+// ─── INIT ─────────────────────────────────
+async function initSheetHeaders(){
+  const sheets={
+    Projects:['id','name','client','status','deadline','note','createdAt'],
+    Logs:['id','projectId','designer','phase','date','hours','note'],
+    Allocations:['id','projectId','designer','pitchEst','implEst']
+  };
   for(const [s,h] of Object.entries(sheets)){
     try{
       const ex=await sheetHdrs(s);
       if(!ex.length){
-        await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${s}!A1:${cl(h.length)}1?valueInputOption=RAW&key=${API_KEY}`,
-          {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:[h]})});
+        await apiCall(`${BASE}/values/${s}!A1:${cl(h.length)}1?valueInputOption=RAW`,'PUT',{values:[h]});
         _hc[s]=h;
       }
     }catch(e){console.warn(s,e);}
   }
 }
 
-showLoading('Se inițializează...');
-initHeaders().then(()=>loadAllData());
+// Wait for Google SDK then init
+function waitForGoogle(){
+  if(window.google && window.google.accounts){ initAuth(); }
+  else { setTimeout(waitForGoogle, 100); }
+}
+waitForGoogle();
 </script>
 </body>
 </html>
