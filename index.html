@@ -76,7 +76,7 @@
   .filter-btn.impl-active { border-color: var(--impl); color: var(--impl); }
   select.filter-select { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; outline: none; }
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  table { width: 100%; border-collapse: collapse; min-width: 1000px; }
   thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
   thead th.pitch-col { color: var(--pitch); } thead th.impl-col { color: var(--impl); }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
@@ -89,11 +89,11 @@
   .designer-chip { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 2px; background: var(--bg); border: 1px solid var(--border); }
   .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .dot.teo { background: var(--teo); } .dot.mircea { background: var(--mircea); } .dot.cristi { background: var(--cristi); }
-  .hours-block { font-family: var(--font-mono); font-size: 11px; }
-  .hours-realized { color: var(--text); font-weight: 600; }
-  .hours-estimated { color: var(--text2); }
+  .hours-block { font-family: var(--font-mono); font-size: 11px; white-space: nowrap; }
+  .hours-real { color: var(--text); font-weight: 600; }
+  .hours-est { color: var(--text2); }
   .hours-sep { color: var(--text3); margin: 0 2px; }
-  .progress-mini { width: 55px; height: 3px; background: var(--bg); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 5px; }
+  .progress-mini { width: 50px; height: 3px; background: var(--bg); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 5px; }
   .progress-mini-fill { height: 100%; border-radius: 2px; }
   .fill-pitch { background: var(--pitch); } .fill-impl { background: var(--impl); }
   .fill-warn { background: var(--accent); } .fill-over { background: var(--danger); }
@@ -108,13 +108,11 @@
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); font-family: var(--font-mono); font-size: 13px; }
   .empty-state div:first-child { font-size: 32px; margin-bottom: 12px; }
   .total-row td { border-top: 1px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 11px; padding-top: 14px; }
-  .phase-badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; font-weight: 600; }
-  .phase-badge.pitch { background: #2a1a4a; color: var(--pitch); }
-  .phase-badge.implementare { background: #1a2a3a; color: var(--impl); }
 
+  /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; width: 580px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
   .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); }
   .modal-title { font-family: var(--font-mono); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
   .modal-close { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 20px; line-height: 1; padding: 0; }
@@ -130,28 +128,24 @@
   .btn-cancel:hover { border-color: var(--text2); color: var(--text); }
   .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   .section-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
-  .designer-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-  .designer-row { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 12px; }
-  .designer-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .designer-row-name { font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+
+  /* DESIGNER ROWS IN MODAL */
+  .designer-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+  .designer-row { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 14px; }
+  .designer-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .designer-row-name { font-family: var(--font-mono); font-size: 13px; font-weight: 600; }
   .designer-row-name.teo { color: var(--teo); } .designer-row-name.mircea { color: var(--mircea); } .designer-row-name.cristi { color: var(--cristi); }
   .btn-remove { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; transition: color 0.15s; padding: 0; line-height: 1; }
   .btn-remove:hover { color: var(--danger); }
-  .phase-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .phase-group { }
+  .phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; display: block; }
   .phase-label.pitch { color: var(--pitch); } .phase-label.impl { color: var(--impl); }
+  .phase-inputs-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .mini-label { font-family: var(--font-mono); font-size: 9px; color: var(--text3); margin-bottom: 3px; }
   .add-designer-bar { display: flex; gap: 8px; align-items: center; }
   .add-designer-bar select { flex: 1; }
-  .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-  .tab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
-  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab-content { display: none; } .tab-content.active { display: block; }
-  .log-entry { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; flex-wrap: wrap; }
-  .log-date { color: var(--text2); min-width: 85px; }
-  .log-hours { color: var(--accent); min-width: 45px; font-weight: 600; }
-  .log-note { color: var(--text); flex: 1; font-family: var(--font-sans); font-size: 12px; min-width: 80px; }
-  .log-delete { color: var(--text3); cursor: pointer; background: none; border: none; font-size: 14px; transition: color 0.15s; }
-  .log-delete:hover { color: var(--danger); }
+
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent); color: var(--accent); padding: 10px 18px; font-family: var(--font-mono); font-size: 12px; border-radius: 4px; z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
   .toast.show { transform: translateY(0); opacity: 1; }
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -182,10 +176,10 @@
     <div class="table-header">
       <div class="section-label" style="margin-bottom:0">Proiecte</div>
       <div class="filters">
-        <button class="filter-btn active" onclick="setStatusFilter('all', this)">Toate</button>
-        <button class="filter-btn" onclick="setStatusFilter('active', this)">Active</button>
-        <button class="filter-btn" onclick="setStatusFilter('completed', this)">Finalizate</button>
-        <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhaseFilter(this)">Faza: Toate</button>
+        <button class="filter-btn active" onclick="setStatusFilter('all',this)">Toate</button>
+        <button class="filter-btn" onclick="setStatusFilter('active',this)">Active</button>
+        <button class="filter-btn" onclick="setStatusFilter('completed',this)">Finalizate</button>
+        <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
         <select class="filter-select" id="designerFilter" onchange="renderTable()">
           <option value="all">Toți designerii</option>
           <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
@@ -197,8 +191,8 @@
         <thead>
           <tr>
             <th>Proiect / Client</th><th>Designeri</th><th>Status</th>
-            <th class="pitch-col">Pitch — real / est.</th>
-            <th class="impl-col">Impl. — real / est.</th>
+            <th class="pitch-col">Pitch real / est.</th>
+            <th class="impl-col">Impl. real / est.</th>
             <th>Total ore</th><th>Cost (25€/h)</th><th>Acțiuni</th>
           </tr>
         </thead>
@@ -208,12 +202,12 @@
   </div>
 </div>
 
-<!-- ADD/EDIT PROJECT MODAL -->
-<div class="modal-overlay" id="addModal">
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="projModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Proiect nou</div>
-      <button class="modal-close" onclick="closeModal('addModal')">×</button>
+      <div class="modal-title" id="projModalTitle">Proiect nou</div>
+      <button class="modal-close" onclick="closeModal('projModal')">×</button>
     </div>
     <div class="modal-body">
       <div class="form-row">
@@ -222,15 +216,17 @@
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Status</label>
-          <select class="form-select" id="f_status"><option value="active">Activ</option><option value="completed">Finalizat</option><option value="paused">Pauzat</option></select>
+          <select class="form-select" id="f_status">
+            <option value="active">Activ</option><option value="completed">Finalizat</option><option value="paused">Pauzat</option>
+          </select>
         </div>
         <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="f_deadline" type="date"></div>
       </div>
       <hr class="divider">
-      <div class="section-title">Designeri & ore estimate per fază</div>
+      <div class="section-title">Designeri — ore estimate & realizate</div>
       <div class="designer-rows" id="designerRows"></div>
       <div class="add-designer-bar">
-        <select class="form-select" id="addDesignerSelect">
+        <select class="form-select" id="addDesignerSel">
           <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
         </select>
         <button class="btn-secondary" onclick="addDesignerRow()">+ Adaugă designer</button>
@@ -239,42 +235,8 @@
       <div class="form-group"><label class="form-label">Notă</label><textarea class="form-textarea" id="f_note" rows="2" placeholder="Detalii suplimentare..."></textarea></div>
     </div>
     <div class="form-footer">
-      <button class="btn-cancel" onclick="closeModal('addModal')">Anulează</button>
+      <button class="btn-cancel" onclick="closeModal('projModal')">Anulează</button>
       <button class="btn-primary" onclick="saveProject()">Salvează</button>
-    </div>
-  </div>
-</div>
-
-<!-- LOG TIME MODAL -->
-<div class="modal-overlay" id="logModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="logModalTitle">Logare ore</div>
-      <button class="modal-close" onclick="closeModal('logModal')">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="tab-bar">
-        <div class="tab active" onclick="switchTab('logNew', this)">Adaugă ore</div>
-        <div class="tab" onclick="switchTab('logHistory', this)">Istoric</div>
-      </div>
-      <div class="tab-content active" id="logNew">
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Designer</label><select class="form-select" id="l_designer"></select></div>
-          <div class="form-group"><label class="form-label">Faza</label>
-            <select class="form-select" id="l_phase"><option value="pitch">Pitch</option><option value="implementare">Implementare</option></select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Data</label><input class="form-input" id="l_date" type="date"></div>
-          <div class="form-group"><label class="form-label">Ore lucrate</label><input class="form-input" id="l_hours" type="number" placeholder="ex. 3.5" min="0.5" step="0.5"></div>
-        </div>
-        <div class="form-group"><label class="form-label">Notă / Task</label><textarea class="form-textarea" id="l_note" rows="2" placeholder="ex. Mockup landing, revisii logo..."></textarea></div>
-      </div>
-      <div class="tab-content" id="logHistory"><div id="logHistoryList"></div></div>
-    </div>
-    <div class="form-footer" id="logFooter">
-      <button class="btn-cancel" onclick="closeModal('logModal')">Închide</button>
-      <button class="btn-primary" onclick="saveLog()">Adaugă ore</button>
     </div>
   </div>
 </div>
@@ -283,87 +245,64 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG ───────────────────────────────
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXP-JwYg2TXwR-IezLMKUk6_z4DdTkJBE8LlABYgQ5M745NGxjeukWg2dAhQNY6zcG/exec';
 const RATE = 25;
-const DESIGNERS = ['Teo', 'Mircea', 'Cristi'];
-const DESIGNER_COLORS = { Teo: '#e8c547', Mircea: '#4ecdc4', Cristi: '#ff9f43' };
+const DESIGNERS = ['Teo','Mircea','Cristi'];
+const DC = { Teo:'#e8c547', Mircea:'#4ecdc4', Cristi:'#ff9f43' };
 
 // ─── API ──────────────────────────────────
 async function apiFetch(payload) {
-  // Apps Script requires no-cors or form submission for POST
-  // We use a URL param trick: send payload as 'data' query param via GET
   const url = `${SCRIPT_URL}?payload=${encodeURIComponent(JSON.stringify(payload))}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data;
+  const r = await fetch(url);
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d;
 }
-
-async function apiGet(sheet) {
-  const res = await fetch(`${SCRIPT_URL}?sheet=${sheet}`);
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data.rows || [];
+async function apiRead(sheet) {
+  const r = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(sheet)}`);
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d.rows || [];
 }
-
-async function sheetRead(sheet) {
-  return await apiGet(sheet);
-}
-
-async function sheetAppend(sheet, obj) {
-  await apiFetch({ action: 'append', sheet, row: obj });
-}
-
-async function sheetUpdate(sheet, index, obj) {
-  await apiFetch({ action: 'update', sheet, index, row: obj });
-}
-
-async function sheetClear(sheet, index) {
-  await apiFetch({ action: 'clear', sheet, index });
-}
-
-async function sheetInitHeaders(sheet, headers) {
-  await apiFetch({ action: 'initHeaders', sheet, headers });
-}
+async function apiAppend(sheet, row) { return apiFetch({action:'append',sheet,row}); }
+async function apiUpdate(sheet, index, row) { return apiFetch({action:'update',sheet,index,row}); }
+async function apiClear(sheet, index) { return apiFetch({action:'clear',sheet,index}); }
+async function apiInitHeaders(sheet, headers) { return apiFetch({action:'initHeaders',sheet,headers}); }
 
 // ─── STATE ────────────────────────────────
-let db = { projects:[], logs:[], allocations:[] };
-let editingId=null, logProjectId=null;
-let currentStatusFilter='all', currentPhaseFilter='all';
-let currentView='manager', activeDesigner='Teo';
-let formDesigners=[];
+let db = { projects:[], allocations:[] };
+let editingId = null;
+let currentStatusFilter = 'all', currentPhaseFilter = 'all';
+let currentView = 'manager', activeDesigner = 'Teo';
+let formDesigners = []; // [{designer, pitchEst, pitchReal, implEst, implReal}]
 
 async function loadAllData() {
   showLoading('Se încarcă datele...');
   try {
-    const [p,l,a] = await Promise.all([
-      sheetRead('Projects'),
-      sheetRead('Logs'),
-      sheetRead('Allocations')
-    ]);
-    db.projects=p; db.logs=l; db.allocations=a;
-    render();
-    toast('Date actualizate ✓');
+    const [p,a] = await Promise.all([apiRead('Projects'), apiRead('Allocations')]);
+    db.projects = p; db.allocations = a;
+    render(); toast('Date actualizate ✓');
   } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
   hideLoading();
 }
 
 // ─── HELPERS ──────────────────────────────
 function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
-function getProjAllocs(pid) { return db.allocations.filter(a=>a.projectId===pid); }
-function getProjLogs(pid,phase=null) { return db.logs.filter(l=>l.projectId===pid&&(phase===null||l.phase===phase)); }
-function sumH(logs) { return logs.reduce((s,l)=>s+Number(l.hours||0),0); }
-function getDesignerHours(d,phase=null) {
-  const ids=new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
-  return db.logs.filter(l=>l.designer===d&&ids.has(l.projectId)&&(phase===null||l.phase===phase)).reduce((s,l)=>s+Number(l.hours||0),0);
+function getAllocs(pid) { return db.allocations.filter(a=>a.projectId===pid); }
+function n(v) { return Number(v)||0; }
+
+function getDesignerTotals(d, phase=null) {
+  const activeIds = new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
+  const allocs = db.allocations.filter(a=>a.designer===d && activeIds.has(a.projectId));
+  if (phase==='pitch') return { real: allocs.reduce((s,a)=>s+n(a.pitchReal),0), est: allocs.reduce((s,a)=>s+n(a.pitchEst),0) };
+  if (phase==='implementare') return { real: allocs.reduce((s,a)=>s+n(a.implReal),0), est: allocs.reduce((s,a)=>s+n(a.implEst),0) };
+  return {
+    real: allocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0),
+    est:  allocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0)
+  };
 }
-function getDesignerEst(d,phase=null) {
-  return db.allocations
-    .filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; })
-    .reduce((s,a)=>phase==='pitch'?s+Number(a.pitchEst||0):phase==='implementare'?s+Number(a.implEst||0):s+Number(a.pitchEst||0)+Number(a.implEst||0),0);
-}
-function toast(msg,isErr=false) {
+
+function toast(msg, isErr=false) {
   const el=document.getElementById('toast');
   el.textContent=msg; el.style.borderColor=isErr?'var(--danger)':'var(--accent)'; el.style.color=isErr?'var(--danger)':'var(--accent)';
   el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3500);
@@ -382,26 +321,26 @@ function setActiveDesigner(d) { activeDesigner=d; render(); }
 function render() { renderCards(); renderTable(); }
 
 function renderCards() {
-  const designers=currentView==='designer'?[activeDesigner]:DESIGNERS;
-  document.getElementById('designerCards').innerHTML=designers.map(d=>{
-    const pR=getDesignerHours(d,'pitch'),iR=getDesignerHours(d,'implementare');
-    const pE=getDesignerEst(d,'pitch'),iE=getDesignerEst(d,'implementare');
-    const tR=pR+iR,tE=pE+iE;
-    const util=tE>0?Math.round((tR/tE)*100):0;
-    const bc=util>100?'var(--danger)':util>80?'var(--accent)':DESIGNER_COLORS[d];
-    const st=util>100?'overloaded':util>75?'busy':'available';
-    const stL={available:'Disponibil',busy:'Ocupat',overloaded:'Suprasolicitat'}[st];
-    const ap=new Set(db.allocations.filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; }).map(a=>a.projectId)).size;
+  const designers = currentView==='designer' ? [activeDesigner] : DESIGNERS;
+  document.getElementById('designerCards').innerHTML = designers.map(d => {
+    const tot = getDesignerTotals(d);
+    const pit = getDesignerTotals(d,'pitch');
+    const imp = getDesignerTotals(d,'implementare');
+    const util = tot.est>0 ? Math.round((tot.real/tot.est)*100) : 0;
+    const bc = util>100?'var(--danger)':util>80?'var(--accent)':DC[d];
+    const st = util>100?'overloaded':util>75?'busy':'available';
+    const stL = {available:'Disponibil',busy:'Ocupat',overloaded:'Suprasolicitat'}[st];
+    const ap = new Set(db.allocations.filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; }).map(a=>a.projectId)).size;
     return `<div class="designer-card ${d.toLowerCase()}">
       <div class="designer-name ${d.toLowerCase()}">${d}</div>
       <div class="stats-row">
         <div class="stat"><div class="stat-label">Proiecte active</div><div class="stat-value">${ap}</div></div>
-        <div class="stat"><div class="stat-label">Ore totale</div><div class="stat-value">${tR.toFixed(1)}<span>h</span></div></div>
-        <div class="stat"><div class="stat-label">Estimate</div><div class="stat-value">${tE.toFixed(1)}<span>h</span></div></div>
+        <div class="stat"><div class="stat-label">Ore realizate</div><div class="stat-value">${tot.real.toFixed(1)}<span>h</span></div></div>
+        <div class="stat"><div class="stat-label">Ore estimate</div><div class="stat-value">${tot.est.toFixed(1)}<span>h</span></div></div>
       </div>
       <div class="phase-stats">
-        <div class="phase-stat"><div class="phase-stat-label pitch">Pitch</div><div class="phase-stat-nums">${pR.toFixed(1)}<span>/${pE>0?pE+'h':'—'}</span></div></div>
-        <div class="phase-stat"><div class="phase-stat-label impl">Implementare</div><div class="phase-stat-nums">${iR.toFixed(1)}<span>/${iE>0?iE+'h':'—'}</span></div></div>
+        <div class="phase-stat"><div class="phase-stat-label pitch">Pitch</div><div class="phase-stat-nums">${pit.real.toFixed(1)}<span> / ${pit.est>0?pit.est+'h':'—'}</span></div></div>
+        <div class="phase-stat"><div class="phase-stat-label impl">Implementare</div><div class="phase-stat-nums">${imp.real.toFixed(1)}<span> / ${imp.est>0?imp.est+'h':'—'}</span></div></div>
       </div>
       <div class="workload-bar-bg"><div class="workload-bar" style="width:${Math.min(util,100)}%;background:${bc}"></div></div>
       <div class="workload-label"><span>${util}% utilizare</span><span class="status-badge ${st}">${stL}</span></div>
@@ -410,42 +349,65 @@ function renderCards() {
 }
 
 function renderTable() {
-  const df=document.getElementById('designerFilter').value;
-  let projs=db.projects.filter(p=>{
-    if(currentStatusFilter!=='all'&&p.status!==currentStatusFilter) return false;
-    if(df!=='all'&&!db.allocations.find(a=>a.projectId===p.id&&a.designer===df)) return false;
-    if(currentView==='designer'&&!db.allocations.find(a=>a.projectId===p.id&&a.designer===activeDesigner)) return false;
+  const df = document.getElementById('designerFilter').value;
+  let projs = db.projects.filter(p => {
+    if (currentStatusFilter!=='all' && p.status!==currentStatusFilter) return false;
+    if (df!=='all' && !db.allocations.find(a=>a.projectId===p.id&&a.designer===df)) return false;
+    if (currentView==='designer' && !db.allocations.find(a=>a.projectId===p.id&&a.designer===activeDesigner)) return false;
     return true;
   });
-  const tbody=document.getElementById('projectsBody');
-  if(!projs.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;return;}
-  let tPR=0,tIR=0,tPE=0,tIE=0;
-  tbody.innerHTML=projs.map(p=>{
-    const allocs=getProjAllocs(p.id);
-    const pR=sumH(getProjLogs(p.id,'pitch')),iR=sumH(getProjLogs(p.id,'implementare'));
-    const pE=allocs.reduce((s,a)=>s+Number(a.pitchEst||0),0),iE=allocs.reduce((s,a)=>s+Number(a.implEst||0),0);
-    const tR=pR+iR,tE=pE+iE;
-    tPR+=pR;tIR+=iR;tPE+=pE;tIE+=iE;
-    const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
-    const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
-    const pPct=pE>0?Math.min(Math.round((pR/pE)*100),200):0;
-    const iPct=iE>0?Math.min(Math.round((iR/iE)*100),200):0;
-    const pF=pPct>100?'fill-over':pPct>75?'fill-warn':'fill-pitch';
-    const iF=iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
-    const sp=currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
-    const si=currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
+  const tbody = document.getElementById('projectsBody');
+  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
+
+  let tPR=0,tPE=0,tIR=0,tIE=0;
+  tbody.innerHTML = projs.map(p => {
+    const allocs = getAllocs(p.id);
+    const pR = allocs.reduce((s,a)=>s+n(a.pitchReal),0);
+    const pE = allocs.reduce((s,a)=>s+n(a.pitchEst),0);
+    const iR = allocs.reduce((s,a)=>s+n(a.implReal),0);
+    const iE = allocs.reduce((s,a)=>s+n(a.implEst),0);
+    const tR = pR+iR, tE = pE+iE;
+    tPR+=pR; tPE+=pE; tIR+=iR; tIE+=iE;
+
+    const stL = {active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
+    const chips = allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+    const pPct = pE>0?Math.min(Math.round((pR/pE)*100),200):0;
+    const iPct = iE>0?Math.min(Math.round((iR/iE)*100),200):0;
+    const pF = pPct>100?'fill-over':pPct>75?'fill-warn':'fill-pitch';
+    const iF = iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
+    const sp = currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
+    const si = currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
+
     return `<tr>
       <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}${p.deadline?' · '+p.deadline:''}</div></td>
       <td><div class="designers-list">${chips||'—'}</div></td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
-      <td class="hours-block" style="opacity:${sp?1:0.2}"><span class="hours-realized">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${pE>0?pE+'h':'—'}</span>${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}</td>
-      <td class="hours-block" style="opacity:${si?1:0.2}"><span class="hours-realized">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${iE>0?iE+'h':'—'}</span>${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}</td>
-      <td class="hours-block"><span class="hours-realized">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tE>0?tE+'h':'—'}</span></td>
+      <td class="hours-block" style="opacity:${sp?1:0.2}">
+        <span class="hours-real">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${pE>0?pE+'h':'—'}</span>
+        ${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}
+      </td>
+      <td class="hours-block" style="opacity:${si?1:0.2}">
+        <span class="hours-real">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${iE>0?iE+'h':'—'}</span>
+        ${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}
+      </td>
+      <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
       <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
-      <td><button class="action-btn" onclick="openLog('${p.id}')">+ Ore</button><button class="action-btn" onclick="editProject('${p.id}')">Edit</button><button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button></td>
+      <td>
+        <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
+        <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
+      </td>
     </tr>`;
   }).join('');
-  tbody.innerHTML+=`<tr class="total-row"><td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td><td class="hours-block"><span class="hours-realized">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tPE>0?tPE+'h':'—'}</span></td><td class="hours-block"><span class="hours-realized">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tIE>0?tIE+'h':'—'}</span></td><td class="hours-block"><span class="hours-realized">${(tPR+tIR).toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${(tPE+tIE)>0?(tPE+tIE)+'h':'—'}</span></td><td class="cost-cell">${((tPR+tIR)*RATE)>0?((tPR+tIR)*RATE).toFixed(0)+' €':'—'}</td><td></td></tr>`;
+
+  const tR=tPR+tIR, tE=tPE+tIE;
+  tbody.innerHTML += `<tr class="total-row">
+    <td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
+    <td class="hours-block"><span class="hours-real">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tPE>0?tPE+'h':'—'}</span></td>
+    <td class="hours-block"><span class="hours-real">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tIE>0?tIE+'h':'—'}</span></td>
+    <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
+    <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
+    <td></td>
+  </tr>`;
 }
 
 function setStatusFilter(f,btn) {
@@ -453,7 +415,7 @@ function setStatusFilter(f,btn) {
   document.querySelectorAll('.filter-btn:not(#phaseFilterBtn)').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); renderTable();
 }
-function cyclePhaseFilter(btn) {
+function cyclePhase(btn) {
   const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['active','pitch-active','impl-active'];
   const next=(states.indexOf(currentPhaseFilter)+1)%3;
   currentPhaseFilter=states[next]; btn.textContent=labels[next]; btn.className='filter-btn '+classes[next]; renderTable();
@@ -461,133 +423,140 @@ function cyclePhaseFilter(btn) {
 
 // ─── FORM DESIGNERS ───────────────────────
 function renderFormDesigners() {
-  const c=document.getElementById('designerRows');
-  if(!formDesigners.length){c.innerHTML=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`;return;}
-  c.innerHTML=formDesigners.map((fd,i)=>`
+  const c = document.getElementById('designerRows');
+  if (!formDesigners.length) {
+    c.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`;
+    return;
+  }
+  c.innerHTML = formDesigners.map((fd,i) => `
     <div class="designer-row">
-      <div class="designer-row-header"><span class="designer-row-name ${fd.designer.toLowerCase()}">${fd.designer}</span><button class="btn-remove" onclick="removeDesignerRow(${i})">×</button></div>
-      <div class="phase-inputs">
-        <div><div class="phase-label pitch">Pitch — ore estimate</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}" onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0"></div>
-        <div><div class="phase-label impl">Implementare — ore estimate</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}" onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0"></div>
+      <div class="designer-row-header">
+        <span class="designer-row-name ${fd.designer.toLowerCase()}">${fd.designer}</span>
+        <button class="btn-remove" onclick="removeDesignerRow(${i})">×</button>
+      </div>
+      <div class="phase-grid">
+        <div class="phase-group">
+          <span class="phase-label pitch">Pitch</span>
+          <div class="phase-inputs-pair">
+            <div>
+              <div class="mini-label">Estimate (h)</div>
+              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}"
+                onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0">
+            </div>
+            <div>
+              <div class="mini-label">Realizate (h)</div>
+              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchReal||''}"
+                onchange="formDesigners[${i}].pitchReal=parseFloat(this.value)||0">
+            </div>
+          </div>
+        </div>
+        <div class="phase-group">
+          <span class="phase-label impl">Implementare</span>
+          <div class="phase-inputs-pair">
+            <div>
+              <div class="mini-label">Estimate (h)</div>
+              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}"
+                onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0">
+            </div>
+            <div>
+              <div class="mini-label">Realizate (h)</div>
+              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implReal||''}"
+                onchange="formDesigners[${i}].implReal=parseFloat(this.value)||0">
+            </div>
+          </div>
+        </div>
       </div>
     </div>`).join('');
 }
+
 function addDesignerRow() {
-  const d=document.getElementById('addDesignerSelect').value;
-  if(formDesigners.find(fd=>fd.designer===d)){toast('Designer deja adăugat',true);return;}
-  formDesigners.push({designer:d,pitchEst:0,implEst:0}); renderFormDesigners();
+  const d = document.getElementById('addDesignerSel').value;
+  if (formDesigners.find(fd=>fd.designer===d)) { toast('Designer deja adăugat',true); return; }
+  formDesigners.push({designer:d,pitchEst:0,pitchReal:0,implEst:0,implReal:0});
+  renderFormDesigners();
 }
 function removeDesignerRow(i) { formDesigners.splice(i,1); renderFormDesigners(); }
 
 // ─── PROJECT CRUD ─────────────────────────
 function openAddProject() {
   editingId=null; formDesigners=[];
-  document.getElementById('modalTitle').textContent='Proiect nou';
+  document.getElementById('projModalTitle').textContent='Proiect nou';
   ['f_name','f_client','f_note'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f_status').value='active'; document.getElementById('f_deadline').value='';
-  renderFormDesigners(); openModal('addModal');
+  document.getElementById('f_status').value='active';
+  document.getElementById('f_deadline').value='';
+  renderFormDesigners(); openModal('projModal');
 }
+
 function editProject(id) {
-  const p=db.projects.find(x=>x.id===id); if(!p) return;
-  editingId=id; document.getElementById('modalTitle').textContent='Editează proiect';
-  document.getElementById('f_name').value=p.name; document.getElementById('f_client').value=p.client||'';
-  document.getElementById('f_status').value=p.status; document.getElementById('f_deadline').value=p.deadline||'';
+  const p = db.projects.find(x=>x.id===id); if (!p) return;
+  editingId = id;
+  document.getElementById('projModalTitle').textContent='Editează proiect';
+  document.getElementById('f_name').value=p.name;
+  document.getElementById('f_client').value=p.client||'';
+  document.getElementById('f_status').value=p.status;
+  document.getElementById('f_deadline').value=p.deadline||'';
   document.getElementById('f_note').value=p.note||'';
-  formDesigners=db.allocations.filter(a=>a.projectId===id).map(a=>({designer:a.designer,pitchEst:Number(a.pitchEst||0),implEst:Number(a.implEst||0)}));
-  renderFormDesigners(); openModal('addModal');
+  formDesigners = db.allocations.filter(a=>a.projectId===id).map(a=>({
+    designer:a.designer,
+    pitchEst:n(a.pitchEst), pitchReal:n(a.pitchReal),
+    implEst:n(a.implEst),   implReal:n(a.implReal)
+  }));
+  renderFormDesigners(); openModal('projModal');
 }
+
 async function saveProject() {
-  const name=document.getElementById('f_name').value.trim();
-  if(!name){alert('Introdu numele proiectului.');return;}
-  const proj={id:editingId||uid(),name,client:document.getElementById('f_client').value.trim(),status:document.getElementById('f_status').value,deadline:document.getElementById('f_deadline').value,note:document.getElementById('f_note').value.trim(),createdAt:new Date().toISOString()};
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { alert('Introdu numele proiectului.'); return; }
+  const proj = {
+    id: editingId||uid(), name,
+    client: document.getElementById('f_client').value.trim(),
+    status: document.getElementById('f_status').value,
+    deadline: document.getElementById('f_deadline').value,
+    note: document.getElementById('f_note').value.trim(),
+    createdAt: new Date().toISOString()
+  };
   showLoading('Se salvează...');
   try {
-    if(editingId){
-      const idx=db.projects.findIndex(x=>x.id===editingId);
-      await sheetUpdate('Projects',idx,proj); db.projects[idx]=proj;
-      const oi=db.allocations.map((a,i)=>a.projectId===editingId?i:-1).filter(i=>i>=0);
-      for(const li of oi.reverse()) await sheetClear('Allocations',li);
-      db.allocations=db.allocations.filter(a=>a.projectId!==editingId);
+    if (editingId) {
+      const idx = db.projects.findIndex(x=>x.id===editingId);
+      await apiUpdate('Projects', idx, proj);
+      db.projects[idx] = proj;
+      // șterge alocările vechi
+      const oi = db.allocations.map((a,i)=>a.projectId===editingId?i:-1).filter(i=>i>=0);
+      for (const li of oi.reverse()) await apiClear('Allocations', li);
+      db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
     } else {
-      await sheetAppend('Projects',proj); db.projects.push(proj);
+      await apiAppend('Projects', proj);
+      db.projects.push(proj);
     }
-    for(const fd of formDesigners){
-      const alloc={id:uid(),projectId:proj.id,designer:fd.designer,pitchEst:fd.pitchEst||0,implEst:fd.implEst||0};
-      await sheetAppend('Allocations',alloc); db.allocations.push(alloc);
+    // salvează alocările noi
+    for (const fd of formDesigners) {
+      const alloc = {
+        id: uid(), projectId: proj.id, designer: fd.designer,
+        pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
+        implEst: fd.implEst||0,   implReal: fd.implReal||0
+      };
+      await apiAppend('Allocations', alloc);
+      db.allocations.push(alloc);
     }
     toast(editingId?'Proiect actualizat ✓':'Proiect adăugat ✓');
-    closeModal('addModal'); render();
-  } catch(e){toast('Eroare: '+e.message,true);}
-  hideLoading();
-}
-async function deleteProject(id) {
-  if(!confirm('Ștergi proiectul, alocările și toate orele?')) return;
-  showLoading('Se șterge...');
-  try {
-    const pi=db.projects.findIndex(p=>p.id===id); await sheetClear('Projects',pi);
-    const ai=db.allocations.map((a,i)=>a.projectId===id?i:-1).filter(i=>i>=0);
-    for(const li of ai.reverse()) await sheetClear('Allocations',li);
-    const li2=db.logs.map((l,i)=>l.projectId===id?i:-1).filter(i=>i>=0);
-    for(const li of li2.reverse()) await sheetClear('Logs',li);
-    db.projects.splice(pi,1); db.allocations=db.allocations.filter(a=>a.projectId!==id); db.logs=db.logs.filter(l=>l.projectId!==id);
-    toast('Proiect șters'); render();
-  } catch(e){toast('Eroare: '+e.message,true);}
+    closeModal('projModal'); render();
+  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
   hideLoading();
 }
 
-// ─── LOG TIME ─────────────────────────────
-function openLog(pid) {
-  logProjectId=pid;
-  const p=db.projects.find(x=>x.id===pid);
-  document.getElementById('logModalTitle').textContent=p?p.name:'Logare ore';
-  const allocs=getProjAllocs(pid);
-  const sel=document.getElementById('l_designer');
-  sel.innerHTML=(allocs.length?allocs.map(a=>a.designer):DESIGNERS).map(d=>`<option value="${d}">${d}</option>`).join('');
-  document.getElementById('l_date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('l_hours').value=''; document.getElementById('l_note').value=''; document.getElementById('l_phase').value='pitch';
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
-  document.querySelectorAll('.tab-content').forEach((c,i)=>c.classList.toggle('active',i===0));
-  document.getElementById('logFooter').querySelector('.btn-primary').style.display='';
-  renderLogHistory(pid); openModal('logModal');
-}
-function switchTab(tabId,btn) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active');
-  document.getElementById('logFooter').querySelector('.btn-primary').style.display=tabId==='logHistory'?'none':'';
-}
-function renderLogHistory(pid) {
-  const list=document.getElementById('logHistoryList');
-  const logs=db.logs.filter(l=>l.projectId===pid).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  if(!logs.length){list.innerHTML='<div class="empty-state" style="padding:30px"><div>📝</div>Nicio intrare încă</div>';return;}
-  list.innerHTML=logs.map(l=>`<div class="log-entry">
-    <span class="log-date">${l.date}</span>
-    <span class="log-hours">${Number(l.hours||0).toFixed(1)}h</span>
-    <span style="font-size:10px;color:${DESIGNER_COLORS[l.designer]||'var(--text2)'};">${l.designer}</span>
-    <span class="phase-badge ${l.phase||'pitch'}">${l.phase==='implementare'?'Impl.':'Pitch'}</span>
-    <span class="log-note">${l.note||'—'}</span>
-    <button class="log-delete" onclick="deleteLog('${l.id}')">✕</button>
-  </div>`).join('');
-}
-async function saveLog() {
-  const hours=parseFloat(document.getElementById('l_hours').value);
-  if(!hours||hours<=0){alert('Introdu numărul de ore.');return;}
-  const date=document.getElementById('l_date').value;
-  if(!date){alert('Selectează data.');return;}
-  const log={id:uid(),projectId:logProjectId,designer:document.getElementById('l_designer').value,phase:document.getElementById('l_phase').value,date,hours,note:document.getElementById('l_note').value.trim()};
-  showLoading('Se salvează orele...');
-  try {
-    await sheetAppend('Logs',log); db.logs.push(log);
-    toast('Ore logate ✓'); document.getElementById('l_hours').value=''; document.getElementById('l_note').value='';
-    renderLogHistory(logProjectId); render();
-  } catch(e){toast('Eroare: '+e.message,true);}
-  hideLoading();
-}
-async function deleteLog(id) {
+async function deleteProject(id) {
+  if (!confirm('Ștergi proiectul și toate alocările?')) return;
   showLoading('Se șterge...');
   try {
-    const idx=db.logs.findIndex(l=>l.id===id); await sheetClear('Logs',idx);
-    db.logs.splice(idx,1); renderLogHistory(logProjectId); render(); toast('Înregistrare ștearsă');
-  } catch(e){toast('Eroare: '+e.message,true);}
+    const pi = db.projects.findIndex(p=>p.id===id);
+    await apiClear('Projects', pi);
+    const ai = db.allocations.map((a,i)=>a.projectId===id?i:-1).filter(i=>i>=0);
+    for (const li of ai.reverse()) await apiClear('Allocations', li);
+    db.projects.splice(pi,1);
+    db.allocations = db.allocations.filter(a=>a.projectId!==id);
+    toast('Proiect șters'); render();
+  } catch(e) { toast('Eroare: '+e.message, true); }
   hideLoading();
 }
 
@@ -598,11 +567,10 @@ async function init() {
   showLoading('Se inițializează...');
   try {
     await Promise.all([
-      sheetInitHeaders('Projects', ['id','name','client','status','deadline','note','createdAt']),
-      sheetInitHeaders('Logs', ['id','projectId','designer','phase','date','hours','note']),
-      sheetInitHeaders('Allocations', ['id','projectId','designer','pitchEst','implEst'])
+      apiInitHeaders('Projects', ['id','name','client','status','deadline','note','createdAt']),
+      apiInitHeaders('Allocations', ['id','projectId','designer','pitchEst','pitchReal','implEst','implReal'])
     ]);
-  } catch(e) { console.warn('Init headers:', e); }
+  } catch(e) { console.warn('Init:', e); }
   hideLoading();
   await loadAllData();
 }
