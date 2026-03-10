@@ -16,24 +16,16 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; }
 
-  /* LOGIN SCREEN */
-  .login-screen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; gap: 24px; }
+  .login-screen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; }
   .login-screen.show { display: flex; }
-  .login-logo { font-family: var(--font-mono); font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
-  .login-sub { font-family: var(--font-mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; margin-bottom: 24px; }
-  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 40px 48px; display: flex; flex-direction: column; align-items: center; gap: 20px; min-width: 340px; }
-  .btn-google { display: flex; align-items: center; gap: 12px; background: #fff; color: #333; border: none; padding: 12px 24px; border-radius: 4px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; width: 100%; justify-content: center; }
-  .btn-google:hover { opacity: 0.9; }
-  .btn-google svg { flex-shrink: 0; }
-  .login-note { font-family: var(--font-mono); font-size: 10px; color: var(--text3); text-align: center; }
-  .access-denied { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9998; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
-  .access-denied.show { display: flex; }
-  .denied-icon { font-size: 48px; }
-  .denied-title { font-family: var(--font-mono); font-size: 16px; color: var(--danger); }
-  .denied-msg { font-family: var(--font-mono); font-size: 12px; color: var(--text2); text-align: center; max-width: 360px; line-height: 1.6; }
-  .btn-logout-denied { background: none; border: 1px solid var(--border); color: var(--text2); padding: 8px 18px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; border-radius: 3px; margin-top: 8px; }
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; min-width: 340px; }
+  .login-logo { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
+  .login-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text2); letter-spacing: 0.1em; margin-top: -16px; }
+  .login-divider { width: 100%; height: 1px; background: var(--border); }
+  .btn-google { display: flex; align-items: center; justify-content: center; gap: 12px; background: #fff; color: #333; border: none; padding: 12px 24px; border-radius: 4px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; width: 100%; }
+  .btn-google:hover { opacity: 0.88; }
+  .login-note { font-family: var(--font-mono); font-size: 10px; color: var(--text3); text-align: center; line-height: 1.6; }
 
-  /* APP */
   #app { display: none; }
   #app.show { display: block; }
 
@@ -46,10 +38,10 @@
   header { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
   .logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
   .logo span { color: var(--text2); font-weight: 400; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .user-chip { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 5px 10px; }
   .user-avatar { width: 22px; height: 22px; border-radius: 50%; }
-  .user-name { font-family: var(--font-mono); font-size: 11px; color: var(--text2); }
+  .user-name { font-family: var(--font-mono); font-size: 11px; color: var(--text2); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .view-switcher { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .view-btn { padding: 6px 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; background: none; border: none; color: var(--text2); cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
   .view-btn.active { background: var(--accent); color: #0f0f0f; font-weight: 600; }
@@ -62,6 +54,8 @@
 
   .container { padding: 24px 28px; max-width: 1500px; margin: 0 auto; }
   .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+  .info-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
 
   .designer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
   .designer-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; position: relative; overflow: hidden; }
@@ -177,33 +171,28 @@
   .log-delete:hover { color: var(--danger); }
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent); color: var(--accent); padding: 10px 18px; font-family: var(--font-mono); font-size: 12px; border-radius: 4px; z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
   .toast.show { transform: translateY(0); opacity: 1; }
-  .info-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-  .info-banner .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-logo">Universum Events</div>
-  <div class="login-sub">/ Design Tracker</div>
+<div class="login-screen show" id="loginScreen">
   <div class="login-card">
-    <div style="font-family:var(--font-mono);font-size:12px;color:var(--text2);text-align:center;line-height:1.6;">Autentifică-te cu contul<br>tău <strong style="color:var(--text)">@universum.ro</strong></div>
-    <button class="btn-google" onclick="signIn()">
-      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A353" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+    <div class="login-logo">Universum Events</div>
+    <div class="login-sub">/ Design Tracker</div>
+    <div class="login-divider"></div>
+    <button class="btn-google" id="loginBtn">
+      <svg width="18" height="18" viewBox="0 0 18 18">
+        <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
+        <path fill="#34A353" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/>
+        <path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/>
+        <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/>
+      </svg>
       Continuă cu Google
     </button>
-    <div class="login-note">Acces restricționat la adrese @universum.ro<br>și colaboratori aprobați</div>
+    <div class="login-note">Autentifică-te cu orice cont Google<br>pentru a accesa Design Tracker</div>
   </div>
-</div>
-
-<!-- ACCESS DENIED -->
-<div class="access-denied" id="accessDenied">
-  <div class="denied-icon">🔒</div>
-  <div class="denied-title">Acces restricționat</div>
-  <div class="denied-msg" id="deniedMsg">Contul tău nu are acces la Design Tracker. Contactează-l pe Mihnea pentru a fi adăugat.</div>
-  <button class="btn-logout-denied" onclick="signOut()">← Încearcă cu alt cont</button>
 </div>
 
 <!-- APP -->
@@ -212,7 +201,7 @@
     <div class="logo">Universum <span>/ Design Tracker</span></div>
     <div class="header-right">
       <div class="user-chip">
-        <img class="user-avatar" id="userAvatar" src="" alt="">
+        <img class="user-avatar" id="userAvatar" src="" alt="" style="display:none">
         <span class="user-name" id="userName"></span>
       </div>
       <div class="view-switcher">
@@ -227,7 +216,6 @@
       <button class="btn-logout" onclick="signOut()">Logout</button>
     </div>
   </header>
-
   <div class="container">
     <div class="info-banner"><span class="dot-green"></span><span id="bannerText">Conectat — date sincronizate cu Google Sheets</span></div>
     <div class="section-label">Workload curent</div>
@@ -337,185 +325,155 @@
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="loading-text" id="loadingText">Se încarcă...</div></div>
 <div class="toast" id="toast"></div>
 
-<!-- Google Identity Services -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-
+<script src="https://accounts.google.com/gsi/client" async></script>
 <script>
 // ─── CONFIG ───────────────────────────────
-const CLIENT_ID   = '146433765376-b1st3pb2lat3082e8l24e41l2opst7sb.apps.googleusercontent.com';
-const SHEET_ID    = '1MCN7LrV0Ug6C5o-JJza61SRANrWRN_badqFKXKK7PsY';
-const API_KEY     = 'AIzaSyAAUM5OQLc_hwt6Qy_wsF03Tb7NHnjU-h0';
-const SCOPES      = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
-const RATE        = 25;
-const DESIGNERS   = ['Teo', 'Mircea', 'Cristi'];
+const CLIENT_ID = '146433765376-b1st3pb2lat3082e8l24e41l2opst7sb.apps.googleusercontent.com';
+const SHEET_ID  = '1MCN7LrV0Ug6C5o-JJza61SRANrWRN_badqFKXKK7PsY';
+const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+const RATE      = 25;
+const DESIGNERS = ['Teo', 'Mircea', 'Cristi'];
 const DESIGNER_COLORS = { Teo: '#e8c547', Mircea: '#4ecdc4', Cristi: '#ff9f43' };
-
-const WHITELIST = [
-  'alexandra.davidescu@universum.ro',
-  'anamaria.gafita@universum.ro',
-  'bogdan.popa@universum.ro',
-  'cristian.calin@universum.ro',
-  'cristian.hossu@universum.ro',
-  'denisa.glavan@universum.ro',
-  'eliza.pisica@universum.ro',
-  'ely.sopos@universum.ro',
-  'emilia.petcu@universum.ro',
-  'eva.moraru@universum.ro',
-  'ioana.chiriac@universum.ro',
-  'ionut.rotaru@universum.ro',
-  'mihnea.hanganu@universum.ro',
-  'mircea.curtianu@universum.ro',
-  'ramona.chirita@universum.ro',
-  'sabina.poparlan@universum.ro',
-  'teo.diaconu@universum.ro'
-];
+const BASE      = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}`;
 
 // ─── AUTH ─────────────────────────────────
-let tokenClient, accessToken = null;
-let currentUser = null;
+let tokenClient, accessToken = null, currentUser = null;
+
+function waitForGoogle() {
+  if (window.google && window.google.accounts) {
+    initAuth();
+  } else {
+    setTimeout(waitForGoogle, 150);
+  }
+}
 
 function initAuth() {
-  // Check saved token
-  const saved = sessionStorage.getItem('dt_token');
-  const savedUser = sessionStorage.getItem('dt_user');
-  if (saved && savedUser) {
-    accessToken = saved;
-    currentUser = JSON.parse(savedUser);
+  // Check session
+  const t = sessionStorage.getItem('dt_token');
+  const u = sessionStorage.getItem('dt_user');
+  if (t && u) {
+    accessToken = t;
+    currentUser = JSON.parse(u);
     showApp();
     return;
   }
+
+  // Setup token client
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: handleToken
+  });
+
+  document.getElementById('loginBtn').onclick = () => {
+    tokenClient.requestAccessToken({ prompt: 'select_account' });
+  };
+
   showLogin();
+}
+
+async function handleToken(resp) {
+  if (resp.error) { toast('Eroare: ' + resp.error, true); return; }
+  accessToken = resp.access_token;
+  showLoading('Se încarcă profilul...');
+  try {
+    const r = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: 'Bearer ' + accessToken }
+    });
+    currentUser = await r.json();
+    sessionStorage.setItem('dt_token', accessToken);
+    sessionStorage.setItem('dt_user', JSON.stringify(currentUser));
+    hideLoading();
+    showApp();
+  } catch(e) {
+    hideLoading();
+    toast('Eroare la autentificare', true);
+  }
 }
 
 function showLogin() {
   document.getElementById('loginScreen').classList.add('show');
-  document.getElementById('accessDenied').classList.remove('show');
-  document.getElementById('app').style.display = 'none';
-}
-
-function showDenied(email) {
-  document.getElementById('loginScreen').classList.remove('show');
-  document.getElementById('accessDenied').classList.add('show');
-  document.getElementById('deniedMsg').textContent = `Contul "${email}" nu are acces la Design Tracker. Contactează-l pe Mihnea pentru a fi adăugat.`;
   document.getElementById('app').style.display = 'none';
 }
 
 function showApp() {
   document.getElementById('loginScreen').classList.remove('show');
-  document.getElementById('accessDenied').classList.remove('show');
   document.getElementById('app').style.display = 'block';
-  if (currentUser) {
-    document.getElementById('userName').textContent = currentUser.name || currentUser.email;
-    if (currentUser.picture) document.getElementById('userAvatar').src = currentUser.picture;
-  }
-  loadAllData();
-}
-
-function signIn() {
-  if (!window.google) { toast('Google SDK nu s-a încărcat. Reîncarcă pagina.', true); return; }
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: async (resp) => {
-      if (resp.error) { toast('Eroare autentificare: ' + resp.error, true); return; }
-      accessToken = resp.access_token;
-      // Fetch user info
-      showLoading('Se verifică accesul...');
-      try {
-        const r = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-          headers: { Authorization: 'Bearer ' + accessToken }
-        });
-        const user = await r.json();
-        const email = (user.email || '').toLowerCase();
-        if (!WHITELIST.includes(email)) {
-          hideLoading();
-          accessToken = null;
-          showDenied(user.email);
-          return;
-        }
-        currentUser = user;
-        sessionStorage.setItem('dt_token', accessToken);
-        sessionStorage.setItem('dt_user', JSON.stringify(user));
-        hideLoading();
-        showApp();
-      } catch(e) {
-        hideLoading();
-        toast('Eroare verificare utilizator', true);
-      }
-    }
-  });
-  tokenClient.requestAccessToken({ prompt: 'select_account' });
+  const av = document.getElementById('userAvatar');
+  if (currentUser?.picture) { av.src = currentUser.picture; av.style.display = 'block'; }
+  document.getElementById('userName').textContent = currentUser?.email || '';
+  initSheetHeaders().then(() => loadAllData());
 }
 
 function signOut() {
   sessionStorage.removeItem('dt_token');
   sessionStorage.removeItem('dt_user');
+  if (window.google?.accounts?.oauth2 && accessToken) {
+    google.accounts.oauth2.revoke(accessToken, () => {});
+  }
   accessToken = null; currentUser = null;
-  if (window.google && window.google.accounts) google.accounts.oauth2.revoke(accessToken, ()=>{});
   showLogin();
 }
 
-// ─── SHEETS API (authenticated) ───────────
+// ─── SHEETS API ───────────────────────────
 const _hc = {};
 
-async function apiCall(url, method='GET', body=null) {
+async function api(url, method = 'GET', body = null) {
   if (!accessToken) throw new Error('Nu ești autentificat');
-  const opts = {
-    method,
-    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }
-  };
+  const opts = { method, headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
   const r = await fetch(url, opts);
-  if (r.status === 401) {
-    sessionStorage.removeItem('dt_token');
-    sessionStorage.removeItem('dt_user');
-    showLogin();
-    throw new Error('Sesiunea a expirat. Te rog autentifică-te din nou.');
-  }
-  if (!r.ok) {
-    const err = await r.json().catch(()=>({}));
-    throw new Error((err.error && err.error.message) || `HTTP ${r.status}`);
-  }
+  if (r.status === 401) { signOut(); throw new Error('Sesiunea a expirat, te rog loghează-te din nou.'); }
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error((e.error?.message)||`HTTP ${r.status}`); }
   return r.json();
 }
 
-const BASE = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}`;
-
 async function sheetRead(s) {
-  const d = await apiCall(`${BASE}/values/${s}`);
+  const d = await api(`${BASE}/values/${s}`);
   if (!d.values || d.values.length < 2) return [];
-  const h = d.values[0];
-  _hc[s] = h;
+  const h = d.values[0]; _hc[s] = h;
   return d.values.slice(1).map(row => { const o={}; h.forEach((k,i)=>o[k]=row[i]??''); return o; }).filter(o=>o.id&&o.id!=='');
 }
 
 async function sheetHdrs(s) {
   if (_hc[s]) return _hc[s];
-  const d = await apiCall(`${BASE}/values/${s}!1:1`);
-  _hc[s] = d.values ? d.values[0] : [];
-  return _hc[s];
+  const d = await api(`${BASE}/values/${s}!1:1`);
+  _hc[s] = d.values?.[0] || []; return _hc[s];
 }
 
 async function sheetAppend(s, obj) {
   const h = await sheetHdrs(s);
-  const row = h.map(k => obj[k] ?? '');
-  await apiCall(`${BASE}/values/${s}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, 'POST', { values: [row] });
+  await api(`${BASE}/values/${s}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, 'POST', { values: [h.map(k=>obj[k]??'')] });
 }
 
 async function sheetUpdate(s, idx, obj) {
-  const h = await sheetHdrs(s);
-  const row = h.map(k => obj[k] ?? '');
-  const er = idx + 2;
-  await apiCall(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}?valueInputOption=RAW`, 'PUT', { values: [row] });
+  const h = await sheetHdrs(s); const er = idx+2;
+  await api(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}?valueInputOption=RAW`, 'PUT', { values: [h.map(k=>obj[k]??'')] });
 }
 
 async function sheetClear(s, idx) {
-  const h = await sheetHdrs(s);
-  const er = idx + 2;
-  await apiCall(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}/clear`, 'POST');
+  const h = await sheetHdrs(s); const er = idx+2;
+  await api(`${BASE}/values/${s}!A${er}:${cl(h.length)}${er}/clear`, 'POST');
 }
 
 function cl(n) { let s=''; while(n>0){s=String.fromCharCode(64+(n%26||26))+s;n=Math.floor((n-1)/26);} return s; }
+
+async function initSheetHeaders() {
+  const defs = {
+    Projects:    ['id','name','client','status','deadline','note','createdAt'],
+    Logs:        ['id','projectId','designer','phase','date','hours','note'],
+    Allocations: ['id','projectId','designer','pitchEst','implEst']
+  };
+  for (const [s, h] of Object.entries(defs)) {
+    try {
+      const ex = await sheetHdrs(s);
+      if (!ex.length) {
+        await api(`${BASE}/values/${s}!A1:${cl(h.length)}1?valueInputOption=RAW`, 'PUT', { values: [h] });
+        _hc[s] = h;
+      }
+    } catch(e) { console.warn('initHeaders', s, e); }
+  }
+}
 
 // ─── STATE ────────────────────────────────
 let db = { projects:[], logs:[], allocations:[] };
@@ -530,54 +488,55 @@ async function loadAllData() {
     const [p,l,a] = await Promise.all([sheetRead('Projects'), sheetRead('Logs'), sheetRead('Allocations')]);
     db.projects=p; db.logs=l; db.allocations=a;
     render();
-    document.getElementById('bannerText').textContent = 'Conectat ca ' + (currentUser?.email||'') + ' — date sincronizate';
+    document.getElementById('bannerText').textContent = `Conectat ca ${currentUser?.email||''} — date sincronizate`;
     toast('Date actualizate ✓');
   } catch(e) { toast('Eroare: '+e.message, true); }
   hideLoading();
 }
 
 // ─── HELPERS ──────────────────────────────
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
-function getProjAllocs(pid){return db.allocations.filter(a=>a.projectId===pid);}
-function getProjLogs(pid,phase=null){return db.logs.filter(l=>l.projectId===pid&&(phase===null||l.phase===phase));}
-function sumH(logs){return logs.reduce((s,l)=>s+Number(l.hours||0),0);}
-function getDesignerHours(d,phase=null){
-  const ids=new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+function getProjAllocs(pid) { return db.allocations.filter(a=>a.projectId===pid); }
+function getProjLogs(pid, phase=null) { return db.logs.filter(l=>l.projectId===pid&&(phase===null||l.phase===phase)); }
+function sumH(logs) { return logs.reduce((s,l)=>s+Number(l.hours||0),0); }
+function getDesignerHours(d, phase=null) {
+  const ids = new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
   return db.logs.filter(l=>l.designer===d&&ids.has(l.projectId)&&(phase===null||l.phase===phase)).reduce((s,l)=>s+Number(l.hours||0),0);
 }
-function getDesignerEst(d,phase=null){
-  return db.allocations.filter(a=>{const p=db.projects.find(pr=>pr.id===a.projectId);return a.designer===d&&p&&p.status==='active';})
-    .reduce((s,a)=>phase==='pitch'?s+Number(a.pitchEst||0):phase==='implementare'?s+Number(a.implEst||0):s+Number(a.pitchEst||0)+Number(a.implEst||0),0);
+function getDesignerEst(d, phase=null) {
+  return db.allocations
+    .filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; })
+    .reduce((s,a)=>phase==='pitch'?s+Number(a.pitchEst||0):phase==='implementare'?s+Number(a.implEst||0):s+Number(a.pitchEst||0)+Number(a.implEst||0), 0);
 }
-function toast(msg,isErr=false){
+function toast(msg, isErr=false) {
   const el=document.getElementById('toast');
   el.textContent=msg; el.style.borderColor=isErr?'var(--danger)':'var(--accent)'; el.style.color=isErr?'var(--danger)':'var(--accent)';
   el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3000);
 }
-function showLoading(msg){document.getElementById('loadingText').textContent=msg;document.getElementById('loadingOverlay').classList.add('show');}
-function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show');}
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
+function showLoading(msg) { document.getElementById('loadingText').textContent=msg; document.getElementById('loadingOverlay').classList.add('show'); }
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 // ─── RENDER ───────────────────────────────
-function switchView(v,btn){
+function switchView(v,btn) {
   currentView=v; document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
   document.getElementById('designerSelector').style.display=v==='designer'?'block':'none'; render();
 }
-function setActiveDesigner(d){activeDesigner=d;render();}
-function render(){renderCards();renderTable();}
+function setActiveDesigner(d) { activeDesigner=d; render(); }
+function render() { renderCards(); renderTable(); }
 
-function renderCards(){
-  const designers=currentView==='designer'?[activeDesigner]:DESIGNERS;
-  document.getElementById('designerCards').innerHTML=designers.map(d=>{
-    const pR=getDesignerHours(d,'pitch'),iR=getDesignerHours(d,'implementare');
-    const pE=getDesignerEst(d,'pitch'),iE=getDesignerEst(d,'implementare');
-    const tR=pR+iR,tE=pE+iE;
+function renderCards() {
+  const designers = currentView==='designer' ? [activeDesigner] : DESIGNERS;
+  document.getElementById('designerCards').innerHTML = designers.map(d => {
+    const pR=getDesignerHours(d,'pitch'), iR=getDesignerHours(d,'implementare');
+    const pE=getDesignerEst(d,'pitch'), iE=getDesignerEst(d,'implementare');
+    const tR=pR+iR, tE=pE+iE;
     const util=tE>0?Math.round((tR/tE)*100):0;
     const bc=util>100?'var(--danger)':util>80?'var(--accent)':DESIGNER_COLORS[d];
     const st=util>100?'overloaded':util>75?'busy':'available';
     const stL={available:'Disponibil',busy:'Ocupat',overloaded:'Suprasolicitat'}[st];
-    const ap=new Set(db.allocations.filter(a=>{const p=db.projects.find(pr=>pr.id===a.projectId);return a.designer===d&&p&&p.status==='active';}).map(a=>a.projectId)).size;
+    const ap=new Set(db.allocations.filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; }).map(a=>a.projectId)).size;
     return `<div class="designer-card ${d.toLowerCase()}">
       <div class="designer-name ${d.toLowerCase()}">${d}</div>
       <div class="stats-row">
@@ -595,7 +554,7 @@ function renderCards(){
   }).join('');
 }
 
-function renderTable(){
+function renderTable() {
   const df=document.getElementById('designerFilter').value;
   let projs=db.projects.filter(p=>{
     if(currentStatusFilter!=='all'&&p.status!==currentStatusFilter) return false;
@@ -620,8 +579,6 @@ function renderTable(){
     const iF=iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
     const sp=currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
     const si=currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
-    const mgr=`<button class="action-btn" onclick="openLog('${p.id}')">+ Ore</button><button class="action-btn" onclick="editProject('${p.id}')">Edit</button><button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>`;
-    const des=`<button class="action-btn" onclick="openLog('${p.id}')">+ Ore mele</button>`;
     return `<tr>
       <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}${p.deadline?' · '+p.deadline:''}</div></td>
       <td><div class="designers-list">${chips||'—'}</div></td>
@@ -630,25 +587,25 @@ function renderTable(){
       <td class="hours-block" style="opacity:${si?1:0.2}"><span class="hours-realized">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${iE>0?iE+'h':'—'}</span>${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}</td>
       <td class="hours-block"><span class="hours-realized">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tE>0?tE+'h':'—'}</span></td>
       <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
-      <td>${currentView==='designer'?des:mgr}</td>
+      <td><button class="action-btn" onclick="openLog('${p.id}')">+ Ore</button><button class="action-btn" onclick="editProject('${p.id}')">Edit</button><button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button></td>
     </tr>`;
   }).join('');
   tbody.innerHTML+=`<tr class="total-row"><td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td><td class="hours-block"><span class="hours-realized">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tPE>0?tPE+'h':'—'}</span></td><td class="hours-block"><span class="hours-realized">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${tIE>0?tIE+'h':'—'}</span></td><td class="hours-block"><span class="hours-realized">${(tPR+tIR).toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-estimated">${(tPE+tIE)>0?(tPE+tIE)+'h':'—'}</span></td><td class="cost-cell">${((tPR+tIR)*RATE)>0?((tPR+tIR)*RATE).toFixed(0)+' €':'—'}</td><td></td></tr>`;
 }
 
-function setStatusFilter(f,btn){
+function setStatusFilter(f,btn) {
   currentStatusFilter=f;
   document.querySelectorAll('.filter-btn:not(#phaseFilterBtn)').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); renderTable();
 }
-function cyclePhaseFilter(btn){
+function cyclePhaseFilter(btn) {
   const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['active','pitch-active','impl-active'];
   const next=(states.indexOf(currentPhaseFilter)+1)%3;
   currentPhaseFilter=states[next]; btn.textContent=labels[next]; btn.className='filter-btn '+classes[next]; renderTable();
 }
 
 // ─── FORM DESIGNERS ───────────────────────
-function renderFormDesigners(){
+function renderFormDesigners() {
   const c=document.getElementById('designerRows');
   if(!formDesigners.length){c.innerHTML=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`;return;}
   c.innerHTML=formDesigners.map((fd,i)=>`
@@ -660,22 +617,22 @@ function renderFormDesigners(){
       </div>
     </div>`).join('');
 }
-function addDesignerRow(){
+function addDesignerRow() {
   const d=document.getElementById('addDesignerSelect').value;
   if(formDesigners.find(fd=>fd.designer===d)){toast('Designer deja adăugat',true);return;}
   formDesigners.push({designer:d,pitchEst:0,implEst:0}); renderFormDesigners();
 }
-function removeDesignerRow(i){formDesigners.splice(i,1);renderFormDesigners();}
+function removeDesignerRow(i) { formDesigners.splice(i,1); renderFormDesigners(); }
 
 // ─── PROJECT CRUD ─────────────────────────
-function openAddProject(){
+function openAddProject() {
   editingId=null; formDesigners=[];
   document.getElementById('modalTitle').textContent='Proiect nou';
   ['f_name','f_client','f_note'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_status').value='active'; document.getElementById('f_deadline').value='';
   renderFormDesigners(); openModal('addModal');
 }
-function editProject(id){
+function editProject(id) {
   const p=db.projects.find(x=>x.id===id); if(!p) return;
   editingId=id; document.getElementById('modalTitle').textContent='Editează proiect';
   document.getElementById('f_name').value=p.name; document.getElementById('f_client').value=p.client||'';
@@ -684,12 +641,12 @@ function editProject(id){
   formDesigners=db.allocations.filter(a=>a.projectId===id).map(a=>({designer:a.designer,pitchEst:Number(a.pitchEst||0),implEst:Number(a.implEst||0)}));
   renderFormDesigners(); openModal('addModal');
 }
-async function saveProject(){
+async function saveProject() {
   const name=document.getElementById('f_name').value.trim();
   if(!name){alert('Introdu numele proiectului.');return;}
   const proj={id:editingId||uid(),name,client:document.getElementById('f_client').value.trim(),status:document.getElementById('f_status').value,deadline:document.getElementById('f_deadline').value,note:document.getElementById('f_note').value.trim(),createdAt:new Date().toISOString()};
   showLoading('Se salvează...');
-  try{
+  try {
     if(editingId){
       const idx=db.projects.findIndex(x=>x.id===editingId);
       await sheetUpdate('Projects',idx,proj); db.projects[idx]=proj;
@@ -708,10 +665,10 @@ async function saveProject(){
   } catch(e){toast('Eroare: '+e.message,true);}
   hideLoading();
 }
-async function deleteProject(id){
+async function deleteProject(id) {
   if(!confirm('Ștergi proiectul, alocările și toate orele?')) return;
   showLoading('Se șterge...');
-  try{
+  try {
     const pi=db.projects.findIndex(p=>p.id===id); await sheetClear('Projects',pi);
     const ai=db.allocations.map((a,i)=>a.projectId===id?i:-1).filter(i=>i>=0);
     for(const li of ai.reverse()) await sheetClear('Allocations',li);
@@ -724,7 +681,7 @@ async function deleteProject(id){
 }
 
 // ─── LOG TIME ─────────────────────────────
-function openLog(pid){
+function openLog(pid) {
   logProjectId=pid;
   const p=db.projects.find(x=>x.id===pid);
   document.getElementById('logModalTitle').textContent=p?p.name:'Logare ore';
@@ -738,12 +695,12 @@ function openLog(pid){
   document.getElementById('logFooter').querySelector('.btn-primary').style.display='';
   renderLogHistory(pid); openModal('logModal');
 }
-function switchTab(tabId,btn){
+function switchTab(tabId,btn) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active');
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active');
   document.getElementById('logFooter').querySelector('.btn-primary').style.display=tabId==='logHistory'?'none':'';
 }
-function renderLogHistory(pid){
+function renderLogHistory(pid) {
   const list=document.getElementById('logHistoryList');
   const logs=db.logs.filter(l=>l.projectId===pid).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   if(!logs.length){list.innerHTML='<div class="empty-state" style="padding:30px"><div>📝</div>Nicio intrare încă</div>';return;}
@@ -756,23 +713,23 @@ function renderLogHistory(pid){
     <button class="log-delete" onclick="deleteLog('${l.id}')">✕</button>
   </div>`).join('');
 }
-async function saveLog(){
+async function saveLog() {
   const hours=parseFloat(document.getElementById('l_hours').value);
   if(!hours||hours<=0){alert('Introdu numărul de ore.');return;}
   const date=document.getElementById('l_date').value;
   if(!date){alert('Selectează data.');return;}
   const log={id:uid(),projectId:logProjectId,designer:document.getElementById('l_designer').value,phase:document.getElementById('l_phase').value,date,hours,note:document.getElementById('l_note').value.trim()};
   showLoading('Se salvează orele...');
-  try{
+  try {
     await sheetAppend('Logs',log); db.logs.push(log);
     toast('Ore logate ✓'); document.getElementById('l_hours').value=''; document.getElementById('l_note').value='';
     renderLogHistory(logProjectId); render();
   } catch(e){toast('Eroare: '+e.message,true);}
   hideLoading();
 }
-async function deleteLog(id){
+async function deleteLog(id) {
   showLoading('Se șterge...');
-  try{
+  try {
     const idx=db.logs.findIndex(l=>l.id===id); await sheetClear('Logs',idx);
     db.logs.splice(idx,1); renderLogHistory(logProjectId); render(); toast('Înregistrare ștearsă');
   } catch(e){toast('Eroare: '+e.message,true);}
@@ -781,29 +738,6 @@ async function deleteLog(id){
 
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
 
-// ─── INIT ─────────────────────────────────
-async function initSheetHeaders(){
-  const sheets={
-    Projects:['id','name','client','status','deadline','note','createdAt'],
-    Logs:['id','projectId','designer','phase','date','hours','note'],
-    Allocations:['id','projectId','designer','pitchEst','implEst']
-  };
-  for(const [s,h] of Object.entries(sheets)){
-    try{
-      const ex=await sheetHdrs(s);
-      if(!ex.length){
-        await apiCall(`${BASE}/values/${s}!A1:${cl(h.length)}1?valueInputOption=RAW`,'PUT',{values:[h]});
-        _hc[s]=h;
-      }
-    }catch(e){console.warn(s,e);}
-  }
-}
-
-// Wait for Google SDK then init
-function waitForGoogle(){
-  if(window.google && window.google.accounts){ initAuth(); }
-  else { setTimeout(waitForGoogle, 100); }
-}
 waitForGoogle();
 </script>
 </body>
