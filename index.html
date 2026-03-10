@@ -320,30 +320,71 @@ function switchView(v,btn) {
 function setActiveDesigner(d) { activeDesigner=d; render(); }
 function render() { renderCards(); renderTable(); }
 
+function workingDaysUntil(deadlineStr) {
+  if (!deadlineStr) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const end = new Date(deadlineStr); end.setHours(0,0,0,0);
+  if (end <= today) return 0;
+  let days = 0, cur = new Date(today);
+  while (cur < end) {
+    cur.setDate(cur.getDate()+1);
+    const dow = cur.getDay();
+    if (dow !== 0 && dow !== 6) days++;
+  }
+  return days;
+}
+
+function getDesignerHPerDay(designer) {
+  // pentru fiecare proiect activ al designerului, calculam ore ramase / zile ramase
+  const activeAllocs = db.allocations.filter(a => {
+    const p = db.projects.find(pr=>pr.id===a.projectId);
+    return a.designer===designer && p && p.status==='active';
+  });
+  let totalHPerDay = 0;
+  const details = [];
+  for (const a of activeAllocs) {
+    const p = db.projects.find(pr=>pr.id===a.projectId);
+    const oreRamase = Math.max(0, (n(a.pitchEst)+n(a.implEst)) - (n(a.pitchReal)+n(a.implReal)));
+    if (oreRamase <= 0) continue;
+    const zile = workingDaysUntil(p.deadline);
+    if (zile === null) { details.push({name:p.name, hpd:null, oreRamase}); continue; }
+    if (zile === 0) { totalHPerDay += oreRamase; details.push({name:p.name, hpd:'⚠', oreRamase}); continue; }
+    const hpd = oreRamase / zile;
+    totalHPerDay += hpd;
+    details.push({name:p.name, hpd, oreRamase, zile});
+  }
+  return { totalHPerDay, details, count: activeAllocs.length };
+}
+
 function renderCards() {
   const designers = currentView==='designer' ? [activeDesigner] : DESIGNERS;
   document.getElementById('designerCards').innerHTML = designers.map(d => {
     const tot = getDesignerTotals(d);
-    const pit = getDesignerTotals(d,'pitch');
-    const imp = getDesignerTotals(d,'implementare');
-    const util = tot.est>0 ? Math.round((tot.real/tot.est)*100) : 0;
-    const bc = util>100?'var(--danger)':util>80?'var(--accent)':DC[d];
-    const st = util>100?'overloaded':util>75?'busy':'available';
-    const stL = {available:'Disponibil',busy:'Ocupat',overloaded:'Suprasolicitat'}[st];
-    const ap = new Set(db.allocations.filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===d&&p&&p.status==='active'; }).map(a=>a.projectId)).size;
+    const { totalHPerDay, details, count } = getDesignerHPerDay(d);
+    const hpd = totalHPerDay;
+    const st = hpd > 6 ? 'overloaded' : hpd > 4 ? 'busy' : 'available';
+    const stL = {available:'Disponibil', busy:'Ocupat', overloaded:'Suprasolicitat'}[st];
+    const bc = st==='overloaded'?'var(--danger)':st==='busy'?'var(--accent)':DC[d];
+    const barPct = Math.min((hpd/8)*100, 100);
+
+    const detailRows = details.length ? details.map(d2 => {
+      const hpdStr = d2.hpd===null ? '(fără deadline)' : d2.hpd==='⚠' ? '⚠ deadline depășit' : `${d2.hpd.toFixed(1)}h/zi`;
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:10px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px;" title="${d2.name}">${d2.name}</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:${d2.hpd===null?'var(--text3)':d2.hpd==='⚠'?'var(--danger)':'var(--text)'};">${hpdStr}</span>
+      </div>`;
+    }).join('') : `<div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:6px 0;">Niciun proiect activ</div>`;
+
     return `<div class="designer-card ${d.toLowerCase()}">
       <div class="designer-name ${d.toLowerCase()}">${d}</div>
       <div class="stats-row">
-        <div class="stat"><div class="stat-label">Proiecte active</div><div class="stat-value">${ap}</div></div>
-        <div class="stat"><div class="stat-label">Ore realizate</div><div class="stat-value">${tot.real.toFixed(1)}<span>h</span></div></div>
-        <div class="stat"><div class="stat-label">Ore estimate</div><div class="stat-value">${tot.est.toFixed(1)}<span>h</span></div></div>
+        <div class="stat"><div class="stat-label">Proiecte active</div><div class="stat-value">${count}</div></div>
+        <div class="stat"><div class="stat-label">Ore rămase</div><div class="stat-value">${Math.max(0,tot.est-tot.real).toFixed(1)}<span>h</span></div></div>
+        <div class="stat"><div class="stat-label">Ritm necesar</div><div class="stat-value" style="color:${bc}">${hpd.toFixed(1)}<span>h/zi</span></div></div>
       </div>
-      <div class="phase-stats">
-        <div class="phase-stat"><div class="phase-stat-label pitch">Pitch</div><div class="phase-stat-nums">${pit.real.toFixed(1)}<span> / ${pit.est>0?pit.est+'h':'—'}</span></div></div>
-        <div class="phase-stat"><div class="phase-stat-label impl">Implementare</div><div class="phase-stat-nums">${imp.real.toFixed(1)}<span> / ${imp.est>0?imp.est+'h':'—'}</span></div></div>
-      </div>
-      <div class="workload-bar-bg"><div class="workload-bar" style="width:${Math.min(util,100)}%;background:${bc}"></div></div>
-      <div class="workload-label"><span>${util}% utilizare</span><span class="status-badge ${st}">${stL}</span></div>
+      <div class="workload-bar-bg"><div class="workload-bar" style="width:${barPct}%;background:${bc}"></div></div>
+      <div class="workload-label" style="margin-bottom:10px;"><span>${hpd.toFixed(1)}h/zi din 8h disponibile</span><span class="status-badge ${st}">${stL}</span></div>
+      <div style="border-top:1px solid var(--border);padding-top:8px;">${detailRows}</div>
     </div>`;
   }).join('');
 }
