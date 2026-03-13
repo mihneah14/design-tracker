@@ -556,17 +556,20 @@ async function saveProject() {
     note: document.getElementById('f_note').value.trim(),
     createdAt: new Date().toISOString()
   };
+  console.log('saveProject — editingId:', editingId, '| proj.id:', proj.id, '| formDesigners:', JSON.stringify(formDesigners));
   showLoading('Se salvează...');
   try {
     if (editingId) {
+      console.log('UPDATE project:', editingId);
       await apiUpdate('Projects', editingId, proj);
       const idx = db.projects.findIndex(x=>x.id===editingId);
       db.projects[idx] = proj;
-      // șterge alocările vechi care există în DB (au id)
       const oldAllocs = db.allocations.filter(a=>a.projectId===editingId && a.id);
+      console.log('DELETE old allocs:', oldAllocs.map(a=>a.id));
       for (const a of oldAllocs) await apiClear('Allocations', a.id);
       db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
     } else {
+      console.log('APPEND new project:', proj.id);
       await apiAppend('Projects', proj);
       db.projects.push(proj);
     }
@@ -576,12 +579,13 @@ async function saveProject() {
         pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
         implEst: fd.implEst||0,   implReal: fd.implReal||0
       };
+      console.log('APPEND alloc:', alloc.id, 'for designer:', fd.designer);
       await apiAppend('Allocations', alloc);
       db.allocations.push(alloc);
     }
     toast(editingId?'Proiect actualizat ✓':'Proiect adăugat ✓');
     closeModal('projModal'); render();
-  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
+  } catch(e) { toast('Eroare: '+e.message, true); console.error('saveProject error:', e); }
   hideLoading();
 }
 
