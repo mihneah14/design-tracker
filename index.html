@@ -310,7 +310,7 @@ function toast(msg, isErr=false) {
 function showLoading(msg) { document.getElementById('loadingText').textContent=msg; document.getElementById('loadingOverlay').classList.add('show'); }
 function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); editingId=null; }
 
 // ─── RENDER ───────────────────────────────
 function switchView(v,btn) {
@@ -538,7 +538,7 @@ function editProject(id) {
   document.getElementById('f_deadline').value=p.deadline||'';
   document.getElementById('f_note').value=p.note||'';
   formDesigners = db.allocations.filter(a=>a.projectId===id).map(a=>({
-    designer:a.designer,
+    id:a.id, designer:a.designer,
     pitchEst:n(a.pitchEst), pitchReal:n(a.pitchReal),
     implEst:n(a.implEst),   implReal:n(a.implReal)
   }));
@@ -562,8 +562,8 @@ async function saveProject() {
       await apiUpdate('Projects', editingId, proj);
       const idx = db.projects.findIndex(x=>x.id===editingId);
       db.projects[idx] = proj;
-      // șterge alocările vechi după ID-ul lor
-      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId);
+      // șterge alocările vechi care există în DB (au id)
+      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId && a.id);
       for (const a of oldAllocs) await apiClear('Allocations', a.id);
       db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
     } else {
@@ -599,7 +599,7 @@ async function deleteProject(id) {
   hideLoading();
 }
 
-document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
+document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el){el.classList.remove('open'); editingId=null;}}));
 
 // ─── INIT ─────────────────────────────────
 async function init() {
