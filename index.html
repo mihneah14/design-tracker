@@ -265,8 +265,8 @@ async function apiRead(sheet) {
   return d.rows || [];
 }
 async function apiAppend(sheet, row) { return apiFetch({action:'append',sheet,row}); }
-async function apiUpdate(sheet, index, row) { return apiFetch({action:'update',sheet,index,row}); }
-async function apiClear(sheet, index) { return apiFetch({action:'clear',sheet,index}); }
+async function apiUpdate(sheet, id, row) { return apiFetch({action:'update',sheet,id,row}); }
+async function apiClear(sheet, id) { return apiFetch({action:'clear',sheet,id}); }
 async function apiInitHeaders(sheet, headers) { return apiFetch({action:'initHeaders',sheet,headers}); }
 
 // ─── STATE ────────────────────────────────
@@ -559,18 +559,17 @@ async function saveProject() {
   showLoading('Se salvează...');
   try {
     if (editingId) {
+      await apiUpdate('Projects', editingId, proj);
       const idx = db.projects.findIndex(x=>x.id===editingId);
-      await apiUpdate('Projects', idx, proj);
       db.projects[idx] = proj;
-      // șterge alocările vechi
-      const oi = db.allocations.map((a,i)=>a.projectId===editingId?i:-1).filter(i=>i>=0);
-      for (const li of oi.reverse()) await apiClear('Allocations', li);
+      // șterge alocările vechi după ID-ul lor
+      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId);
+      for (const a of oldAllocs) await apiClear('Allocations', a.id);
       db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
     } else {
       await apiAppend('Projects', proj);
       db.projects.push(proj);
     }
-    // salvează alocările noi
     for (const fd of formDesigners) {
       const alloc = {
         id: uid(), projectId: proj.id, designer: fd.designer,
@@ -590,14 +589,13 @@ async function deleteProject(id) {
   if (!confirm('Ștergi proiectul și toate alocările?')) return;
   showLoading('Se șterge...');
   try {
-    const pi = db.projects.findIndex(p=>p.id===id);
-    await apiClear('Projects', pi);
-    const ai = db.allocations.map((a,i)=>a.projectId===id?i:-1).filter(i=>i>=0);
-    for (const li of ai.reverse()) await apiClear('Allocations', li);
-    db.projects.splice(pi,1);
+    await apiClear('Projects', id);
+    const oldAllocs = db.allocations.filter(a=>a.projectId===id);
+    for (const a of oldAllocs) await apiClear('Allocations', a.id);
+    db.projects = db.projects.filter(p=>p.id!==id);
     db.allocations = db.allocations.filter(a=>a.projectId!==id);
     toast('Proiect șters'); render();
-  } catch(e) { toast('Eroare: '+e.message, true); }
+  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
   hideLoading();
 }
 
