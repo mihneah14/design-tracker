@@ -16,12 +16,14 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; }
 
+  /* LOADING */
   .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(3px); }
   .loading-overlay.show { display: flex; }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-family: var(--font-mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; }
 
+  /* HEADER */
   header { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
   .logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
   .logo span { color: var(--text2); font-weight: 400; }
@@ -34,12 +36,16 @@
   .btn-secondary { background: none; border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.08em; }
   .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
 
+  /* LAYOUT — main + side panel */
+  .app-body { display: flex; min-height: calc(100vh - 57px); transition: all 0.3s ease; }
+  .main-content { flex: 1; min-width: 0; transition: all 0.3s ease; }
   .container { padding: 24px 28px; max-width: 1500px; margin: 0 auto; }
   .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
   .info-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
   .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
+  /* DESIGNER CARDS */
   .designer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
   .designer-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; position: relative; overflow: hidden; }
   .designer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
@@ -53,12 +59,6 @@
   .stat-label { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; font-family: var(--font-mono); }
   .stat-value { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: var(--text); }
   .stat-value span { font-size: 11px; color: var(--text2); font-weight: 400; }
-  .phase-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-  .phase-stat { background: var(--bg); border-radius: 4px; padding: 8px 10px; }
-  .phase-stat-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .phase-stat-label.pitch { color: var(--pitch); } .phase-stat-label.impl { color: var(--impl); }
-  .phase-stat-nums { font-family: var(--font-mono); font-size: 12px; color: var(--text); }
-  .phase-stat-nums span { color: var(--text2); }
   .workload-bar-bg { background: var(--bg); border-radius: 2px; height: 5px; overflow: hidden; margin-bottom: 5px; }
   .workload-bar { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
   .workload-label { font-family: var(--font-mono); font-size: 10px; color: var(--text2); display: flex; justify-content: space-between; }
@@ -67,6 +67,7 @@
   .status-badge.busy { background: #3a2a0a; color: var(--accent); }
   .status-badge.overloaded { background: #3a1a1a; color: var(--danger); }
 
+  /* TABLE */
   .projects-section { margin-bottom: 28px; }
   .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
   .filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -76,19 +77,32 @@
   .filter-btn.impl-active { border-color: var(--impl); color: var(--impl); }
   select.filter-select { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; outline: none; }
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-  thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s; }
+  thead th:hover { color: var(--text2); }
+  thead th.sort-asc::after { content: ' ↑'; color: var(--accent); }
+  thead th.sort-desc::after { content: ' ↓'; color: var(--accent); }
   thead th.pitch-col { color: var(--pitch); } thead th.impl-col { color: var(--impl); }
-  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: var(--surface2); }
+  thead th.no-sort { cursor: default; }
+  thead th.no-sort:hover { color: var(--text3); }
+
+  /* PROJECT rows */
+  tbody tr.proj-row { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
+  tbody tr.proj-row:hover { background: var(--surface2); }
+  tbody tr.proj-row.active-panel { background: #1e1e1e; border-left: 2px solid var(--accent); }
+  tbody tr.designer-subrow { border-bottom: 1px solid rgba(46,46,46,0.5); background: rgba(0,0,0,0.15); }
+  tbody tr.designer-subrow td { padding: 6px 14px 6px 28px; }
+  tbody tr.designer-subrow:last-of-type { border-bottom: 1px solid var(--border); }
+  tbody tr.total-row td { border-top: 2px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 11px; padding-top: 14px; }
   tbody td { padding: 10px 14px; font-size: 13px; vertical-align: middle; }
-  .project-name { font-weight: 500; color: var(--text); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .project-name { font-weight: 500; color: var(--text); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .project-client { font-size: 11px; color: var(--text2); font-family: var(--font-mono); margin-top: 2px; }
-  .designers-list { display: flex; flex-wrap: wrap; gap: 4px; }
-  .designer-chip { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 2px; background: var(--bg); border: 1px solid var(--border); }
-  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .dot.teo { background: var(--teo); } .dot.mircea { background: var(--mircea); } .dot.cristi { background: var(--cristi); }
+  .deadline-display { font-family: var(--font-mono); font-size: 10px; margin-top: 3px; }
+  .deadline-ok { color: var(--text3); }
+  .deadline-soon { color: var(--accent); }
+  .deadline-over { color: var(--danger); }
+
   .hours-block { font-family: var(--font-mono); font-size: 11px; white-space: nowrap; }
   .hours-real { color: var(--text); font-weight: 600; }
   .hours-est { color: var(--text2); }
@@ -98,6 +112,7 @@
   .fill-pitch { background: var(--pitch); } .fill-impl { background: var(--impl); }
   .fill-warn { background: var(--accent); } .fill-over { background: var(--danger); }
   .cost-cell { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); }
+
   .action-btn { background: none; border: 1px solid var(--border); color: var(--text2); padding: 4px 8px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; margin-right: 3px; white-space: nowrap; }
   .action-btn:hover { border-color: var(--accent); color: var(--accent); }
   .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
@@ -107,7 +122,49 @@
   .proj-status.paused { background: #2a2a1a; color: var(--accent); }
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); font-family: var(--font-mono); font-size: 13px; }
   .empty-state div:first-child { font-size: 32px; margin-bottom: 12px; }
-  .total-row td { border-top: 1px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 11px; padding-top: 14px; }
+
+  /* Designer sub-row elements */
+  .sub-designer-name { font-family: var(--font-mono); font-size: 10px; display: flex; align-items: center; gap: 5px; color: var(--text2); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot.teo { background: var(--teo); } .dot.mircea { background: var(--mircea); } .dot.cristi { background: var(--cristi); }
+
+  /* SIDE PANEL */
+  .side-panel { width: 0; overflow: hidden; border-left: 0px solid var(--border); background: var(--surface); transition: width 0.3s ease, border 0.3s ease; flex-shrink: 0; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
+  .side-panel.open { width: 380px; border-left: 1px solid var(--border); }
+  .panel-inner { width: 380px; padding: 0; }
+  .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 10; }
+  .panel-title { font-family: var(--font-mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .panel-subtitle { font-size: 11px; color: var(--text2); margin-top: 3px; font-family: var(--font-mono); }
+  .panel-close { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 18px; padding: 0; line-height: 1; transition: color 0.15s; }
+  .panel-close:hover { color: var(--text); }
+  .panel-section { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .panel-section-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+  .panel-field { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .panel-field-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); white-space: nowrap; }
+  .panel-field-value { font-family: var(--font-mono); font-size: 11px; color: var(--text); text-align: right; }
+
+  /* Panel designer breakdown */
+  .panel-designer-block { background: var(--bg); border-radius: 4px; padding: 10px 12px; margin-bottom: 8px; }
+  .panel-designer-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
+  .panel-designer-header.teo { color: var(--teo); } .panel-designer-header.mircea { color: var(--mircea); } .panel-designer-header.cristi { color: var(--cristi); }
+  .panel-phase-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .panel-phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .panel-phase-label.pitch { color: var(--pitch); } .panel-phase-label.impl { color: var(--impl); }
+  .panel-phase-nums { font-family: var(--font-mono); font-size: 11px; }
+  .panel-phase-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 3px; }
+  .panel-phase-bar-fill { height: 100%; border-radius: 2px; }
+
+  /* LOG */
+  .log-list { display: flex; flex-direction: column; gap: 0; }
+  .log-entry { padding: 10px 0; border-bottom: 1px solid rgba(46,46,46,0.5); }
+  .log-entry:last-child { border-bottom: none; }
+  .log-time { font-family: var(--font-mono); font-size: 9px; color: var(--text3); margin-bottom: 4px; }
+  .log-changes { display: flex; flex-direction: column; gap: 3px; }
+  .log-change { font-family: var(--font-mono); font-size: 10px; color: var(--text2); }
+  .log-change .old { color: var(--danger); text-decoration: line-through; }
+  .log-change .new { color: #4ade80; }
+  .log-change .arrow { color: var(--text3); margin: 0 4px; }
+  .log-empty { font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: center; padding: 20px 0; }
 
   /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
@@ -138,7 +195,6 @@
   .btn-remove { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; transition: color 0.15s; padding: 0; line-height: 1; }
   .btn-remove:hover { color: var(--danger); }
   .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .phase-group { }
   .phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; display: block; }
   .phase-label.pitch { color: var(--pitch); } .phase-label.impl { color: var(--impl); }
   .phase-inputs-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -168,37 +224,50 @@
   </div>
 </header>
 
-<div class="container">
-  <div class="info-banner"><span class="dot-green"></span><span>Date sincronizate cu Google Sheets</span></div>
-  <div class="section-label">Workload curent</div>
-  <div class="designer-cards" id="designerCards"></div>
-  <div class="projects-section">
-    <div class="table-header">
-      <div class="section-label" style="margin-bottom:0">Proiecte</div>
-      <div class="filters">
-        <button class="filter-btn active" onclick="setStatusFilter('all',this)">Toate</button>
-        <button class="filter-btn" onclick="setStatusFilter('active',this)">Active</button>
-        <button class="filter-btn" onclick="setStatusFilter('completed',this)">Finalizate</button>
-        <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
-        <select class="filter-select" id="designerFilter" onchange="renderTable()">
-          <option value="all">Toți designerii</option>
-          <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
-        </select>
+<div class="app-body">
+  <div class="main-content">
+    <div class="container">
+      <div class="info-banner"><span class="dot-green"></span><span>Date sincronizate cu Google Sheets</span></div>
+      <div class="section-label">Workload curent</div>
+      <div class="designer-cards" id="designerCards"></div>
+      <div class="projects-section">
+        <div class="table-header">
+          <div class="section-label" style="margin-bottom:0">Proiecte</div>
+          <div class="filters">
+            <button class="filter-btn active" onclick="setStatusFilter('all',this)">Toate</button>
+            <button class="filter-btn" onclick="setStatusFilter('active',this)">Active</button>
+            <button class="filter-btn" onclick="setStatusFilter('completed',this)">Finalizate</button>
+            <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
+            <select class="filter-select" id="designerFilter" onchange="renderTable()">
+              <option value="all">Toți designerii</option>
+              <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="setSort('name')">Proiect / Client</th>
+                <th class="no-sort">Status</th>
+                <th onclick="setSort('deadline')">Deadline</th>
+                <th class="pitch-col no-sort">Pitch real / est.</th>
+                <th class="impl-col no-sort">Impl. real / est.</th>
+                <th onclick="setSort('total')">Total ore</th>
+                <th onclick="setSort('cost')">Cost (25€/h)</th>
+                <th class="no-sort">Acțiuni</th>
+              </tr>
+            </thead>
+            <tbody id="projectsBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Proiect / Client</th><th>Designeri</th><th>Status</th>
-            <th class="pitch-col">Pitch real / est.</th>
-            <th class="impl-col">Impl. real / est.</th>
-            <th>Total ore</th><th>Cost (25€/h)</th><th>Acțiuni</th>
-          </tr>
-        </thead>
-        <tbody id="projectsBody"></tbody>
-      </table>
-    </div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div class="side-panel" id="sidePanel">
+    <div class="panel-inner" id="panelInner"></div>
   </div>
 </div>
 
@@ -270,20 +339,76 @@ async function apiClear(sheet, id) { return apiFetch({action:'clear',sheet,id});
 async function apiInitHeaders(sheet, headers) { return apiFetch({action:'initHeaders',sheet,headers}); }
 
 // ─── STATE ────────────────────────────────
-let db = { projects:[], allocations:[] };
+let db = { projects:[], allocations:[], logs:[] };
 let editingId = null;
 let currentStatusFilter = 'all', currentPhaseFilter = 'all';
 let currentView = 'manager', activeDesigner = 'Teo';
-let formDesigners = []; // [{designer, pitchEst, pitchReal, implEst, implReal}]
+let formDesigners = [];
+let activePanelId = null;
+let sortCol = 'deadline', sortDir = 'asc';
 
-async function loadAllData() {
-  showLoading('Se încarcă datele...');
-  try {
-    const [p,a] = await Promise.all([apiRead('Projects'), apiRead('Allocations')]);
-    db.projects = p; db.allocations = a;
-    render(); toast('Date actualizate ✓');
-  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
-  hideLoading();
+// ─── DATE HELPERS ─────────────────────────
+function formatDate(str) {
+  if (!str) return '—';
+  // Handle both YYYY-MM-DD and full timestamp strings
+  const match = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return str;
+  return `${match[1]}-${match[2]}-${match[3]}`;
+}
+
+function deadlineDaysLeft(str) {
+  if (!str) return null;
+  const match = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dl = new Date(Number(match[1]), Number(match[2])-1, Number(match[3]));
+  return Math.round((dl - today) / 86400000);
+}
+
+function deadlineClass(str) {
+  const d = deadlineDaysLeft(str);
+  if (d === null) return '';
+  if (d < 0) return 'deadline-over';
+  if (d <= 5) return 'deadline-soon';
+  return 'deadline-ok';
+}
+
+function deadlineLabel(str) {
+  const d = deadlineDaysLeft(str);
+  if (d === null) return '';
+  if (d < 0) return ` (${Math.abs(d)}z depășit)`;
+  if (d === 0) return ' (azi!)';
+  if (d <= 5) return ` (${d}z)`;
+  return '';
+}
+
+// ─── SORTING ──────────────────────────────
+function setSort(col) {
+  if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  else { sortCol = col; sortDir = 'asc'; }
+  document.querySelectorAll('thead th').forEach(th => {
+    th.classList.remove('sort-asc','sort-desc');
+  });
+  event.currentTarget.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+  renderTable();
+}
+
+function sortedProjects(projs) {
+  return [...projs].sort((a,b) => {
+    let va, vb;
+    if (sortCol === 'name') { va = a.name||''; vb = b.name||''; return sortDir==='asc' ? va.localeCompare(vb) : vb.localeCompare(va); }
+    if (sortCol === 'deadline') {
+      va = a.deadline ? String(a.deadline).slice(0,10) : '9999';
+      vb = b.deadline ? String(b.deadline).slice(0,10) : '9999';
+      return sortDir==='asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    if (sortCol === 'total' || sortCol === 'cost') {
+      const sumReal = p => getAllocs(p.id).reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
+      va = sumReal(a); vb = sumReal(b);
+      return sortDir==='asc' ? va-vb : vb-va;
+    }
+    return 0;
+  });
 }
 
 // ─── HELPERS ──────────────────────────────
@@ -291,11 +416,9 @@ function uid() { return Date.now().toString(36)+Math.random().toString(36).slice
 function getAllocs(pid) { return db.allocations.filter(a=>a.projectId===pid); }
 function n(v) { return Number(v)||0; }
 
-function getDesignerTotals(d, phase=null) {
+function getDesignerTotals(d) {
   const activeIds = new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
   const allocs = db.allocations.filter(a=>a.designer===d && activeIds.has(a.projectId));
-  if (phase==='pitch') return { real: allocs.reduce((s,a)=>s+n(a.pitchReal),0), est: allocs.reduce((s,a)=>s+n(a.pitchEst),0) };
-  if (phase==='implementare') return { real: allocs.reduce((s,a)=>s+n(a.implReal),0), est: allocs.reduce((s,a)=>s+n(a.implEst),0) };
   return {
     real: allocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0),
     est:  allocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0)
@@ -312,6 +435,64 @@ function hideLoading() { document.getElementById('loadingOverlay').classList.rem
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); editingId=null; }
 
+async function loadAllData() {
+  showLoading('Se încarcă datele...');
+  try {
+    const [p,a,l] = await Promise.all([apiRead('Projects'), apiRead('Allocations'), apiRead('Logs')]);
+    db.projects = p; db.allocations = a; db.logs = l;
+    render();
+    if (activePanelId) openPanel(activePanelId);
+    toast('Date actualizate ✓');
+  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
+  hideLoading();
+}
+
+// ─── LOG HELPERS ──────────────────────────
+async function appendLog(projectId, changes) {
+  const logEntry = {
+    id: uid(),
+    projectId,
+    timestamp: new Date().toISOString(),
+    changes: JSON.stringify(changes)
+  };
+  try {
+    await apiAppend('Logs', logEntry);
+    db.logs.push(logEntry);
+  } catch(e) { console.warn('Log append failed:', e); }
+}
+
+function buildDiff(oldProj, newProj, oldAllocs, newAllocs) {
+  const changes = [];
+  // Project field changes
+  const fields = [{k:'name',l:'Nume'},{k:'client',l:'Client'},{k:'status',l:'Status'},{k:'deadline',l:'Deadline'},{k:'note',l:'Notă'}];
+  for (const {k,l} of fields) {
+    const ov = oldProj[k]||'', nv = newProj[k]||'';
+    if (String(ov).trim() !== String(nv).trim()) {
+      const oval = k==='deadline' ? formatDate(ov)||'—' : ov||'—';
+      const nval = k==='deadline' ? formatDate(nv)||'—' : nv||'—';
+      changes.push({field: l, old: oval, new: nval});
+    }
+  }
+  // Allocation changes
+  for (const nd of newAllocs) {
+    const od = oldAllocs.find(x=>x.designer===nd.designer);
+    if (!od) {
+      changes.push({field:`${nd.designer} adăugat`, old:'—', new:`Pitch ${nd.pitchEst||0}h est / ${nd.pitchReal||0}h real · Impl ${nd.implEst||0}h est / ${nd.implReal||0}h real`});
+    } else {
+      const hFields = [{k:'pitchEst',l:`${nd.designer} Pitch est`},{k:'pitchReal',l:`${nd.designer} Pitch real`},{k:'implEst',l:`${nd.designer} Impl est`},{k:'implReal',l:`${nd.designer} Impl real`}];
+      for (const {k,l} of hFields) {
+        if (n(od[k]) !== n(nd[k])) changes.push({field:l, old:`${n(od[k])}h`, new:`${n(nd[k])}h`});
+      }
+    }
+  }
+  for (const od of oldAllocs) {
+    if (!newAllocs.find(x=>x.designer===od.designer)) {
+      changes.push({field:`${od.designer} eliminat`, old:'—', new:'—'});
+    }
+  }
+  return changes;
+}
+
 // ─── RENDER ───────────────────────────────
 function switchView(v,btn) {
   currentView=v; document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
@@ -322,8 +503,10 @@ function render() { renderCards(); renderTable(); }
 
 function workingDaysUntil(deadlineStr) {
   if (!deadlineStr) return null;
+  const match = String(deadlineStr).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
   const today = new Date(); today.setHours(0,0,0,0);
-  const end = new Date(deadlineStr); end.setHours(0,0,0,0);
+  const end = new Date(Number(match[1]), Number(match[2])-1, Number(match[3]));
   if (end <= today) return 0;
   let days = 0, cur = new Date(today);
   while (cur < end) {
@@ -335,7 +518,6 @@ function workingDaysUntil(deadlineStr) {
 }
 
 function getDesignerHPerDay(designer) {
-  // pentru fiecare proiect activ al designerului, calculam ore ramase / zile ramase
   const activeAllocs = db.allocations.filter(a => {
     const p = db.projects.find(pr=>pr.id===a.projectId);
     return a.designer===designer && p && p.status==='active';
@@ -366,7 +548,6 @@ function renderCards() {
     const stL = {available:'Disponibil', busy:'Ocupat', overloaded:'Suprasolicitat'}[st];
     const bc = st==='overloaded'?'var(--danger)':st==='busy'?'var(--accent)':DC[d];
     const barPct = Math.min((hpd/8)*100, 100);
-
     const detailRows = details.length ? details.map(d2 => {
       const hpdStr = d2.hpd===null ? '(fără deadline)' : d2.hpd==='⚠' ? '⚠ deadline depășit' : `${d2.hpd.toFixed(1)}h/zi`;
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -374,7 +555,6 @@ function renderCards() {
         <span style="font-family:var(--font-mono);font-size:10px;color:${d2.hpd===null?'var(--text3)':d2.hpd==='⚠'?'var(--danger)':'var(--text)'};">${hpdStr}</span>
       </div>`;
     }).join('') : `<div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:6px 0;">Niciun proiect activ</div>`;
-
     return `<div class="designer-card ${d.toLowerCase()}">
       <div class="designer-name ${d.toLowerCase()}">${d}</div>
       <div class="stats-row">
@@ -397,11 +577,18 @@ function renderTable() {
     if (currentView==='designer' && !db.allocations.find(a=>a.projectId===p.id&&a.designer===activeDesigner)) return false;
     return true;
   });
+  projs = sortedProjects(projs);
+
   const tbody = document.getElementById('projectsBody');
-  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
+  if (!projs.length) {
+    tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+    return;
+  }
 
   let tPR=0,tPE=0,tIR=0,tIE=0;
-  tbody.innerHTML = projs.map(p => {
+  let html = '';
+
+  for (const p of projs) {
     const allocs = getAllocs(p.id);
     const pR = allocs.reduce((s,a)=>s+n(a.pitchReal),0);
     const pE = allocs.reduce((s,a)=>s+n(a.pitchEst),0);
@@ -411,18 +598,26 @@ function renderTable() {
     tPR+=pR; tPE+=pE; tIR+=iR; tIE+=iE;
 
     const stL = {active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
-    const chips = allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+    const dlFmt = formatDate(p.deadline);
+    const dlClass = deadlineClass(p.deadline);
+    const dlLabel = deadlineLabel(p.deadline);
     const pPct = pE>0?Math.min(Math.round((pR/pE)*100),200):0;
     const iPct = iE>0?Math.min(Math.round((iR/iE)*100),200):0;
     const pF = pPct>100?'fill-over':pPct>75?'fill-warn':'fill-pitch';
     const iF = iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
     const sp = currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
     const si = currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
+    const isActive = activePanelId === p.id;
 
-    return `<tr>
-      <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}${p.deadline?' · '+p.deadline:''}</div></td>
-      <td><div class="designers-list">${chips||'—'}</div></td>
+    html += `<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
+      <td>
+        <div class="project-name" title="${p.name}">${p.name}</div>
+        <div class="project-client">${p.client||'—'}</div>
+      </td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
+      <td>
+        ${dlFmt !== '—' ? `<span class="deadline-display ${dlClass}" style="font-family:var(--font-mono);font-size:11px;">${dlFmt}<span style="font-size:9px;">${dlLabel}</span></span>` : '<span style="color:var(--text3);font-family:var(--font-mono);font-size:11px;">—</span>'}
+      </td>
       <td class="hours-block" style="opacity:${sp?1:0.2}">
         <span class="hours-real">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${pE>0?pE+'h':'—'}</span>
         ${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}
@@ -433,22 +628,55 @@ function renderTable() {
       </td>
       <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
       <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
-      <td>
+      <td onclick="event.stopPropagation()">
         <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
         <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
       </td>
     </tr>`;
-  }).join('');
+
+    // Designer sub-rows
+    if (allocs.length > 1) {
+      for (const a of allocs) {
+        const apR = n(a.pitchReal), apE = n(a.pitchEst);
+        const aiR = n(a.implReal), aiE = n(a.implEst);
+        const atR = apR+aiR, atE = apE+aiE;
+        const apPct = apE>0?Math.min(Math.round((apR/apE)*100),200):0;
+        const aiPct = aiE>0?Math.min(Math.round((aiR/aiE)*100),200):0;
+        const apF = apPct>100?'fill-over':apPct>75?'fill-warn':'fill-pitch';
+        const aiF = aiPct>100?'fill-over':aiPct>75?'fill-warn':'fill-impl';
+        html += `<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
+          <td colspan="2">
+            <div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div>
+          </td>
+          <td></td>
+          <td class="hours-block" style="opacity:${sp?1:0.2}">
+            <span class="hours-real">${apR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${apE>0?apE+'h':'—'}</span>
+            ${apE>0?`<div class="progress-mini"><div class="progress-mini-fill ${apF}" style="width:${Math.min(apPct,100)}%"></div></div>`:''}
+          </td>
+          <td class="hours-block" style="opacity:${si?1:0.2}">
+            <span class="hours-real">${aiR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${aiE>0?aiE+'h':'—'}</span>
+            ${aiE>0?`<div class="progress-mini"><div class="progress-mini-fill ${aiF}" style="width:${Math.min(aiPct,100)}%"></div></div>`:''}
+          </td>
+          <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+          <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+          <td></td>
+        </tr>`;
+      }
+    }
+  }
 
   const tR=tPR+tIR, tE=tPE+tIE;
-  tbody.innerHTML += `<tr class="total-row">
-    <td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
+  html += `<tr class="total-row">
+    <td colspan="2" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
+    <td></td>
     <td class="hours-block"><span class="hours-real">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tPE>0?tPE+'h':'—'}</span></td>
     <td class="hours-block"><span class="hours-real">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tIE>0?tIE+'h':'—'}</span></td>
     <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
     <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
     <td></td>
   </tr>`;
+
+  tbody.innerHTML = html;
 }
 
 function setStatusFilter(f,btn) {
@@ -460,6 +688,124 @@ function cyclePhase(btn) {
   const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['active','pitch-active','impl-active'];
   const next=(states.indexOf(currentPhaseFilter)+1)%3;
   currentPhaseFilter=states[next]; btn.textContent=labels[next]; btn.className='filter-btn '+classes[next]; renderTable();
+}
+
+// ─── SIDE PANEL ───────────────────────────
+function togglePanel(pid) {
+  if (activePanelId === pid) { closePanel(); return; }
+  openPanel(pid);
+}
+
+function closePanel() {
+  activePanelId = null;
+  document.getElementById('sidePanel').classList.remove('open');
+  document.getElementById('panelInner').innerHTML = '';
+  renderTable();
+}
+
+function openPanel(pid) {
+  const p = db.projects.find(x=>x.id===pid);
+  if (!p) return;
+  activePanelId = pid;
+  document.getElementById('sidePanel').classList.add('open');
+  renderPanel(p);
+  renderTable();
+}
+
+function renderPanel(p) {
+  const allocs = getAllocs(p.id);
+  const dlFmt = formatDate(p.deadline);
+  const dlClass = deadlineClass(p.deadline);
+  const dlLabel = deadlineLabel(p.deadline);
+  const stL = {active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
+  const logs = db.logs.filter(l=>l.projectId===p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
+
+  // Designer blocks
+  const designerBlocks = allocs.map(a => {
+    const pPct = n(a.pitchEst)>0 ? Math.min((n(a.pitchReal)/n(a.pitchEst))*100,100) : 0;
+    const iPct = n(a.implEst)>0 ? Math.min((n(a.implReal)/n(a.implEst))*100,100) : 0;
+    const pColor = pPct>=100?'var(--danger)':pPct>75?'var(--accent)':'var(--pitch)';
+    const iColor = iPct>=100?'var(--danger)':iPct>75?'var(--accent)':'var(--impl)';
+    return `<div class="panel-designer-block">
+      <div class="panel-designer-header ${a.designer.toLowerCase()}">
+        <span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}
+      </div>
+      <div class="panel-phase-row">
+        <span class="panel-phase-label pitch">Pitch</span>
+        <span class="panel-phase-nums" style="font-family:var(--font-mono);font-size:10px;">
+          <span style="color:var(--text);font-weight:600;">${n(a.pitchReal).toFixed(1)}</span>
+          <span style="color:var(--text3)"> / </span>
+          <span style="color:var(--text2);">${n(a.pitchEst)>0?n(a.pitchEst)+'h':'—'}</span>
+        </span>
+      </div>
+      ${n(a.pitchEst)>0?`<div class="panel-phase-bar"><div class="panel-phase-bar-fill" style="width:${pPct}%;background:${pColor}"></div></div>`:''}
+      <div class="panel-phase-row" style="margin-top:6px;">
+        <span class="panel-phase-label impl">Implementare</span>
+        <span class="panel-phase-nums" style="font-family:var(--font-mono);font-size:10px;">
+          <span style="color:var(--text);font-weight:600;">${n(a.implReal).toFixed(1)}</span>
+          <span style="color:var(--text3)"> / </span>
+          <span style="color:var(--text2);">${n(a.implEst)>0?n(a.implEst)+'h':'—'}</span>
+        </span>
+      </div>
+      ${n(a.implEst)>0?`<div class="panel-phase-bar"><div class="panel-phase-bar-fill" style="width:${iPct}%;background:${iColor}"></div></div>`:''}
+    </div>`;
+  }).join('');
+
+  // Log entries
+  const logHtml = logs.length ? logs.map(l => {
+    const time = new Date(l.timestamp);
+    const timeStr = `${time.toLocaleDateString('ro-RO')} ${time.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'})}`;
+    let changes = [];
+    try { changes = JSON.parse(l.changes); } catch(e) {}
+    const changeRows = changes.map(c =>
+      `<div class="log-change">
+        <span style="color:var(--text3);">${c.field}:</span>
+        <span class="old">${c.old}</span>
+        <span class="arrow">→</span>
+        <span class="new">${c.new}</span>
+      </div>`
+    ).join('');
+    return `<div class="log-entry">
+      <div class="log-time">${timeStr}</div>
+      <div class="log-changes">${changeRows || '<span style="color:var(--text3);font-size:10px;">Proiect creat</span>'}</div>
+    </div>`;
+  }).join('') : '<div class="log-empty">Nicio modificare înregistrată</div>';
+
+  document.getElementById('panelInner').innerHTML = `
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">${p.name}</div>
+        <div class="panel-subtitle">${p.client||'—'}</div>
+      </div>
+      <button class="panel-close" onclick="closePanel()">×</button>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Detalii proiect</div>
+      <div class="panel-field">
+        <span class="panel-field-label">Status</span>
+        <span class="proj-status ${p.status}">${stL}</span>
+      </div>
+      <div class="panel-field">
+        <span class="panel-field-label">Deadline</span>
+        <span class="panel-field-value ${dlClass}">${dlFmt}${dlLabel ? `<span style="font-size:9px;margin-left:4px;">${dlLabel}</span>` : ''}</span>
+      </div>
+      ${p.note ? `<div class="panel-field" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <span class="panel-field-label">Notă</span>
+        <span style="font-size:11px;color:var(--text2);line-height:1.5;">${p.note}</span>
+      </div>` : ''}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Ore per designer</div>
+      ${designerBlocks || '<div class="log-empty">Niciun designer alocat</div>'}
+    </div>
+
+    <div class="panel-section" style="border-bottom:none;">
+      <div class="panel-section-label">Istoric modificări</div>
+      <div class="log-list">${logHtml}</div>
+    </div>
+  `;
 }
 
 // ─── FORM DESIGNERS ───────────────────────
@@ -535,7 +881,7 @@ function editProject(id) {
   document.getElementById('f_name').value=p.name;
   document.getElementById('f_client').value=p.client||'';
   document.getElementById('f_status').value=p.status;
-  document.getElementById('f_deadline').value=p.deadline||'';
+  document.getElementById('f_deadline').value=formatDate(p.deadline)||'';
   document.getElementById('f_note').value=p.note||'';
   formDesigners = db.allocations.filter(a=>a.projectId===id).map(a=>({
     id:a.id, designer:a.designer,
@@ -556,35 +902,53 @@ async function saveProject() {
     note: document.getElementById('f_note').value.trim(),
     createdAt: new Date().toISOString()
   };
-  console.log('saveProject — editingId:', editingId, '| proj.id:', proj.id, '| formDesigners:', JSON.stringify(formDesigners));
   showLoading('Se salvează...');
   try {
     if (editingId) {
-      console.log('UPDATE project:', editingId);
+      // Capture old state for diff
+      const oldProj = db.projects.find(x=>x.id===editingId) || {};
+      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId).map(a=>({...a}));
+
       await apiUpdate('Projects', editingId, proj);
       const idx = db.projects.findIndex(x=>x.id===editingId);
       db.projects[idx] = proj;
-      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId && a.id);
-      console.log('DELETE old allocs:', oldAllocs.map(a=>a.id));
-      for (const a of oldAllocs) await apiClear('Allocations', a.id);
+      const toDelete = db.allocations.filter(a=>a.projectId===editingId && a.id);
+      for (const a of toDelete) await apiClear('Allocations', a.id);
       db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
+
+      for (const fd of formDesigners) {
+        const alloc = {
+          id: uid(), projectId: proj.id, designer: fd.designer,
+          pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
+          implEst: fd.implEst||0,   implReal: fd.implReal||0
+        };
+        await apiAppend('Allocations', alloc);
+        db.allocations.push(alloc);
+      }
+
+      // Build and save diff log
+      const changes = buildDiff(oldProj, proj, oldAllocs, formDesigners);
+      if (changes.length > 0) await appendLog(proj.id, changes);
+
     } else {
-      console.log('APPEND new project:', proj.id);
       await apiAppend('Projects', proj);
       db.projects.push(proj);
-    }
-    for (const fd of formDesigners) {
-      const alloc = {
-        id: uid(), projectId: proj.id, designer: fd.designer,
-        pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
-        implEst: fd.implEst||0,   implReal: fd.implReal||0
-      };
-      console.log('APPEND alloc:', alloc.id, 'for designer:', fd.designer);
-      await apiAppend('Allocations', alloc);
-      db.allocations.push(alloc);
+      for (const fd of formDesigners) {
+        const alloc = {
+          id: uid(), projectId: proj.id, designer: fd.designer,
+          pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
+          implEst: fd.implEst||0,   implReal: fd.implReal||0
+        };
+        await apiAppend('Allocations', alloc);
+        db.allocations.push(alloc);
+      }
+      // Log creation
+      await appendLog(proj.id, []);
     }
     toast(editingId?'Proiect actualizat ✓':'Proiect adăugat ✓');
-    closeModal('projModal'); render();
+    closeModal('projModal');
+    if (activePanelId === proj.id) openPanel(proj.id);
+    render();
   } catch(e) { toast('Eroare: '+e.message, true); console.error('saveProject error:', e); }
   hideLoading();
 }
@@ -596,8 +960,12 @@ async function deleteProject(id) {
     await apiClear('Projects', id);
     const oldAllocs = db.allocations.filter(a=>a.projectId===id);
     for (const a of oldAllocs) await apiClear('Allocations', a.id);
+    const oldLogs = db.logs.filter(l=>l.projectId===id);
+    for (const l of oldLogs) await apiClear('Logs', l.id);
     db.projects = db.projects.filter(p=>p.id!==id);
     db.allocations = db.allocations.filter(a=>a.projectId!==id);
+    db.logs = db.logs.filter(l=>l.projectId!==id);
+    if (activePanelId === id) closePanel();
     toast('Proiect șters'); render();
   } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
   hideLoading();
@@ -611,7 +979,8 @@ async function init() {
   try {
     await Promise.all([
       apiInitHeaders('Projects', ['id','name','client','status','deadline','note','createdAt']),
-      apiInitHeaders('Allocations', ['id','projectId','designer','pitchEst','pitchReal','implEst','implReal'])
+      apiInitHeaders('Allocations', ['id','projectId','designer','pitchEst','pitchReal','implEst','implReal']),
+      apiInitHeaders('Logs', ['id','projectId','timestamp','changes'])
     ]);
   } catch(e) { console.warn('Init:', e); }
   hideLoading();
