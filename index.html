@@ -406,15 +406,35 @@ let currentTab = 'projects';
 let reportMonth = new Date();
 
 // ─── DATE HELPERS ─────────────────────────
+// Normalizeaza orice format de data la YYYY-MM-DD
+function normalizeDate(str) {
+  if (!str) return null;
+  const s = String(str).trim();
+  // YYYY-MM-DD
+  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) return s;
+  // DD.MM.YYYY (format european din Sheets getDisplayValues)
+  const eu = s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  if (eu) return `${eu[3]}-${eu[2]}-${eu[1]}`;
+  // DD/MM/YYYY
+  const eu2 = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (eu2) return `${eu2[3]}-${eu2[2]}-${eu2[1]}`;
+  // Timestamp "Tue Mar 24 2026 ..."
+  const ts = s.match(/\w{3} (\w{3}) (\d{2}) (\d{4})/);
+  if (ts) {
+    const months = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
+    return `${ts[3]}-${months[ts[1]]||'01'}-${ts[2]}`;
+  }
+  return null;
+}
 function formatDate(str) {
   if (!str) return '—';
-  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (!m) return str;
-  return `${m[1]}-${m[2]}-${m[3]}`;
+  return normalizeDate(str) || str;
 }
 function parseDate(str) {
-  if (!str) return null;
-  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  const n = normalizeDate(str);
+  if (!n) return null;
+  const m = n.match(/(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return null;
   return new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
 }
@@ -424,7 +444,9 @@ function todayStr() {
 }
 function deadlineDaysLeft(str, status) {
   if (!str || status === 'completed') return null;
-  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  const n = normalizeDate(str);
+  if (!n) return null;
+  const m = n.match(/(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return null;
   const today = new Date(); today.setHours(0,0,0,0);
   const dl = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
@@ -476,8 +498,8 @@ function sortedProjects(projs) {
     let va, vb;
     if (sortCol==='name') { va=a.name||''; vb=b.name||''; return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va); }
     if (sortCol==='deadline') {
-      va = a.deadline ? String(a.deadline).slice(0,10) : '9999';
-      vb = b.deadline ? String(b.deadline).slice(0,10) : '9999';
+      va = normalizeDate(a.deadline) || '9999';
+      vb = normalizeDate(b.deadline) || '9999';
       return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
     }
     if (sortCol==='status') {
@@ -843,7 +865,6 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
           <div class="project-name" title="${p.name}">${p.name}${others.length?` <span style="font-size:9px;color:var(--text3);font-weight:400;">+${others.join(', ')}</span>`:''}</div>
           <div class="project-client">${p.client||'—'}</div>
         </td>
-        <td></td>
         <td><span class="proj-status ${p.status}">${stL}</span></td>
         <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
         ${hoursBlock(apR,apE,'fill-pitch',sp)}
