@@ -278,7 +278,6 @@
               <thead id="tableHead">
                 <tr>
                   <th onclick="setSort('name')">Proiect / Client</th>
-                  <th class="no-sort">Designeri</th>
                   <th onclick="setSort('status')">Status</th>
                   <th onclick="setSort('deadline')">Deadline</th>
                   <th class="pitch-col no-sort">Pitch real / est.</th>
@@ -761,7 +760,7 @@ function renderTable() {
 
   // Default: sort by column
   projs=sortedProjects(projs);
-  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
+  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
   let html='', tPR=0,tPE=0,tIR=0,tIE=0;
   for (const p of projs) {
     const allocs=getAllocs(p.id);
@@ -774,7 +773,6 @@ function renderTable() {
     const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
     html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
       <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
-      <td>${chips||'—'}</td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
       <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
       ${hoursBlock(pR,pE,'fill-pitch',sp)}
@@ -824,7 +822,7 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
     const totalH=desAllocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
     const totalEst=desAllocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0);
     html+=`<tr class="group-header-row" style="background:rgba(${des==='Mircea'?'78,205,196':des==='Teo'?'232,197,71':'255,159,67'},0.07);">
-      <td colspan="9">
+      <td colspan="8">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span class="dot ${des.toLowerCase()}"></span>
           <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${DC[des]};letter-spacing:.08em;text-transform:uppercase;">${des}</span>
@@ -859,7 +857,7 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
       </tr>`;
     }
   }
-  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+  tbody.innerHTML=html||`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
 }
 
 function renderGroupedByStatus(projs, sp, si, tbody) {
@@ -870,7 +868,7 @@ function renderGroupedByStatus(projs, sp, si, tbody) {
     if (!gProjs.length) continue;
     const gColor={active:'var(--accent2)',paused:'var(--accent)',completed:'#4ade80'}[k];
     html+=`<tr class="group-header-row" style="background:rgba(${k==='active'?'78,205,196':k==='completed'?'74,222,128':'232,197,71'},0.07);">
-      <td colspan="9"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${gColor};letter-spacing:.08em;text-transform:uppercase;">${l}</span><span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-left:10px;">${gProjs.length} proiecte</span></td>
+      <td colspan="8"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${gColor};letter-spacing:.08em;text-transform:uppercase;">${l}</span><span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-left:10px;">${gProjs.length} proiecte</span></td>
     </tr>`;
     for (const p of sortedProjects(gProjs)) {
       const allocs=getAllocs(p.id);
@@ -882,7 +880,6 @@ function renderGroupedByStatus(projs, sp, si, tbody) {
       const isActive=activePanelId===p.id;
       html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')" style="padding-left:12px;">
         <td style="padding-left:26px;"><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
-        <td>${chips||'—'}</td>
         <td></td>
         <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
         ${hoursBlock(pR,pE,'fill-pitch',sp)}
@@ -909,7 +906,7 @@ function renderGroupedByStatus(projs, sp, si, tbody) {
       }
     }
   }
-  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+  tbody.innerHTML=html||`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
 }
 
 function setStatusFilter(f,btn) {
