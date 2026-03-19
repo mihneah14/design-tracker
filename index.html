@@ -406,24 +406,28 @@ let currentTab = 'projects';
 let reportMonth = new Date();
 
 // ─── DATE HELPERS ─────────────────────────
-// Normalizeaza orice format de data la YYYY-MM-DD
+function pad2(n) { return String(n).padStart(2,'0'); }
 function normalizeDate(str) {
   if (!str) return null;
   const s = String(str).trim();
-  // YYYY-MM-DD
-  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (iso) return s;
-  // DD.MM.YYYY (format european din Sheets getDisplayValues)
-  const eu = s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-  if (eu) return `${eu[3]}-${eu[2]}-${eu[1]}`;
+  if (!s || s === '—') return null;
+  // YYYY-MM-DD sau YYYY-M-D
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (m) return `${m[1]}-${pad2(m[2])}-${pad2(m[3])}`;
+  // ISO timestamp 2026-03-19T...
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})T/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  // DD.MM.YYYY sau D.M.YYYY (european Sheets)
+  m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (m) return `${m[3]}-${pad2(m[2])}-${pad2(m[1])}`;
   // DD/MM/YYYY
-  const eu2 = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (eu2) return `${eu2[3]}-${eu2[2]}-${eu2[1]}`;
-  // Timestamp "Tue Mar 24 2026 ..."
-  const ts = s.match(/\w{3} (\w{3}) (\d{2}) (\d{4})/);
-  if (ts) {
-    const months = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
-    return `${ts[3]}-${months[ts[1]]||'01'}-${ts[2]}`;
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return `${m[3]}-${pad2(m[2])}-${pad2(m[1])}`;
+  // Timestamp lung "Tue Mar 24 2026 ..."
+  m = s.match(/\w{3}\s+(\w{3})\s+(\d{1,2})\s+(\d{4})/);
+  if (m) {
+    const mo = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
+    return `${m[3]}-${mo[m[1]]||'01'}-${pad2(m[2])}`;
   }
   return null;
 }
