@@ -374,7 +374,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXP-JwYg2TXwR-IezLMKUk6_z4DdTkJBE8LlABYgQ5M745NGxjeukWg2dAhQNY6zcG/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGz_fjkIr8w05J_vh-fdJRn6XhsPIYtAVaEo3gv-_KOpBiVF_I6OGHv7baDEbjIaZi/exec';
 const RATE = 25;
 const DESIGNERS = ['Teo','Mircea','Cristi'];
 const DC = { Teo:'#e8c547', Mircea:'#4ecdc4', Cristi:'#ff9f43' };
@@ -932,7 +932,7 @@ function renderPanel(p) {
   const allocs=getAllocs(p.id);
   const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
   const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
-  const logs=db.logs.filter(l=>l.projectId===p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
+  const logs=db.logs.filter(l=>l.projectId===p.id&&l.timestamp).sort((a,b)=>(b.timestamp||'').localeCompare(a.timestamp||''));
   const designerBlocks=allocs.map(a=>{
     const pPct=n(a.pitchEst)>0?Math.min((n(a.pitchReal)/n(a.pitchEst))*100,100):0;
     const iPct=n(a.implEst)>0?Math.min((n(a.implReal)/n(a.implEst))*100,100):0;
