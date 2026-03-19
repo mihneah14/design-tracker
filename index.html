@@ -16,14 +16,12 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; }
 
-  /* LOADING */
   .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(3px); }
   .loading-overlay.show { display: flex; }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-family: var(--font-mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; }
 
-  /* HEADER */
   header { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
   .logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
   .logo span { color: var(--text2); font-weight: 400; }
@@ -36,16 +34,20 @@
   .btn-secondary { background: none; border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; border-radius: 3px; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.08em; }
   .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
 
-  /* LAYOUT — main + side panel */
-  .app-body { display: flex; min-height: calc(100vh - 57px); transition: all 0.3s ease; }
-  .main-content { flex: 1; min-width: 0; transition: all 0.3s ease; }
+  /* NAV TABS */
+  .nav-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); padding: 0 28px; }
+  .nav-tab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--text2); cursor: pointer; transition: all 0.15s; margin-bottom: -1px; }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-tab:hover:not(.active) { color: var(--text); }
+
+  .app-body { display: flex; min-height: calc(100vh - 105px); }
+  .main-content { flex: 1; min-width: 0; }
   .container { padding: 24px 28px; max-width: 1500px; margin: 0 auto; }
   .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
   .info-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
   .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  /* DESIGNER CARDS */
   .designer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
   .designer-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; position: relative; overflow: hidden; }
   .designer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
@@ -67,15 +69,17 @@
   .status-badge.busy { background: #3a2a0a; color: var(--accent); }
   .status-badge.overloaded { background: #3a1a1a; color: var(--danger); }
 
-  /* TABLE */
   .projects-section { margin-bottom: 28px; }
   .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-  .filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .filters { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
   .filter-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; background: none; border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; transition: all 0.15s; }
   .filter-btn.active { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.group-active { border-color: var(--accent2); color: var(--accent2); }
   .filter-btn.pitch-active { border-color: var(--pitch); color: var(--pitch); }
   .filter-btn.impl-active { border-color: var(--impl); color: var(--impl); }
+  .filter-sep { width: 1px; height: 20px; background: var(--border); margin: 0 2px; }
   select.filter-select { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; border-radius: 3px; outline: none; }
+
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 900px; }
   thead th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s; }
@@ -86,19 +90,17 @@
   thead th.no-sort { cursor: default; }
   thead th.no-sort:hover { color: var(--text3); }
 
-  /* PROJECT rows */
   tbody tr.proj-row { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
   tbody tr.proj-row:hover { background: var(--surface2); }
   tbody tr.proj-row.active-panel { background: #1e1e1e; border-left: 2px solid var(--accent); }
-  tbody tr.designer-subrow { border-bottom: 1px solid rgba(46,46,46,0.5); background: rgba(0,0,0,0.15); }
+  tbody tr.designer-subrow { border-bottom: 1px solid rgba(46,46,46,0.5); background: rgba(0,0,0,0.15); cursor: pointer; }
   tbody tr.designer-subrow td { padding: 6px 14px 6px 28px; }
-  tbody tr.designer-subrow:last-of-type { border-bottom: 1px solid var(--border); }
+  tbody tr.group-header-row td { padding: 6px 14px; }
   tbody tr.total-row td { border-top: 2px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 11px; padding-top: 14px; }
   tbody td { padding: 10px 14px; font-size: 13px; vertical-align: middle; }
 
   .project-name { font-weight: 500; color: var(--text); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .project-client { font-size: 11px; color: var(--text2); font-family: var(--font-mono); margin-top: 2px; }
-  .deadline-display { font-family: var(--font-mono); font-size: 10px; margin-top: 3px; }
   .deadline-ok { color: var(--text3); }
   .deadline-soon { color: var(--accent); }
   .deadline-over { color: var(--danger); }
@@ -123,13 +125,13 @@
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); font-family: var(--font-mono); font-size: 13px; }
   .empty-state div:first-child { font-size: 32px; margin-bottom: 12px; }
 
-  /* Designer sub-row elements */
   .sub-designer-name { font-family: var(--font-mono); font-size: 10px; display: flex; align-items: center; gap: 5px; color: var(--text2); }
   .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .dot.teo { background: var(--teo); } .dot.mircea { background: var(--mircea); } .dot.cristi { background: var(--cristi); }
+  .designer-chip { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 2px; background: var(--bg); border: 1px solid var(--border); margin-right: 3px; }
 
   /* SIDE PANEL */
-  .side-panel { width: 0; overflow: hidden; border-left: 0px solid var(--border); background: var(--surface); transition: width 0.3s ease, border 0.3s ease; flex-shrink: 0; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
+  .side-panel { width: 0; overflow: hidden; border-left: 0px solid var(--border); background: var(--surface); transition: width 0.3s ease, border 0.3s ease; flex-shrink: 0; position: sticky; top: 105px; height: calc(100vh - 105px); overflow-y: auto; }
   .side-panel.open { width: 380px; border-left: 1px solid var(--border); }
   .panel-inner { width: 380px; padding: 0; }
   .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 10; }
@@ -142,19 +144,15 @@
   .panel-field { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
   .panel-field-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); white-space: nowrap; }
   .panel-field-value { font-family: var(--font-mono); font-size: 11px; color: var(--text); text-align: right; }
-
-  /* Panel designer breakdown */
   .panel-designer-block { background: var(--bg); border-radius: 4px; padding: 10px 12px; margin-bottom: 8px; }
   .panel-designer-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
   .panel-designer-header.teo { color: var(--teo); } .panel-designer-header.mircea { color: var(--mircea); } .panel-designer-header.cristi { color: var(--cristi); }
   .panel-phase-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
   .panel-phase-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
   .panel-phase-label.pitch { color: var(--pitch); } .panel-phase-label.impl { color: var(--impl); }
-  .panel-phase-nums { font-family: var(--font-mono); font-size: 11px; }
   .panel-phase-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 3px; }
   .panel-phase-bar-fill { height: 100%; border-radius: 2px; }
 
-  /* LOG */
   .log-list { display: flex; flex-direction: column; gap: 0; }
   .log-entry { padding: 10px 0; border-bottom: 1px solid rgba(46,46,46,0.5); }
   .log-entry:last-child { border-bottom: none; }
@@ -165,6 +163,24 @@
   .log-change .new { color: #4ade80; }
   .log-change .arrow { color: var(--text3); margin: 0 4px; }
   .log-empty { font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: center; padding: 20px 0; }
+
+  /* REPORTS TAB */
+  .reports-container { padding: 24px 28px; }
+  .report-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+  .report-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; overflow-x: auto; margin-bottom: 20px; }
+  .report-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  .report-table th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .report-table td { padding: 10px 14px; font-family: var(--font-mono); font-size: 11px; border-bottom: 1px solid var(--border); }
+  .report-table tr:last-child td { border-bottom: none; }
+  .report-table .total-col { font-weight: 600; color: var(--text); }
+  .report-table .cost-col { color: var(--accent2); }
+  .report-table .subtotal-row td { border-top: 1px solid var(--border); background: var(--bg); font-weight: 600; }
+  .month-nav { display: flex; align-items: center; gap: 12px; }
+  .month-nav button { background: none; border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; font-family: var(--font-mono); font-size: 12px; cursor: pointer; border-radius: 3px; transition: all 0.15s; }
+  .month-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .month-display { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--text); min-width: 140px; text-align: center; }
+  .export-btn { background: none; border: 1px solid var(--accent2); color: var(--accent2); padding: 7px 16px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all 0.15s; margin-left: auto; }
+  .export-btn:hover { background: var(--accent2); color: #0f0f0f; }
 
   /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
@@ -186,7 +202,6 @@
   .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   .section-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 
-  /* DESIGNER ROWS IN MODAL */
   .designer-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
   .designer-row { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 14px; }
   .designer-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -220,49 +235,90 @@
       <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
     </select>
     <button class="btn-secondary" onclick="loadAllData()">↻ Refresh</button>
-    <button class="btn-primary" onclick="openAddProject()">+ Proiect nou</button>
+    <button class="btn-primary" id="btnAddProject" onclick="openAddProject()">+ Proiect nou</button>
   </div>
 </header>
 
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="switchTab('projects', this)">Proiecte</button>
+  <button class="nav-tab" onclick="switchTab('reports', this)">Rapoarte</button>
+</div>
+
 <div class="app-body">
   <div class="main-content">
-    <div class="container">
-      <div class="info-banner"><span class="dot-green"></span><span>Date sincronizate cu Google Sheets</span></div>
-      <div class="section-label">Workload curent</div>
-      <div class="designer-cards" id="designerCards"></div>
-      <div class="projects-section">
-        <div class="table-header">
-          <div class="section-label" style="margin-bottom:0">Proiecte</div>
-          <div class="filters">
-            <button class="filter-btn active" onclick="setStatusFilter('all',this)">Toate</button>
-            <button class="filter-btn" onclick="setStatusFilter('active',this)">Active</button>
-            <button class="filter-btn" onclick="setStatusFilter('completed',this)">Finalizate</button>
-            <button class="filter-btn active" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
-            <select class="filter-select" id="designerFilter" onchange="renderTable()">
-              <option value="all">Toți designerii</option>
-              <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
-            </select>
+
+    <!-- PROJECTS TAB -->
+    <div id="tab-projects">
+      <div class="container">
+        <div class="info-banner"><span class="dot-green"></span><span>Date sincronizate cu Google Sheets</span></div>
+        <div class="section-label">Workload curent</div>
+        <div class="designer-cards" id="designerCards"></div>
+        <div class="projects-section">
+          <div class="table-header">
+            <div class="section-label" style="margin-bottom:0">Proiecte</div>
+            <div class="filters">
+              <button class="filter-btn active" onclick="setStatusFilter('all',this)">Toate</button>
+              <button class="filter-btn" onclick="setStatusFilter('active',this)">Active</button>
+              <button class="filter-btn" onclick="setStatusFilter('completed',this)">Finalizate</button>
+              <div class="filter-sep"></div>
+              <button class="filter-btn" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
+              <div class="filter-sep"></div>
+              <button class="filter-btn" id="groupBtn-deadline" onclick="setGroupBy('deadline',this)">↕ Deadline</button>
+              <button class="filter-btn" id="groupBtn-designer" onclick="setGroupBy('designer',this)">↕ Designer</button>
+              <button class="filter-btn" id="groupBtn-status" onclick="setGroupBy('status',this)">↕ Status</button>
+              <div class="filter-sep"></div>
+              <select class="filter-select" id="designerFilter" onchange="renderTable()">
+                <option value="all">Toți designerii</option>
+                <option value="Teo">Teo</option><option value="Mircea">Mircea</option><option value="Cristi">Cristi</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th onclick="setSort('name')">Proiect / Client</th>
-                <th class="no-sort">Status</th>
-                <th onclick="setSort('deadline')">Deadline</th>
-                <th class="pitch-col no-sort">Pitch real / est.</th>
-                <th class="impl-col no-sort">Impl. real / est.</th>
-                <th onclick="setSort('total')">Total ore</th>
-                <th onclick="setSort('cost')">Cost (25€/h)</th>
-                <th class="no-sort">Acțiuni</th>
-              </tr>
-            </thead>
-            <tbody id="projectsBody"></tbody>
-          </table>
+          <div class="table-wrap">
+            <table>
+              <thead id="tableHead">
+                <tr>
+                  <th onclick="setSort('name')">Proiect / Client</th>
+                  <th class="no-sort">Designeri</th>
+                  <th onclick="setSort('status')">Status</th>
+                  <th onclick="setSort('deadline')">Deadline</th>
+                  <th class="pitch-col no-sort">Pitch real / est.</th>
+                  <th class="impl-col no-sort">Impl. real / est.</th>
+                  <th onclick="setSort('total')">Total ore</th>
+                  <th onclick="setSort('cost')">Cost (25€/h)</th>
+                  <th class="no-sort">Acțiuni</th>
+                </tr>
+              </thead>
+              <tbody id="projectsBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- REPORTS TAB -->
+    <div id="tab-reports" style="display:none;">
+      <div class="reports-container">
+        <div class="section-label">Raport lunar ore</div>
+        <div class="report-controls">
+          <div class="month-nav">
+            <button onclick="changeMonth(-1)">←</button>
+            <div class="month-display" id="monthDisplay"></div>
+            <button onclick="changeMonth(1)">→</button>
+          </div>
+          <button class="export-btn" onclick="exportCSV()">↓ Export CSV</button>
+        </div>
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead id="reportHead"></thead>
+            <tbody id="reportBody"></tbody>
+          </table>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-top:8px;">
+          * Orele sunt distribuite proporțional pe zile lucrătoare între data de start și deadline-ul proiectului.
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- SIDE PANEL -->
@@ -290,6 +346,10 @@
           </select>
         </div>
         <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="f_deadline" type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Data start</label><input class="form-input" id="f_startDate" type="date"></div>
+        <div class="form-group"><label class="form-label" style="color:var(--text3);">Data finalizare</label><input class="form-input" id="f_endDate" type="date" disabled style="opacity:0.4;cursor:not-allowed;" placeholder="Auto la finalizare"></div>
       </div>
       <hr class="divider">
       <div class="section-title">Designeri — ore estimate & realizate</div>
@@ -322,16 +382,12 @@ const DC = { Teo:'#e8c547', Mircea:'#4ecdc4', Cristi:'#ff9f43' };
 // ─── API ──────────────────────────────────
 async function apiFetch(payload) {
   const url = `${SCRIPT_URL}?payload=${encodeURIComponent(JSON.stringify(payload))}`;
-  const r = await fetch(url);
-  const d = await r.json();
-  if (d.error) throw new Error(d.error);
-  return d;
+  const r = await fetch(url); const d = await r.json();
+  if (d.error) throw new Error(d.error); return d;
 }
 async function apiRead(sheet) {
   const r = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(sheet)}`);
-  const d = await r.json();
-  if (d.error) throw new Error(d.error);
-  return d.rows || [];
+  const d = await r.json(); if (d.error) throw new Error(d.error); return d.rows || [];
 }
 async function apiAppend(sheet, row) { return apiFetch({action:'append',sheet,row}); }
 async function apiUpdate(sheet, id, row) { return apiFetch({action:'update',sheet,id,row}); }
@@ -346,66 +402,93 @@ let currentView = 'manager', activeDesigner = 'Teo';
 let formDesigners = [];
 let activePanelId = null;
 let sortCol = 'deadline', sortDir = 'asc';
+let groupBy = 'deadline';
+let currentTab = 'projects';
+let reportMonth = new Date();
 
 // ─── DATE HELPERS ─────────────────────────
 function formatDate(str) {
   if (!str) return '—';
-  // Handle both YYYY-MM-DD and full timestamp strings
-  const match = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return str;
-  return `${match[1]}-${match[2]}-${match[3]}`;
+  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return str;
+  return `${m[1]}-${m[2]}-${m[3]}`;
 }
-
-function deadlineDaysLeft(str) {
+function parseDate(str) {
   if (!str) return null;
-  const match = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return null;
+  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  return new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+}
+function todayStr() {
+  const t = new Date();
+  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+}
+function deadlineDaysLeft(str, status) {
+  if (!str || status === 'completed') return null;
+  const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
   const today = new Date(); today.setHours(0,0,0,0);
-  const dl = new Date(Number(match[1]), Number(match[2])-1, Number(match[3]));
+  const dl = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
   return Math.round((dl - today) / 86400000);
 }
-
-function deadlineClass(str) {
-  const d = deadlineDaysLeft(str);
-  if (d === null) return '';
+function deadlineClass(str, status) {
+  const d = deadlineDaysLeft(str, status);
+  if (d === null) return 'deadline-ok';
   if (d < 0) return 'deadline-over';
   if (d <= 5) return 'deadline-soon';
   return 'deadline-ok';
 }
-
-function deadlineLabel(str) {
-  const d = deadlineDaysLeft(str);
+function deadlineLabel(str, status) {
+  const d = deadlineDaysLeft(str, status);
   if (d === null) return '';
-  if (d < 0) return ` (${Math.abs(d)}z depășit)`;
-  if (d === 0) return ' (azi!)';
-  if (d <= 5) return ` (${d}z)`;
+  if (d < 0) return ` <span style="font-size:9px">(${Math.abs(d)}z dep.)</span>`;
+  if (d === 0) return ` <span style="font-size:9px">(azi!)</span>`;
+  if (d <= 5) return ` <span style="font-size:9px">(${d}z)</span>`;
   return '';
 }
 
-// ─── SORTING ──────────────────────────────
+// ─── TABS ─────────────────────────────────
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-projects').style.display = tab === 'projects' ? '' : 'none';
+  document.getElementById('tab-reports').style.display = tab === 'reports' ? '' : 'none';
+  document.getElementById('btnAddProject').style.display = tab === 'projects' ? '' : 'none';
+  if (tab === 'reports') renderReport();
+}
+
+// ─── SORTING & GROUPING ───────────────────
 function setSort(col) {
   if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
   else { sortCol = col; sortDir = 'asc'; }
-  document.querySelectorAll('thead th').forEach(th => {
-    th.classList.remove('sort-asc','sort-desc');
-  });
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sort-asc','sort-desc'));
   event.currentTarget.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
   renderTable();
 }
-
+function setGroupBy(g, btn) {
+  groupBy = g;
+  document.querySelectorAll('[id^="groupBtn-"]').forEach(b => b.classList.remove('group-active'));
+  btn.classList.add('group-active');
+  renderTable();
+}
 function sortedProjects(projs) {
   return [...projs].sort((a,b) => {
     let va, vb;
-    if (sortCol === 'name') { va = a.name||''; vb = b.name||''; return sortDir==='asc' ? va.localeCompare(vb) : vb.localeCompare(va); }
-    if (sortCol === 'deadline') {
+    if (sortCol==='name') { va=a.name||''; vb=b.name||''; return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va); }
+    if (sortCol==='deadline') {
       va = a.deadline ? String(a.deadline).slice(0,10) : '9999';
       vb = b.deadline ? String(b.deadline).slice(0,10) : '9999';
-      return sortDir==='asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+      return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
     }
-    if (sortCol === 'total' || sortCol === 'cost') {
-      const sumReal = p => getAllocs(p.id).reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
-      va = sumReal(a); vb = sumReal(b);
-      return sortDir==='asc' ? va-vb : vb-va;
+    if (sortCol==='status') {
+      const order = {active:0,paused:1,completed:2};
+      va=order[a.status]??3; vb=order[b.status]??3;
+      return sortDir==='asc'?va-vb:vb-va;
+    }
+    if (sortCol==='total'||sortCol==='cost') {
+      const s = p => getAllocs(p.id).reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
+      va=s(a); vb=s(b); return sortDir==='asc'?va-vb:vb-va;
     }
     return 0;
   });
@@ -419,10 +502,7 @@ function n(v) { return Number(v)||0; }
 function getDesignerTotals(d) {
   const activeIds = new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
   const allocs = db.allocations.filter(a=>a.designer===d && activeIds.has(a.projectId));
-  return {
-    real: allocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0),
-    est:  allocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0)
-  };
+  return { real: allocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0), est: allocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0) };
 }
 
 function toast(msg, isErr=false) {
@@ -439,9 +519,10 @@ async function loadAllData() {
   showLoading('Se încarcă datele...');
   try {
     const [p,a,l] = await Promise.all([apiRead('Projects'), apiRead('Allocations'), apiRead('Logs')]);
-    db.projects = p; db.allocations = a; db.logs = l;
+    db.projects=p; db.allocations=a; db.logs=l;
     render();
     if (activePanelId) openPanel(activePanelId);
+    if (currentTab==='reports') renderReport();
     toast('Date actualizate ✓');
   } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
   hideLoading();
@@ -449,48 +530,146 @@ async function loadAllData() {
 
 // ─── LOG HELPERS ──────────────────────────
 async function appendLog(projectId, changes) {
-  const logEntry = {
-    id: uid(),
-    projectId,
-    timestamp: new Date().toISOString(),
-    changes: JSON.stringify(changes)
-  };
-  try {
-    await apiAppend('Logs', logEntry);
-    db.logs.push(logEntry);
-  } catch(e) { console.warn('Log append failed:', e); }
+  const logEntry = { id:uid(), projectId, timestamp:new Date().toISOString(), changes:JSON.stringify(changes) };
+  try { await apiAppend('Logs', logEntry); db.logs.push(logEntry); } catch(e) { console.warn('Log fail:', e); }
 }
-
 function buildDiff(oldProj, newProj, oldAllocs, newAllocs) {
   const changes = [];
-  // Project field changes
-  const fields = [{k:'name',l:'Nume'},{k:'client',l:'Client'},{k:'status',l:'Status'},{k:'deadline',l:'Deadline'},{k:'note',l:'Notă'}];
+  const fields = [{k:'name',l:'Nume'},{k:'client',l:'Client'},{k:'status',l:'Status'},{k:'deadline',l:'Deadline'},{k:'startDate',l:'Data start'},{k:'note',l:'Notă'}];
   for (const {k,l} of fields) {
-    const ov = oldProj[k]||'', nv = newProj[k]||'';
-    if (String(ov).trim() !== String(nv).trim()) {
-      const oval = k==='deadline' ? formatDate(ov)||'—' : ov||'—';
-      const nval = k==='deadline' ? formatDate(nv)||'—' : nv||'—';
-      changes.push({field: l, old: oval, new: nval});
+    const ov=oldProj[k]||'', nv=newProj[k]||'';
+    if (String(ov).trim()!==String(nv).trim()) {
+      const oval = (k==='deadline'||k==='startDate') ? formatDate(ov)||'—' : ov||'—';
+      const nval = (k==='deadline'||k==='startDate') ? formatDate(nv)||'—' : nv||'—';
+      changes.push({field:l, old:oval, new:nval});
     }
   }
-  // Allocation changes
   for (const nd of newAllocs) {
     const od = oldAllocs.find(x=>x.designer===nd.designer);
-    if (!od) {
-      changes.push({field:`${nd.designer} adăugat`, old:'—', new:`Pitch ${nd.pitchEst||0}h est / ${nd.pitchReal||0}h real · Impl ${nd.implEst||0}h est / ${nd.implReal||0}h real`});
-    } else {
-      const hFields = [{k:'pitchEst',l:`${nd.designer} Pitch est`},{k:'pitchReal',l:`${nd.designer} Pitch real`},{k:'implEst',l:`${nd.designer} Impl est`},{k:'implReal',l:`${nd.designer} Impl real`}];
-      for (const {k,l} of hFields) {
-        if (n(od[k]) !== n(nd[k])) changes.push({field:l, old:`${n(od[k])}h`, new:`${n(nd[k])}h`});
-      }
+    if (!od) { changes.push({field:`${nd.designer} adăugat`, old:'—', new:`Pitch ${nd.pitchEst||0}h est/${nd.pitchReal||0}h real · Impl ${nd.implEst||0}h est/${nd.implReal||0}h real`}); }
+    else {
+      const hf = [{k:'pitchEst',l:`${nd.designer} Pitch est`},{k:'pitchReal',l:`${nd.designer} Pitch real`},{k:'implEst',l:`${nd.designer} Impl est`},{k:'implReal',l:`${nd.designer} Impl real`}];
+      for (const {k,l} of hf) { if (n(od[k])!==n(nd[k])) changes.push({field:l, old:`${n(od[k])}h`, new:`${n(nd[k])}h`}); }
     }
   }
-  for (const od of oldAllocs) {
-    if (!newAllocs.find(x=>x.designer===od.designer)) {
-      changes.push({field:`${od.designer} eliminat`, old:'—', new:'—'});
-    }
-  }
+  for (const od of oldAllocs) { if (!newAllocs.find(x=>x.designer===od.designer)) changes.push({field:`${od.designer} eliminat`, old:'—', new:'—'}); }
   return changes;
+}
+
+// ─── REPORTS ──────────────────────────────
+function workingDaysInMonth(year, month) {
+  let days = 0;
+  const d = new Date(year, month, 1);
+  while (d.getMonth()===month) { const dw=d.getDay(); if(dw!==0&&dw!==6) days++; d.setDate(d.getDate()+1); }
+  return days;
+}
+function workingDaysBetween(start, end) {
+  if (!start||!end||start>end) return 0;
+  let days=0, cur=new Date(start);
+  while (cur<=end) { const dw=cur.getDay(); if(dw!==0&&dw!==6) days++; cur.setDate(cur.getDate()+1); }
+  return days;
+}
+function getMonthOverlap(projStart, projEnd, year, month) {
+  const mStart = new Date(year, month, 1);
+  const mEnd = new Date(year, month+1, 0);
+  const overlapStart = projStart > mStart ? projStart : mStart;
+  const overlapEnd = projEnd < mEnd ? projEnd : mEnd;
+  if (overlapStart > overlapEnd) return 0;
+  return workingDaysBetween(overlapStart, overlapEnd);
+}
+function computeReportForMonth(year, month) {
+  const rows = [];
+  for (const p of db.projects) {
+    const allocs = getAllocs(p.id);
+    if (!allocs.length) continue;
+    const projStart = parseDate(p.startDate) || parseDate(p.createdAt) || new Date(year, month, 1);
+    const projEnd = parseDate(p.endDate) || parseDate(p.deadline) || new Date(year, month+1, 0);
+    const totalDays = workingDaysBetween(projStart, projEnd);
+    const overlapDays = getMonthOverlap(projStart, projEnd, year, month);
+    if (overlapDays === 0 || totalDays === 0) continue;
+    const ratio = overlapDays / totalDays;
+    for (const a of allocs) {
+      const totalReal = n(a.pitchReal)+n(a.implReal);
+      const totalEst = n(a.pitchEst)+n(a.implEst);
+      if (totalReal===0 && totalEst===0) continue;
+      rows.push({
+        project: p.name, client: p.client||'—', designer: a.designer,
+        hoursReal: Math.round(totalReal*ratio*10)/10,
+        hoursEst: Math.round(totalEst*ratio*10)/10,
+        pitchReal: Math.round(n(a.pitchReal)*ratio*10)/10,
+        implReal: Math.round(n(a.implReal)*ratio*10)/10,
+        ratio
+      });
+    }
+  }
+  return rows;
+}
+function changeMonth(delta) {
+  reportMonth = new Date(reportMonth.getFullYear(), reportMonth.getMonth()+delta, 1);
+  renderReport();
+}
+function renderReport() {
+  const y = reportMonth.getFullYear(), m = reportMonth.getMonth();
+  const monthNames = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+  document.getElementById('monthDisplay').textContent = `${monthNames[m]} ${y}`;
+  const rows = computeReportForMonth(y, m);
+  const head = document.getElementById('reportHead');
+  const body = document.getElementById('reportBody');
+  head.innerHTML = `<tr>
+    <th>Proiect</th><th>Client</th><th>Designer</th>
+    <th>Pitch (real)</th><th>Impl (real)</th>
+    <th class="total-col">Total ore</th><th class="cost-col">Cost (25€/h)</th>
+  </tr>`;
+  if (!rows.length) { body.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text3);font-family:var(--font-mono);">Nicio activitate în ${monthNames[m]} ${y}</td></tr>`; return; }
+  let html='', totals={};
+  DESIGNERS.forEach(d=>totals[d]={h:0,cost:0});
+  let grandTotal=0, grandCost=0;
+  const byDesigner = {};
+  DESIGNERS.forEach(d=>byDesigner[d]=[]);
+  for (const r of rows) { if (byDesigner[r.designer]) byDesigner[r.designer].push(r); }
+  for (const d of DESIGNERS) {
+    const dRows = byDesigner[d];
+    if (!dRows.length) continue;
+    const dTotal = dRows.reduce((s,r)=>s+r.hoursReal,0);
+    const dCost = dTotal*RATE;
+    totals[d]={h:dTotal,cost:dCost};
+    grandTotal+=dTotal; grandCost+=dCost;
+    for (const r of dRows) {
+      html+=`<tr>
+        <td style="color:var(--text)">${r.project}</td>
+        <td style="color:var(--text2)">${r.client}</td>
+        <td><span style="font-family:var(--font-mono);font-size:10px;color:${DC[r.designer]}">${r.designer}</span></td>
+        <td style="color:var(--text2)">${r.pitchReal.toFixed(1)}h</td>
+        <td style="color:var(--text2)">${r.implReal.toFixed(1)}h</td>
+        <td class="total-col">${r.hoursReal.toFixed(1)}h</td>
+        <td class="cost-col">${(r.hoursReal*RATE).toFixed(0)} €</td>
+      </tr>`;
+    }
+    html+=`<tr class="subtotal-row">
+      <td colspan="3" style="color:${DC[d]}">${d} — subtotal</td>
+      <td></td><td></td>
+      <td class="total-col">${dTotal.toFixed(1)}h</td>
+      <td class="cost-col">${dCost.toFixed(0)} €</td>
+    </tr>`;
+  }
+  html+=`<tr style="border-top:2px solid var(--border);background:var(--bg);">
+    <td colspan="3" style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);font-weight:600;">TOTAL ${monthNames[m].toUpperCase()}</td>
+    <td></td><td></td>
+    <td style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text)">${grandTotal.toFixed(1)}h</td>
+    <td style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--accent2)">${grandCost.toFixed(0)} €</td>
+  </tr>`;
+  body.innerHTML=html;
+}
+function exportCSV() {
+  const y=reportMonth.getFullYear(), m=reportMonth.getMonth();
+  const monthNames=['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+  const rows=computeReportForMonth(y,m);
+  let csv='Proiect,Client,Designer,Pitch ore,Impl ore,Total ore,Cost EUR\n';
+  for (const r of rows) csv+=`"${r.project}","${r.client}","${r.designer}",${r.pitchReal.toFixed(1)},${r.implReal.toFixed(1)},${r.hoursReal.toFixed(1)},${(r.hoursReal*RATE).toFixed(0)}\n`;
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`design-tracker-${monthNames[m]}-${y}.csv`; a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ─── RENDER ───────────────────────────────
@@ -503,58 +682,44 @@ function render() { renderCards(); renderTable(); }
 
 function workingDaysUntil(deadlineStr) {
   if (!deadlineStr) return null;
-  const match = String(deadlineStr).match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return null;
-  const today = new Date(); today.setHours(0,0,0,0);
-  const end = new Date(Number(match[1]), Number(match[2])-1, Number(match[3]));
-  if (end <= today) return 0;
-  let days = 0, cur = new Date(today);
-  while (cur < end) {
-    cur.setDate(cur.getDate()+1);
-    const dow = cur.getDay();
-    if (dow !== 0 && dow !== 6) days++;
-  }
+  const m=String(deadlineStr).match(/(\d{4})-(\d{2})-(\d{2})/); if (!m) return null;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const end=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+  if (end<=today) return 0;
+  let days=0, cur=new Date(today);
+  while (cur<end) { cur.setDate(cur.getDate()+1); const dw=cur.getDay(); if(dw!==0&&dw!==6) days++; }
   return days;
 }
-
 function getDesignerHPerDay(designer) {
-  const activeAllocs = db.allocations.filter(a => {
-    const p = db.projects.find(pr=>pr.id===a.projectId);
-    return a.designer===designer && p && p.status==='active';
-  });
-  let totalHPerDay = 0;
-  const details = [];
+  const activeAllocs=db.allocations.filter(a=>{ const p=db.projects.find(pr=>pr.id===a.projectId); return a.designer===designer&&p&&p.status==='active'; });
+  let totalHPerDay=0; const details=[];
   for (const a of activeAllocs) {
-    const p = db.projects.find(pr=>pr.id===a.projectId);
-    const oreRamase = Math.max(0, (n(a.pitchEst)+n(a.implEst)) - (n(a.pitchReal)+n(a.implReal)));
-    if (oreRamase <= 0) continue;
-    const zile = workingDaysUntil(p.deadline);
-    if (zile === null) { details.push({name:p.name, hpd:null, oreRamase}); continue; }
-    if (zile === 0) { totalHPerDay += oreRamase; details.push({name:p.name, hpd:'⚠', oreRamase}); continue; }
-    const hpd = oreRamase / zile;
-    totalHPerDay += hpd;
-    details.push({name:p.name, hpd, oreRamase, zile});
+    const p=db.projects.find(pr=>pr.id===a.projectId);
+    const oreRamase=Math.max(0,(n(a.pitchEst)+n(a.implEst))-(n(a.pitchReal)+n(a.implReal)));
+    if (oreRamase<=0) continue;
+    const zile=workingDaysUntil(p.deadline);
+    if (zile===null) { details.push({name:p.name,hpd:null,oreRamase}); continue; }
+    if (zile===0) { totalHPerDay+=oreRamase; details.push({name:p.name,hpd:'⚠',oreRamase}); continue; }
+    const hpd=oreRamase/zile; totalHPerDay+=hpd;
+    details.push({name:p.name,hpd,oreRamase,zile});
   }
-  return { totalHPerDay, details, count: activeAllocs.length };
+  return {totalHPerDay,details,count:activeAllocs.length};
 }
-
 function renderCards() {
-  const designers = currentView==='designer' ? [activeDesigner] : DESIGNERS;
-  document.getElementById('designerCards').innerHTML = designers.map(d => {
-    const tot = getDesignerTotals(d);
-    const { totalHPerDay, details, count } = getDesignerHPerDay(d);
-    const hpd = totalHPerDay;
-    const st = hpd > 6 ? 'overloaded' : hpd > 4 ? 'busy' : 'available';
-    const stL = {available:'Disponibil', busy:'Ocupat', overloaded:'Suprasolicitat'}[st];
-    const bc = st==='overloaded'?'var(--danger)':st==='busy'?'var(--accent)':DC[d];
-    const barPct = Math.min((hpd/8)*100, 100);
-    const detailRows = details.length ? details.map(d2 => {
-      const hpdStr = d2.hpd===null ? '(fără deadline)' : d2.hpd==='⚠' ? '⚠ deadline depășit' : `${d2.hpd.toFixed(1)}h/zi`;
+  const designers=currentView==='designer'?[activeDesigner]:DESIGNERS;
+  document.getElementById('designerCards').innerHTML=designers.map(d=>{
+    const tot=getDesignerTotals(d); const {totalHPerDay,details,count}=getDesignerHPerDay(d);
+    const hpd=totalHPerDay; const st=hpd>6?'overloaded':hpd>4?'busy':'available';
+    const stL={available:'Disponibil',busy:'Ocupat',overloaded:'Suprasolicitat'}[st];
+    const bc=st==='overloaded'?'var(--danger)':st==='busy'?'var(--accent)':DC[d];
+    const barPct=Math.min((hpd/8)*100,100);
+    const detailRows=details.length?details.map(d2=>{
+      const hpdStr=d2.hpd===null?'(fără deadline)':d2.hpd==='⚠'?'⚠ deadline depășit':`${d2.hpd.toFixed(1)}h/zi`;
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);">
         <span style="font-size:10px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px;" title="${d2.name}">${d2.name}</span>
         <span style="font-family:var(--font-mono);font-size:10px;color:${d2.hpd===null?'var(--text3)':d2.hpd==='⚠'?'var(--danger)':'var(--text)'};">${hpdStr}</span>
       </div>`;
-    }).join('') : `<div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:6px 0;">Niciun proiect activ</div>`;
+    }).join(''):`<div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:6px 0;">Niciun proiect activ</div>`;
     return `<div class="designer-card ${d.toLowerCase()}">
       <div class="designer-name ${d.toLowerCase()}">${d}</div>
       <div class="stats-row">
@@ -569,63 +734,51 @@ function renderCards() {
   }).join('');
 }
 
+function hoursBlock(real, est, phaseClass, sp) {
+  const pct = est>0?Math.min(Math.round((real/est)*100),200):0;
+  const fillClass = pct>100?'fill-over':pct>75?'fill-warn':phaseClass;
+  return `<td class="hours-block" style="opacity:${sp?1:0.2}">
+    <span class="hours-real">${real.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${est>0?est+'h':'—'}</span>
+    ${est>0?`<div class="progress-mini"><div class="progress-mini-fill ${fillClass}" style="width:${Math.min(pct,100)}%"></div></div>`:''}
+  </td>`;
+}
+
 function renderTable() {
-  const df = document.getElementById('designerFilter').value;
-  let projs = db.projects.filter(p => {
-    if (currentStatusFilter!=='all' && p.status!==currentStatusFilter) return false;
-    if (df!=='all' && !db.allocations.find(a=>a.projectId===p.id&&a.designer===df)) return false;
-    if (currentView==='designer' && !db.allocations.find(a=>a.projectId===p.id&&a.designer===activeDesigner)) return false;
+  const df=document.getElementById('designerFilter').value;
+  let projs=db.projects.filter(p=>{
+    if (currentStatusFilter!=='all'&&p.status!==currentStatusFilter) return false;
+    if (df!=='all'&&!db.allocations.find(a=>a.projectId===p.id&&a.designer===df)) return false;
+    if (currentView==='designer'&&!db.allocations.find(a=>a.projectId===p.id&&a.designer===activeDesigner)) return false;
     return true;
   });
-  projs = sortedProjects(projs);
 
-  const tbody = document.getElementById('projectsBody');
-  if (!projs.length) {
-    tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
-    return;
-  }
+  const sp=currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
+  const si=currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
+  const tbody=document.getElementById('projectsBody');
 
-  let tPR=0,tPE=0,tIR=0,tIE=0;
-  let html = '';
+  if (groupBy==='designer') { renderGroupedByDesigner(projs, sp, si, tbody); return; }
+  if (groupBy==='status') { renderGroupedByStatus(projs, sp, si, tbody); return; }
 
+  // Default: sort by column
+  projs=sortedProjects(projs);
+  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
+  let html='', tPR=0,tPE=0,tIR=0,tIE=0;
   for (const p of projs) {
-    const allocs = getAllocs(p.id);
-    const pR = allocs.reduce((s,a)=>s+n(a.pitchReal),0);
-    const pE = allocs.reduce((s,a)=>s+n(a.pitchEst),0);
-    const iR = allocs.reduce((s,a)=>s+n(a.implReal),0);
-    const iE = allocs.reduce((s,a)=>s+n(a.implEst),0);
-    const tR = pR+iR, tE = pE+iE;
-    tPR+=pR; tPE+=pE; tIR+=iR; tIE+=iE;
-
-    const stL = {active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
-    const dlFmt = formatDate(p.deadline);
-    const dlClass = deadlineClass(p.deadline);
-    const dlLabel = deadlineLabel(p.deadline);
-    const pPct = pE>0?Math.min(Math.round((pR/pE)*100),200):0;
-    const iPct = iE>0?Math.min(Math.round((iR/iE)*100),200):0;
-    const pF = pPct>100?'fill-over':pPct>75?'fill-warn':'fill-pitch';
-    const iF = iPct>100?'fill-over':iPct>75?'fill-warn':'fill-impl';
-    const sp = currentPhaseFilter==='all'||currentPhaseFilter==='pitch';
-    const si = currentPhaseFilter==='all'||currentPhaseFilter==='implementare';
-    const isActive = activePanelId === p.id;
-
-    html += `<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
-      <td>
-        <div class="project-name" title="${p.name}">${p.name}</div>
-        <div class="project-client">${p.client||'—'}</div>
-      </td>
+    const allocs=getAllocs(p.id);
+    const pR=allocs.reduce((s,a)=>s+n(a.pitchReal),0), pE=allocs.reduce((s,a)=>s+n(a.pitchEst),0);
+    const iR=allocs.reduce((s,a)=>s+n(a.implReal),0), iE=allocs.reduce((s,a)=>s+n(a.implEst),0);
+    const tR=pR+iR, tE=pE+iE; tPR+=pR;tPE+=pE;tIR+=iR;tIE+=iE;
+    const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
+    const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
+    const isActive=activePanelId===p.id;
+    const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+    html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
+      <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
+      <td>${chips||'—'}</td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
-      <td>
-        ${dlFmt !== '—' ? `<span class="deadline-display ${dlClass}" style="font-family:var(--font-mono);font-size:11px;">${dlFmt}<span style="font-size:9px;">${dlLabel}</span></span>` : '<span style="color:var(--text3);font-family:var(--font-mono);font-size:11px;">—</span>'}
-      </td>
-      <td class="hours-block" style="opacity:${sp?1:0.2}">
-        <span class="hours-real">${pR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${pE>0?pE+'h':'—'}</span>
-        ${pE>0?`<div class="progress-mini"><div class="progress-mini-fill ${pF}" style="width:${Math.min(pPct,100)}%"></div></div>`:''}
-      </td>
-      <td class="hours-block" style="opacity:${si?1:0.2}">
-        <span class="hours-real">${iR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${iE>0?iE+'h':'—'}</span>
-        ${iE>0?`<div class="progress-mini"><div class="progress-mini-fill ${iF}" style="width:${Math.min(iPct,100)}%"></div></div>`:''}
-      </td>
+      <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
+      ${hoursBlock(pR,pE,'fill-pitch',sp)}
+      ${hoursBlock(iR,iE,'fill-impl',si)}
       <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
       <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
       <td onclick="event.stopPropagation()">
@@ -633,41 +786,26 @@ function renderTable() {
         <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
       </td>
     </tr>`;
-
-    // Designer sub-rows
-    if (allocs.length > 1) {
-      for (const a of allocs) {
-        const apR = n(a.pitchReal), apE = n(a.pitchEst);
-        const aiR = n(a.implReal), aiE = n(a.implEst);
-        const atR = apR+aiR, atE = apE+aiE;
-        const apPct = apE>0?Math.min(Math.round((apR/apE)*100),200):0;
-        const aiPct = aiE>0?Math.min(Math.round((aiR/aiE)*100),200):0;
-        const apF = apPct>100?'fill-over':apPct>75?'fill-warn':'fill-pitch';
-        const aiF = aiPct>100?'fill-over':aiPct>75?'fill-warn':'fill-impl';
-        html += `<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
-          <td colspan="2">
-            <div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div>
-          </td>
-          <td></td>
-          <td class="hours-block" style="opacity:${sp?1:0.2}">
-            <span class="hours-real">${apR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${apE>0?apE+'h':'—'}</span>
-            ${apE>0?`<div class="progress-mini"><div class="progress-mini-fill ${apF}" style="width:${Math.min(apPct,100)}%"></div></div>`:''}
-          </td>
-          <td class="hours-block" style="opacity:${si?1:0.2}">
-            <span class="hours-real">${aiR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${aiE>0?aiE+'h':'—'}</span>
-            ${aiE>0?`<div class="progress-mini"><div class="progress-mini-fill ${aiF}" style="width:${Math.min(aiPct,100)}%"></div></div>`:''}
-          </td>
-          <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
-          <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
-          <td></td>
-        </tr>`;
-      }
+    // Sub-rows for all projects (even single designer)
+    for (const a of allocs) {
+      const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
+      const atR=apR+aiR, atE=apE+aiE;
+      const showSub = allocs.length >= 1;
+      if (!showSub) continue;
+      html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
+        <td colspan="2"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
+        <td></td><td></td>
+        ${hoursBlock(apR,apE,'fill-pitch',sp)}
+        ${hoursBlock(aiR,aiE,'fill-impl',si)}
+        <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+        <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+        <td></td>
+      </tr>`;
     }
   }
-
   const tR=tPR+tIR, tE=tPE+tIE;
-  html += `<tr class="total-row">
-    <td colspan="2" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
+  html+=`<tr class="total-row">
+    <td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
     <td></td>
     <td class="hours-block"><span class="hours-real">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tPE>0?tPE+'h':'—'}</span></td>
     <td class="hours-block"><span class="hours-real">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tIE>0?tIE+'h':'—'}</span></td>
@@ -675,318 +813,296 @@ function renderTable() {
     <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
     <td></td>
   </tr>`;
+  tbody.innerHTML=html;
+}
 
-  tbody.innerHTML = html;
+function renderGroupedByDesigner(projs, sp, si, tbody) {
+  let html='';
+  for (const des of DESIGNERS) {
+    const desAllocs=db.allocations.filter(a=>a.designer===des&&projs.find(p=>p.id===a.projectId));
+    if (!desAllocs.length) continue;
+    const totalH=desAllocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
+    const totalEst=desAllocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0);
+    html+=`<tr class="group-header-row" style="background:rgba(${des==='Mircea'?'78,205,196':des==='Teo'?'232,197,71':'255,159,67'},0.07);">
+      <td colspan="9">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="dot ${des.toLowerCase()}"></span>
+          <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${DC[des]};letter-spacing:.08em;text-transform:uppercase;">${des}</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);">${desAllocs.length} proiect${desAllocs.length>1?'e':''} · ${totalH.toFixed(1)}h realizate · ${Math.max(0,totalEst-totalH).toFixed(1)}h rămase</span>
+        </div>
+      </td>
+    </tr>`;
+    for (const a of desAllocs) {
+      const p=projs.find(pr=>pr.id===a.projectId); if(!p) continue;
+      const others=getAllocs(p.id).filter(x=>x.designer!==des).map(x=>x.designer);
+      const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
+      const atR=apR+aiR, atE=apE+aiE;
+      const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
+      const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
+      const isActive=activePanelId===p.id;
+      html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')" style="padding-left:12px;">
+        <td style="padding-left:26px;">
+          <div class="project-name" title="${p.name}">${p.name}${others.length?` <span style="font-size:9px;color:var(--text3);font-weight:400;">+${others.join(', ')}</span>`:''}</div>
+          <div class="project-client">${p.client||'—'}</div>
+        </td>
+        <td></td>
+        <td><span class="proj-status ${p.status}">${stL}</span></td>
+        <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
+        ${hoursBlock(apR,apE,'fill-pitch',sp)}
+        ${hoursBlock(aiR,aiE,'fill-impl',si)}
+        <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+        <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+        <td onclick="event.stopPropagation()">
+          <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
+          <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
+        </td>
+      </tr>`;
+    }
+  }
+  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+}
+
+function renderGroupedByStatus(projs, sp, si, tbody) {
+  const statusGroups=[{k:'active',l:'Active'},{k:'paused',l:'Pauza'},{k:'completed',l:'Finalizate'}];
+  let html='';
+  for (const {k,l} of statusGroups) {
+    const gProjs=projs.filter(p=>p.status===k);
+    if (!gProjs.length) continue;
+    const gColor={active:'var(--accent2)',paused:'var(--accent)',completed:'#4ade80'}[k];
+    html+=`<tr class="group-header-row" style="background:rgba(${k==='active'?'78,205,196':k==='completed'?'74,222,128':'232,197,71'},0.07);">
+      <td colspan="9"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${gColor};letter-spacing:.08em;text-transform:uppercase;">${l}</span><span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-left:10px;">${gProjs.length} proiecte</span></td>
+    </tr>`;
+    for (const p of sortedProjects(gProjs)) {
+      const allocs=getAllocs(p.id);
+      const pR=allocs.reduce((s,a)=>s+n(a.pitchReal),0), pE=allocs.reduce((s,a)=>s+n(a.pitchEst),0);
+      const iR=allocs.reduce((s,a)=>s+n(a.implReal),0), iE=allocs.reduce((s,a)=>s+n(a.implEst),0);
+      const tR=pR+iR, tE=pE+iE;
+      const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
+      const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+      const isActive=activePanelId===p.id;
+      html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')" style="padding-left:12px;">
+        <td style="padding-left:26px;"><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
+        <td>${chips||'—'}</td>
+        <td></td>
+        <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
+        ${hoursBlock(pR,pE,'fill-pitch',sp)}
+        ${hoursBlock(iR,iE,'fill-impl',si)}
+        <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
+        <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
+        <td onclick="event.stopPropagation()">
+          <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
+          <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
+        </td>
+      </tr>`;
+      for (const a of allocs) {
+        const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
+        const atR=apR+aiR, atE=apE+aiE;
+        html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
+          <td colspan="2" style="padding-left:40px;"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
+          <td></td><td></td>
+          ${hoursBlock(apR,apE,'fill-pitch',sp)}
+          ${hoursBlock(aiR,aiE,'fill-impl',si)}
+          <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+          <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+          <td></td>
+        </tr>`;
+      }
+    }
+  }
+  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
 }
 
 function setStatusFilter(f,btn) {
   currentStatusFilter=f;
-  document.querySelectorAll('.filter-btn:not(#phaseFilterBtn)').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn:not(#phaseFilterBtn):not([id^="groupBtn-"])').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); renderTable();
 }
 function cyclePhase(btn) {
-  const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['active','pitch-active','impl-active'];
+  const states=['all','pitch','implementare'],labels=['Faza: Toate','Faza: Pitch','Faza: Implementare'],classes=['','pitch-active','impl-active'];
   const next=(states.indexOf(currentPhaseFilter)+1)%3;
   currentPhaseFilter=states[next]; btn.textContent=labels[next]; btn.className='filter-btn '+classes[next]; renderTable();
 }
 
 // ─── SIDE PANEL ───────────────────────────
-function togglePanel(pid) {
-  if (activePanelId === pid) { closePanel(); return; }
-  openPanel(pid);
-}
-
-function closePanel() {
-  activePanelId = null;
-  document.getElementById('sidePanel').classList.remove('open');
-  document.getElementById('panelInner').innerHTML = '';
-  renderTable();
-}
-
-function openPanel(pid) {
-  const p = db.projects.find(x=>x.id===pid);
-  if (!p) return;
-  activePanelId = pid;
-  document.getElementById('sidePanel').classList.add('open');
-  renderPanel(p);
-  renderTable();
-}
+function togglePanel(pid) { if(activePanelId===pid){closePanel();return;} openPanel(pid); }
+function closePanel() { activePanelId=null; document.getElementById('sidePanel').classList.remove('open'); document.getElementById('panelInner').innerHTML=''; renderTable(); }
+function openPanel(pid) { const p=db.projects.find(x=>x.id===pid); if(!p) return; activePanelId=pid; document.getElementById('sidePanel').classList.add('open'); renderPanel(p); renderTable(); }
 
 function renderPanel(p) {
-  const allocs = getAllocs(p.id);
-  const dlFmt = formatDate(p.deadline);
-  const dlClass = deadlineClass(p.deadline);
-  const dlLabel = deadlineLabel(p.deadline);
-  const stL = {active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
-  const logs = db.logs.filter(l=>l.projectId===p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
-
-  // Designer blocks
-  const designerBlocks = allocs.map(a => {
-    const pPct = n(a.pitchEst)>0 ? Math.min((n(a.pitchReal)/n(a.pitchEst))*100,100) : 0;
-    const iPct = n(a.implEst)>0 ? Math.min((n(a.implReal)/n(a.implEst))*100,100) : 0;
-    const pColor = pPct>=100?'var(--danger)':pPct>75?'var(--accent)':'var(--pitch)';
-    const iColor = iPct>=100?'var(--danger)':iPct>75?'var(--accent)':'var(--impl)';
+  const allocs=getAllocs(p.id);
+  const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
+  const stL={active:'Activ',completed:'Finalizat',paused:'Pauzat'}[p.status]||p.status;
+  const logs=db.logs.filter(l=>l.projectId===p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
+  const designerBlocks=allocs.map(a=>{
+    const pPct=n(a.pitchEst)>0?Math.min((n(a.pitchReal)/n(a.pitchEst))*100,100):0;
+    const iPct=n(a.implEst)>0?Math.min((n(a.implReal)/n(a.implEst))*100,100):0;
+    const pColor=pPct>=100?'var(--danger)':pPct>75?'var(--accent)':'var(--pitch)';
+    const iColor=iPct>=100?'var(--danger)':iPct>75?'var(--accent)':'var(--impl)';
     return `<div class="panel-designer-block">
-      <div class="panel-designer-header ${a.designer.toLowerCase()}">
-        <span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}
-      </div>
-      <div class="panel-phase-row">
-        <span class="panel-phase-label pitch">Pitch</span>
-        <span class="panel-phase-nums" style="font-family:var(--font-mono);font-size:10px;">
-          <span style="color:var(--text);font-weight:600;">${n(a.pitchReal).toFixed(1)}</span>
-          <span style="color:var(--text3)"> / </span>
-          <span style="color:var(--text2);">${n(a.pitchEst)>0?n(a.pitchEst)+'h':'—'}</span>
-        </span>
+      <div class="panel-designer-header ${a.designer.toLowerCase()}"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div>
+      <div class="panel-phase-row"><span class="panel-phase-label pitch">Pitch</span>
+        <span style="font-family:var(--font-mono);font-size:10px;"><span style="color:var(--text);font-weight:600;">${n(a.pitchReal).toFixed(1)}</span><span style="color:var(--text3)"> / </span><span style="color:var(--text2);">${n(a.pitchEst)>0?n(a.pitchEst)+'h':'—'}</span></span>
       </div>
       ${n(a.pitchEst)>0?`<div class="panel-phase-bar"><div class="panel-phase-bar-fill" style="width:${pPct}%;background:${pColor}"></div></div>`:''}
-      <div class="panel-phase-row" style="margin-top:6px;">
-        <span class="panel-phase-label impl">Implementare</span>
-        <span class="panel-phase-nums" style="font-family:var(--font-mono);font-size:10px;">
-          <span style="color:var(--text);font-weight:600;">${n(a.implReal).toFixed(1)}</span>
-          <span style="color:var(--text3)"> / </span>
-          <span style="color:var(--text2);">${n(a.implEst)>0?n(a.implEst)+'h':'—'}</span>
-        </span>
+      <div class="panel-phase-row" style="margin-top:6px;"><span class="panel-phase-label impl">Implementare</span>
+        <span style="font-family:var(--font-mono);font-size:10px;"><span style="color:var(--text);font-weight:600;">${n(a.implReal).toFixed(1)}</span><span style="color:var(--text3)"> / </span><span style="color:var(--text2);">${n(a.implEst)>0?n(a.implEst)+'h':'—'}</span></span>
       </div>
       ${n(a.implEst)>0?`<div class="panel-phase-bar"><div class="panel-phase-bar-fill" style="width:${iPct}%;background:${iColor}"></div></div>`:''}
     </div>`;
   }).join('');
+  const logHtml=logs.length?logs.map(l=>{
+    const time=new Date(l.timestamp);
+    const timeStr=`${time.toLocaleDateString('ro-RO')} ${time.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'})}`;
+    let changes=[]; try{changes=JSON.parse(l.changes);}catch(e){}
+    const changeRows=changes.map(c=>`<div class="log-change"><span style="color:var(--text3);">${c.field}:</span> <span class="old">${c.old}</span><span class="arrow">→</span><span class="new">${c.new}</span></div>`).join('');
+    return `<div class="log-entry"><div class="log-time">${timeStr}</div><div class="log-changes">${changeRows||'<span style="color:var(--text3);font-size:10px;">Proiect creat</span>'}</div></div>`;
+  }).join(''):'<div class="log-empty">Nicio modificare înregistrată</div>';
 
-  // Log entries
-  const logHtml = logs.length ? logs.map(l => {
-    const time = new Date(l.timestamp);
-    const timeStr = `${time.toLocaleDateString('ro-RO')} ${time.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'})}`;
-    let changes = [];
-    try { changes = JSON.parse(l.changes); } catch(e) {}
-    const changeRows = changes.map(c =>
-      `<div class="log-change">
-        <span style="color:var(--text3);">${c.field}:</span>
-        <span class="old">${c.old}</span>
-        <span class="arrow">→</span>
-        <span class="new">${c.new}</span>
-      </div>`
-    ).join('');
-    return `<div class="log-entry">
-      <div class="log-time">${timeStr}</div>
-      <div class="log-changes">${changeRows || '<span style="color:var(--text3);font-size:10px;">Proiect creat</span>'}</div>
-    </div>`;
-  }).join('') : '<div class="log-empty">Nicio modificare înregistrată</div>';
-
-  document.getElementById('panelInner').innerHTML = `
+  document.getElementById('panelInner').innerHTML=`
     <div class="panel-header">
-      <div>
-        <div class="panel-title">${p.name}</div>
-        <div class="panel-subtitle">${p.client||'—'}</div>
-      </div>
+      <div><div class="panel-title">${p.name}</div><div class="panel-subtitle">${p.client||'—'}</div></div>
       <button class="panel-close" onclick="closePanel()">×</button>
     </div>
-
     <div class="panel-section">
       <div class="panel-section-label">Detalii proiect</div>
-      <div class="panel-field">
-        <span class="panel-field-label">Status</span>
-        <span class="proj-status ${p.status}">${stL}</span>
-      </div>
-      <div class="panel-field">
-        <span class="panel-field-label">Deadline</span>
-        <span class="panel-field-value ${dlClass}">${dlFmt}${dlLabel ? `<span style="font-size:9px;margin-left:4px;">${dlLabel}</span>` : ''}</span>
-      </div>
-      ${p.note ? `<div class="panel-field" style="flex-direction:column;align-items:flex-start;gap:4px;">
-        <span class="panel-field-label">Notă</span>
-        <span style="font-size:11px;color:var(--text2);line-height:1.5;">${p.note}</span>
-      </div>` : ''}
+      <div class="panel-field"><span class="panel-field-label">Status</span><span class="proj-status ${p.status}">${stL}</span></div>
+      <div class="panel-field"><span class="panel-field-label">Start</span><span class="panel-field-value">${formatDate(p.startDate)||'—'}</span></div>
+      <div class="panel-field"><span class="panel-field-label">Deadline</span><span class="panel-field-value ${dlClass}">${dlFmt}${dlLabel}</span></div>
+      ${p.endDate?`<div class="panel-field"><span class="panel-field-label">Finalizat</span><span class="panel-field-value" style="color:#4ade80;">${formatDate(p.endDate)}</span></div>`:''}
+      ${p.note?`<div class="panel-field" style="flex-direction:column;align-items:flex-start;gap:4px;"><span class="panel-field-label">Notă</span><span style="font-size:11px;color:var(--text2);line-height:1.5;">${p.note}</span></div>`:''}
     </div>
-
-    <div class="panel-section">
-      <div class="panel-section-label">Ore per designer</div>
-      ${designerBlocks || '<div class="log-empty">Niciun designer alocat</div>'}
-    </div>
-
-    <div class="panel-section" style="border-bottom:none;">
-      <div class="panel-section-label">Istoric modificări</div>
-      <div class="log-list">${logHtml}</div>
-    </div>
+    <div class="panel-section"><div class="panel-section-label">Ore per designer</div>${designerBlocks||'<div class="log-empty">Niciun designer alocat</div>'}</div>
+    <div class="panel-section" style="border-bottom:none;"><div class="panel-section-label">Istoric modificări</div><div class="log-list">${logHtml}</div></div>
   `;
 }
 
-// ─── FORM DESIGNERS ───────────────────────
+// ─── FORM ─────────────────────────────────
 function renderFormDesigners() {
-  const c = document.getElementById('designerRows');
-  if (!formDesigners.length) {
-    c.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`;
-    return;
-  }
-  c.innerHTML = formDesigners.map((fd,i) => `
+  const c=document.getElementById('designerRows');
+  if (!formDesigners.length) { c.innerHTML=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:8px 0;">Niciun designer — apasă + pentru a adăuga</div>`; return; }
+  c.innerHTML=formDesigners.map((fd,i)=>`
     <div class="designer-row">
       <div class="designer-row-header">
         <span class="designer-row-name ${fd.designer.toLowerCase()}">${fd.designer}</span>
         <button class="btn-remove" onclick="removeDesignerRow(${i})">×</button>
       </div>
       <div class="phase-grid">
-        <div class="phase-group">
-          <span class="phase-label pitch">Pitch</span>
+        <div><span class="phase-label pitch">Pitch</span>
           <div class="phase-inputs-pair">
-            <div>
-              <div class="mini-label">Estimate (h)</div>
-              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}"
-                onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0">
-            </div>
-            <div>
-              <div class="mini-label">Realizate (h)</div>
-              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchReal||''}"
-                onchange="formDesigners[${i}].pitchReal=parseFloat(this.value)||0">
-            </div>
+            <div><div class="mini-label">Estimate (h)</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchEst||''}" onchange="formDesigners[${i}].pitchEst=parseFloat(this.value)||0"></div>
+            <div><div class="mini-label">Realizate (h)</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.pitchReal||''}" onchange="formDesigners[${i}].pitchReal=parseFloat(this.value)||0"></div>
           </div>
         </div>
-        <div class="phase-group">
-          <span class="phase-label impl">Implementare</span>
+        <div><span class="phase-label impl">Implementare</span>
           <div class="phase-inputs-pair">
-            <div>
-              <div class="mini-label">Estimate (h)</div>
-              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}"
-                onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0">
-            </div>
-            <div>
-              <div class="mini-label">Realizate (h)</div>
-              <input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implReal||''}"
-                onchange="formDesigners[${i}].implReal=parseFloat(this.value)||0">
-            </div>
+            <div><div class="mini-label">Estimate (h)</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implEst||''}" onchange="formDesigners[${i}].implEst=parseFloat(this.value)||0"></div>
+            <div><div class="mini-label">Realizate (h)</div><input class="form-input" type="number" min="0" step="0.5" placeholder="0" value="${fd.implReal||''}" onchange="formDesigners[${i}].implReal=parseFloat(this.value)||0"></div>
           </div>
         </div>
       </div>
     </div>`).join('');
 }
-
-function addDesignerRow() {
-  const d = document.getElementById('addDesignerSel').value;
-  if (formDesigners.find(fd=>fd.designer===d)) { toast('Designer deja adăugat',true); return; }
-  formDesigners.push({designer:d,pitchEst:0,pitchReal:0,implEst:0,implReal:0});
-  renderFormDesigners();
-}
+function addDesignerRow() { const d=document.getElementById('addDesignerSel').value; if(formDesigners.find(fd=>fd.designer===d)){toast('Designer deja adăugat',true);return;} formDesigners.push({designer:d,pitchEst:0,pitchReal:0,implEst:0,implReal:0}); renderFormDesigners(); }
 function removeDesignerRow(i) { formDesigners.splice(i,1); renderFormDesigners(); }
 
-// ─── PROJECT CRUD ─────────────────────────
+// ─── CRUD ─────────────────────────────────
 function openAddProject() {
   editingId=null; formDesigners=[];
   document.getElementById('projModalTitle').textContent='Proiect nou';
   ['f_name','f_client','f_note'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_status').value='active';
   document.getElementById('f_deadline').value='';
+  document.getElementById('f_startDate').value=todayStr();
+  document.getElementById('f_endDate').value='';
   renderFormDesigners(); openModal('projModal');
 }
-
 function editProject(id) {
-  const p = db.projects.find(x=>x.id===id); if (!p) return;
-  editingId = id;
+  const p=db.projects.find(x=>x.id===id); if(!p) return;
+  editingId=id;
   document.getElementById('projModalTitle').textContent='Editează proiect';
   document.getElementById('f_name').value=p.name;
   document.getElementById('f_client').value=p.client||'';
   document.getElementById('f_status').value=p.status;
   document.getElementById('f_deadline').value=formatDate(p.deadline)||'';
+  document.getElementById('f_startDate').value=formatDate(p.startDate)||'';
+  document.getElementById('f_endDate').value=formatDate(p.endDate)||'';
   document.getElementById('f_note').value=p.note||'';
-  formDesigners = db.allocations.filter(a=>a.projectId===id).map(a=>({
-    id:a.id, designer:a.designer,
-    pitchEst:n(a.pitchEst), pitchReal:n(a.pitchReal),
-    implEst:n(a.implEst),   implReal:n(a.implReal)
-  }));
+  formDesigners=db.allocations.filter(a=>a.projectId===id).map(a=>({id:a.id,designer:a.designer,pitchEst:n(a.pitchEst),pitchReal:n(a.pitchReal),implEst:n(a.implEst),implReal:n(a.implReal)}));
   renderFormDesigners(); openModal('projModal');
 }
-
 async function saveProject() {
-  const name = document.getElementById('f_name').value.trim();
-  if (!name) { alert('Introdu numele proiectului.'); return; }
-  const proj = {
-    id: editingId||uid(), name,
-    client: document.getElementById('f_client').value.trim(),
-    status: document.getElementById('f_status').value,
-    deadline: document.getElementById('f_deadline').value,
-    note: document.getElementById('f_note').value.trim(),
-    createdAt: new Date().toISOString()
+  const name=document.getElementById('f_name').value.trim(); if(!name){alert('Introdu numele proiectului.');return;}
+  const newStatus=document.getElementById('f_status').value;
+  const oldProj=editingId?db.projects.find(x=>x.id===editingId)||{}:{};
+  const wasCompleted=oldProj.status==='completed';
+  const nowCompleted=newStatus==='completed';
+  const endDate=nowCompleted&&!wasCompleted ? todayStr() : (formatDate(oldProj.endDate)||'');
+  const proj={
+    id:editingId||uid(), name,
+    client:document.getElementById('f_client').value.trim(),
+    status:newStatus,
+    deadline:document.getElementById('f_deadline').value,
+    startDate:document.getElementById('f_startDate').value||todayStr(),
+    endDate,
+    note:document.getElementById('f_note').value.trim(),
+    createdAt:oldProj.createdAt||new Date().toISOString()
   };
   showLoading('Se salvează...');
   try {
     if (editingId) {
-      // Capture old state for diff
-      const oldProj = db.projects.find(x=>x.id===editingId) || {};
-      const oldAllocs = db.allocations.filter(a=>a.projectId===editingId).map(a=>({...a}));
-
-      await apiUpdate('Projects', editingId, proj);
-      const idx = db.projects.findIndex(x=>x.id===editingId);
-      db.projects[idx] = proj;
-      const toDelete = db.allocations.filter(a=>a.projectId===editingId && a.id);
-      for (const a of toDelete) await apiClear('Allocations', a.id);
-      db.allocations = db.allocations.filter(a=>a.projectId!==editingId);
-
-      for (const fd of formDesigners) {
-        const alloc = {
-          id: uid(), projectId: proj.id, designer: fd.designer,
-          pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
-          implEst: fd.implEst||0,   implReal: fd.implReal||0
-        };
-        await apiAppend('Allocations', alloc);
-        db.allocations.push(alloc);
-      }
-
-      // Build and save diff log
-      const changes = buildDiff(oldProj, proj, oldAllocs, formDesigners);
-      if (changes.length > 0) await appendLog(proj.id, changes);
-
+      const oldAllocs=db.allocations.filter(a=>a.projectId===editingId).map(a=>({...a}));
+      await apiUpdate('Projects',editingId,proj);
+      const idx=db.projects.findIndex(x=>x.id===editingId); db.projects[idx]=proj;
+      const toDelete=db.allocations.filter(a=>a.projectId===editingId&&a.id);
+      for (const a of toDelete) await apiClear('Allocations',a.id);
+      db.allocations=db.allocations.filter(a=>a.projectId!==editingId);
+      for (const fd of formDesigners) { const alloc={id:uid(),projectId:proj.id,designer:fd.designer,pitchEst:fd.pitchEst||0,pitchReal:fd.pitchReal||0,implEst:fd.implEst||0,implReal:fd.implReal||0}; await apiAppend('Allocations',alloc); db.allocations.push(alloc); }
+      const changes=buildDiff(oldProj,proj,oldAllocs,formDesigners);
+      if (changes.length>0) await appendLog(proj.id,changes);
     } else {
-      await apiAppend('Projects', proj);
-      db.projects.push(proj);
-      for (const fd of formDesigners) {
-        const alloc = {
-          id: uid(), projectId: proj.id, designer: fd.designer,
-          pitchEst: fd.pitchEst||0, pitchReal: fd.pitchReal||0,
-          implEst: fd.implEst||0,   implReal: fd.implReal||0
-        };
-        await apiAppend('Allocations', alloc);
-        db.allocations.push(alloc);
-      }
-      // Log creation
-      await appendLog(proj.id, []);
+      await apiAppend('Projects',proj); db.projects.push(proj);
+      for (const fd of formDesigners) { const alloc={id:uid(),projectId:proj.id,designer:fd.designer,pitchEst:fd.pitchEst||0,pitchReal:fd.pitchReal||0,implEst:fd.implEst||0,implReal:fd.implReal||0}; await apiAppend('Allocations',alloc); db.allocations.push(alloc); }
+      await appendLog(proj.id,[]);
     }
     toast(editingId?'Proiect actualizat ✓':'Proiect adăugat ✓');
     closeModal('projModal');
-    if (activePanelId === proj.id) openPanel(proj.id);
+    if (activePanelId===proj.id) openPanel(proj.id);
     render();
-  } catch(e) { toast('Eroare: '+e.message, true); console.error('saveProject error:', e); }
+  } catch(e) { toast('Eroare: '+e.message,true); console.error(e); }
   hideLoading();
 }
-
 async function deleteProject(id) {
   if (!confirm('Ștergi proiectul și toate alocările?')) return;
   showLoading('Se șterge...');
   try {
-    await apiClear('Projects', id);
-    const oldAllocs = db.allocations.filter(a=>a.projectId===id);
-    for (const a of oldAllocs) await apiClear('Allocations', a.id);
-    const oldLogs = db.logs.filter(l=>l.projectId===id);
-    for (const l of oldLogs) await apiClear('Logs', l.id);
-    db.projects = db.projects.filter(p=>p.id!==id);
-    db.allocations = db.allocations.filter(a=>a.projectId!==id);
-    db.logs = db.logs.filter(l=>l.projectId!==id);
-    if (activePanelId === id) closePanel();
+    await apiClear('Projects',id);
+    for (const a of db.allocations.filter(a=>a.projectId===id)) await apiClear('Allocations',a.id);
+    for (const l of db.logs.filter(l=>l.projectId===id)) await apiClear('Logs',l.id);
+    db.projects=db.projects.filter(p=>p.id!==id);
+    db.allocations=db.allocations.filter(a=>a.projectId!==id);
+    db.logs=db.logs.filter(l=>l.projectId!==id);
+    if (activePanelId===id) closePanel();
     toast('Proiect șters'); render();
-  } catch(e) { toast('Eroare: '+e.message, true); console.error(e); }
+  } catch(e) { toast('Eroare: '+e.message,true); console.error(e); }
   hideLoading();
 }
 
-document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el){el.classList.remove('open'); editingId=null;}}));
+document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el){el.classList.remove('open');editingId=null;}}));
 
 // ─── INIT ─────────────────────────────────
 async function init() {
   showLoading('Se inițializează...');
+  reportMonth = new Date();
   try {
     await Promise.all([
-      apiInitHeaders('Projects', ['id','name','client','status','deadline','note','createdAt']),
-      apiInitHeaders('Allocations', ['id','projectId','designer','pitchEst','pitchReal','implEst','implReal']),
-      apiInitHeaders('Logs', ['id','projectId','timestamp','changes'])
+      apiInitHeaders('Projects',['id','name','client','status','deadline','startDate','endDate','note','createdAt']),
+      apiInitHeaders('Allocations',['id','projectId','designer','pitchEst','pitchReal','implEst','implReal']),
+      apiInitHeaders('Logs',['id','projectId','timestamp','changes'])
     ]);
-  } catch(e) { console.warn('Init:', e); }
+  } catch(e) { console.warn('Init:',e); }
   hideLoading();
   await loadAllData();
 }
-
 init();
 </script>
 </body>
