@@ -708,7 +708,9 @@ function render() { renderCards(); renderTable(); }
 
 function workingDaysUntil(deadlineStr) {
   if (!deadlineStr) return null;
-  const m=String(deadlineStr).match(/(\d{4})-(\d{2})-(\d{2})/); if (!m) return null;
+  const norm = normalizeDate(deadlineStr);
+  if (!norm) return null;
+  const m = norm.match(/(\d{4})-(\d{2})-(\d{2})/); if (!m) return null;
   const today=new Date(); today.setHours(0,0,0,0);
   const end=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
   if (end<=today) return 0;
