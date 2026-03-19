@@ -263,7 +263,6 @@
               <div class="filter-sep"></div>
               <button class="filter-btn" id="phaseFilterBtn" onclick="cyclePhase(this)">Faza: Toate</button>
               <div class="filter-sep"></div>
-              <button class="filter-btn" id="groupBtn-deadline" onclick="setGroupBy('deadline',this)">↕ Deadline</button>
               <button class="filter-btn" id="groupBtn-designer" onclick="setGroupBy('designer',this)">↕ Designer</button>
               <button class="filter-btn" id="groupBtn-status" onclick="setGroupBy('status',this)">↕ Status</button>
               <div class="filter-sep"></div>
@@ -277,7 +276,8 @@
             <table>
               <thead id="tableHead">
                 <tr>
-                  <th onclick="setSort('name')">Proiect / Client</th>
+                  <th onclick="setSort('name')">Proiect</th>
+                  <th onclick="setSort('client')">Client</th>
                   <th onclick="setSort('status')">Status</th>
                   <th onclick="setSort('deadline')">Deadline</th>
                   <th class="pitch-col no-sort">Pitch real / est.</th>
@@ -501,6 +501,7 @@ function sortedProjects(projs) {
   return [...projs].sort((a,b) => {
     let va, vb;
     if (sortCol==='name') { va=a.name||''; vb=b.name||''; return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va); }
+    if (sortCol==='client') { va=a.client||''; vb=b.client||''; return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va); }
     if (sortCol==='deadline') {
       va = normalizeDate(a.deadline) || '9999';
       vb = normalizeDate(b.deadline) || '9999';
@@ -522,7 +523,7 @@ function sortedProjects(projs) {
 // ─── HELPERS ──────────────────────────────
 function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
 function getAllocs(pid) { return db.allocations.filter(a=>a.projectId===pid); }
-function n(v) { return Number(v)||0; }
+function n(v) { return Number(String(v).replace(',','.'))||0; }
 
 function getDesignerTotals(d) {
   const activeIds = new Set(db.projects.filter(p=>p.status==='active').map(p=>p.id));
@@ -786,7 +787,7 @@ function renderTable() {
 
   // Default: sort by column
   projs=sortedProjects(projs);
-  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
+  if (!projs.length) { tbody.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`; return; }
   let html='', tPR=0,tPE=0,tIR=0,tIE=0;
   for (const p of projs) {
     const allocs=getAllocs(p.id);
@@ -797,40 +798,55 @@ function renderTable() {
     const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
     const isActive=activePanelId===p.id;
     const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+    // Single designer: show their hours directly; multi: show totals
+    const showSingle = allocs.length === 1;
+    const sA = showSingle ? allocs[0] : null;
+    const dispPR = showSingle ? n(sA.pitchReal) : pR;
+    const dispPE = showSingle ? n(sA.pitchEst) : pE;
+    const dispIR = showSingle ? n(sA.implReal) : iR;
+    const dispIE = showSingle ? n(sA.implEst) : iE;
+    const dispTR = dispPR+dispIR, dispTE = dispPE+dispIE;
     html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
-      <td><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
+      <td>
+        <div class="project-name" title="${p.name}">${p.name}</div>
+        <div style="display:flex;align-items:center;gap:4px;margin-top:3px;">
+          ${showSingle ? `<span class="designer-chip"><span class="dot ${sA.designer.toLowerCase()}"></span>${sA.designer}</span>` : chips}
+        </div>
+      </td>
+      <td><div class="project-client">${p.client||'—'}</div></td>
       <td><span class="proj-status ${p.status}">${stL}</span></td>
       <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
-      ${hoursBlock(pR,pE,'fill-pitch',sp)}
-      ${hoursBlock(iR,iE,'fill-impl',si)}
-      <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
-      <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
+      ${hoursBlock(dispPR,dispPE,'fill-pitch',sp)}
+      ${hoursBlock(dispIR,dispIE,'fill-impl',si)}
+      <td class="hours-block"><span class="hours-real">${dispTR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${dispTE>0?dispTE+'h':'—'}</span></td>
+      <td class="cost-cell">${dispTR>0?(dispTR*RATE).toFixed(0)+' €':'—'}</td>
       <td onclick="event.stopPropagation()">
         <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
         <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
       </td>
     </tr>`;
-    // Sub-rows for all projects (even single designer)
-    for (const a of allocs) {
-      const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
-      const atR=apR+aiR, atE=apE+aiE;
-      const showSub = allocs.length >= 1;
-      if (!showSub) continue;
-      html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
-        <td colspan="2"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
-        <td></td><td></td>
-        ${hoursBlock(apR,apE,'fill-pitch',sp)}
-        ${hoursBlock(aiR,aiE,'fill-impl',si)}
-        <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
-        <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
-        <td></td>
-      </tr>`;
+    // Sub-rows only for 2+ designers
+    if (allocs.length > 1) {
+      for (const a of allocs) {
+        const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
+        const atR=apR+aiR, atE=apE+aiE;
+        html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
+          <td colspan="3"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
+          <td></td>
+          ${hoursBlock(apR,apE,'fill-pitch',sp)}
+          ${hoursBlock(aiR,aiE,'fill-impl',si)}
+          <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+          <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+          <td></td>
+        </tr>`;
+      }
+    } else if (allocs.length === 1) {
+      // Single designer: show chip inline on main row (handled below)
     }
   }
   const tR=tPR+tIR, tE=tPE+tIE;
   html+=`<tr class="total-row">
-    <td colspan="3" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
-    <td></td>
+    <td colspan="4" style="color:var(--text3);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Total</td>
     <td class="hours-block"><span class="hours-real">${tPR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tPE>0?tPE+'h':'—'}</span></td>
     <td class="hours-block"><span class="hours-real">${tIR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tIE>0?tIE+'h':'—'}</span></td>
     <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
@@ -845,10 +861,16 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
   for (const des of DESIGNERS) {
     const desAllocs=db.allocations.filter(a=>a.designer===des&&projs.find(p=>p.id===a.projectId));
     if (!desAllocs.length) continue;
+    // Sort by deadline asc within group
+    desAllocs.sort((a,b)=>{
+      const pa=projs.find(pr=>pr.id===a.projectId), pb=projs.find(pr=>pr.id===b.projectId);
+      const da=normalizeDate(pa&&pa.deadline)||'9999', db2=normalizeDate(pb&&pb.deadline)||'9999';
+      return da.localeCompare(db2);
+    });
     const totalH=desAllocs.reduce((s,a)=>s+n(a.pitchReal)+n(a.implReal),0);
     const totalEst=desAllocs.reduce((s,a)=>s+n(a.pitchEst)+n(a.implEst),0);
     html+=`<tr class="group-header-row" style="background:rgba(${des==='Mircea'?'78,205,196':des==='Teo'?'232,197,71':'255,159,67'},0.07);">
-      <td colspan="8">
+      <td colspan="9">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span class="dot ${des.toLowerCase()}"></span>
           <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${DC[des]};letter-spacing:.08em;text-transform:uppercase;">${des}</span>
@@ -867,8 +889,8 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
       html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')" style="padding-left:12px;">
         <td style="padding-left:26px;">
           <div class="project-name" title="${p.name}">${p.name}${others.length?` <span style="font-size:9px;color:var(--text3);font-weight:400;">+${others.join(', ')}</span>`:''}</div>
-          <div class="project-client">${p.client||'—'}</div>
         </td>
+        <td><div class="project-client">${p.client||'—'}</div></td>
         <td><span class="proj-status ${p.status}">${stL}</span></td>
         <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
         ${hoursBlock(apR,apE,'fill-pitch',sp)}
@@ -882,7 +904,7 @@ function renderGroupedByDesigner(projs, sp, si, tbody) {
       </tr>`;
     }
   }
-  tbody.innerHTML=html||`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
 }
 
 function renderGroupedByStatus(projs, sp, si, tbody) {
@@ -893,7 +915,7 @@ function renderGroupedByStatus(projs, sp, si, tbody) {
     if (!gProjs.length) continue;
     const gColor={active:'var(--accent2)',paused:'var(--accent)',completed:'#4ade80'}[k];
     html+=`<tr class="group-header-row" style="background:rgba(${k==='active'?'78,205,196':k==='completed'?'74,222,128':'232,197,71'},0.07);">
-      <td colspan="8"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${gColor};letter-spacing:.08em;text-transform:uppercase;">${l}</span><span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-left:10px;">${gProjs.length} proiecte</span></td>
+      <td colspan="9"><span style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:${gColor};letter-spacing:.08em;text-transform:uppercase;">${l}</span><span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-left:10px;">${gProjs.length} proiecte</span></td>
     </tr>`;
     for (const p of sortedProjects(gProjs)) {
       const allocs=getAllocs(p.id);
@@ -901,37 +923,51 @@ function renderGroupedByStatus(projs, sp, si, tbody) {
       const iR=allocs.reduce((s,a)=>s+n(a.implReal),0), iE=allocs.reduce((s,a)=>s+n(a.implEst),0);
       const tR=pR+iR, tE=pE+iE;
       const dlFmt=formatDate(p.deadline), dlClass=deadlineClass(p.deadline,p.status), dlLabel=deadlineLabel(p.deadline,p.status);
-      const chips=allocs.map(a=>`<span class="designer-chip"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</span>`).join('');
+      const showSingle2 = allocs.length === 1;
+      const sA2 = showSingle2 ? allocs[0] : null;
+      const dispPR2 = showSingle2 ? n(sA2.pitchReal) : pR;
+      const dispPE2 = showSingle2 ? n(sA2.pitchEst) : pE;
+      const dispIR2 = showSingle2 ? n(sA2.implReal) : iR;
+      const dispIE2 = showSingle2 ? n(sA2.implEst) : iE;
+      const dispTR2 = dispPR2+dispIR2, dispTE2 = dispPE2+dispIE2;
       const isActive=activePanelId===p.id;
-      html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')" style="padding-left:12px;">
-        <td style="padding-left:26px;"><div class="project-name" title="${p.name}">${p.name}</div><div class="project-client">${p.client||'—'}</div></td>
+      html+=`<tr class="proj-row${isActive?' active-panel':''}" onclick="togglePanel('${p.id}')">
+        <td style="padding-left:26px;">
+          <div class="project-name" title="${p.name}">${p.name}</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:3px;">
+            ${showSingle2 ? `<span class="designer-chip"><span class="dot ${sA2.designer.toLowerCase()}"></span>${sA2.designer}</span>` : chips}
+          </div>
+        </td>
+        <td><div class="project-client">${p.client||'—'}</div></td>
         <td></td>
         <td><span class="hours-block ${dlClass}" style="font-size:11px;">${dlFmt!=='—'?dlFmt+dlLabel:'—'}</span></td>
-        ${hoursBlock(pR,pE,'fill-pitch',sp)}
-        ${hoursBlock(iR,iE,'fill-impl',si)}
-        <td class="hours-block"><span class="hours-real">${tR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${tE>0?tE+'h':'—'}</span></td>
-        <td class="cost-cell">${tR>0?(tR*RATE).toFixed(0)+' €':'—'}</td>
+        ${hoursBlock(dispPR2,dispPE2,'fill-pitch',sp)}
+        ${hoursBlock(dispIR2,dispIE2,'fill-impl',si)}
+        <td class="hours-block"><span class="hours-real">${dispTR2.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${dispTE2>0?dispTE2+'h':'—'}</span></td>
+        <td class="cost-cell">${dispTR2>0?(dispTR2*RATE).toFixed(0)+' €':'—'}</td>
         <td onclick="event.stopPropagation()">
           <button class="action-btn" onclick="editProject('${p.id}')">Edit</button>
           <button class="action-btn danger" onclick="deleteProject('${p.id}')">✕</button>
         </td>
       </tr>`;
-      for (const a of allocs) {
-        const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
-        const atR=apR+aiR, atE=apE+aiE;
-        html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
-          <td colspan="2" style="padding-left:40px;"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
-          <td></td><td></td>
-          ${hoursBlock(apR,apE,'fill-pitch',sp)}
-          ${hoursBlock(aiR,aiE,'fill-impl',si)}
-          <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
-          <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
-          <td></td>
-        </tr>`;
+      if (allocs.length > 1) {
+        for (const a of allocs) {
+          const apR=n(a.pitchReal),apE=n(a.pitchEst),aiR=n(a.implReal),aiE=n(a.implEst);
+          const atR=apR+aiR, atE=apE+aiE;
+          html+=`<tr class="designer-subrow" onclick="togglePanel('${p.id}')">
+            <td colspan="3" style="padding-left:40px;"><div class="sub-designer-name"><span class="dot ${a.designer.toLowerCase()}"></span>${a.designer}</div></td>
+            <td></td>
+            ${hoursBlock(apR,apE,'fill-pitch',sp)}
+            ${hoursBlock(aiR,aiE,'fill-impl',si)}
+            <td class="hours-block"><span class="hours-real">${atR.toFixed(1)}</span><span class="hours-sep">/</span><span class="hours-est">${atE>0?atE+'h':'—'}</span></td>
+            <td class="cost-cell">${atR>0?(atR*RATE).toFixed(0)+' €':'—'}</td>
+            <td></td>
+          </tr>`;
+        }
       }
     }
   }
-  tbody.innerHTML=html||`<tr><td colspan="8"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
+  tbody.innerHTML=html||`<tr><td colspan="9"><div class="empty-state"><div>📋</div>Niciun proiect găsit</div></td></tr>`;
 }
 
 function setStatusFilter(f,btn) {
